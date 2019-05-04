@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 
 
-bot_secret_token = "NTYyMDE0NTgyNDY2NDEyNTY1.XKE_7Q.wCapmUIc2PgTGXrb9K7aRWec7Sk"
+bot_secret_token = ""
 
 
 
@@ -20,7 +20,7 @@ client.on('ready', () => {
     console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`) 
            })
     var generalChannel = client.channels.get("500665868318015489") // channel ID
-    generalChannel.send("I is the online <@325667415780360212> also ur gay")             
+    generalChannel.send("I is the online")             
          })
        })
 
