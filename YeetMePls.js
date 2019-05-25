@@ -6,6 +6,7 @@ var prefix = config.bot.prefix;
 
 
 
+
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
     //servers
