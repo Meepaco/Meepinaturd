@@ -1,5 +1,7 @@
-const Discord = require('discord.js')
-const client = new Discord.Client()
+const Discord = require('discord.js');
+const client = new Discord.Client();
+var config = require('./Renograde.json');
+var prefix = config.bot.prefix;
 
 
 
@@ -27,7 +29,7 @@ client.on('message', async receivedMessage => {
         return
         }
 
-    prefix = ("-")
+    //prefix = ("-")
 
 var essay1 = "shut yo skin tone chicken bone google chrome no home flip phone disowned ice cream cone garden gnome extra chromosome metronome dimmadome genome full blown monochrome student loan indiana jones overgrown flintstone x and y hormone friend zone sylvester stallone sierra leone autozone professionally seen silver patrone ching chong ling long suck my ding dong head ass pubg fortnite flip phone remote control autism down syndrome stage four terminal braind cancer o rielly auto parts silver bronze ash amiibo uv light pen sushi ramen harrison ford gamer bitch ass virgin lamp thermometor lean mean string bean charlie sheen limousine canteen trampoline serpentine antihistamine wolverine submarine unclean nectarine broken gene halloween defective spleen smokescreen james dean putting green tiny peen anti vaccine aquamarine eugene extra green nicotine vaseline jellybean magazine protein lightning-mcqueen vending machine what'chu mean Ocean Man by Ween head ass tf up bitch"
 var essay2 = `Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah Bwah bwah bwah bwah bwah`
@@ -93,6 +95,6 @@ else  {
   }
   
 })
-renograde = "" //bot token
-client.login(renograde)
-    
+//renograde = "" //bot token
+client.login(config.bot.token);
+
