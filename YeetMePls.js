@@ -1,6 +1,8 @@
+//beta 3 
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
+const modlogs = require('./Moderations.txt');
 //const logfile = require('.modlogs.txt');
 var prefix = config.bot.prefix;
 
@@ -8,10 +10,12 @@ var prefix = config.bot.prefix;
 //loading
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag)
+    console.log("--beta 3 build 2--")
     //servers
     console.log("Servers:") 
     client.guilds.forEach((guild) => {
     console.log(" - " + guild.name)
+
     console.log("**Channels**")  
     
 
@@ -96,36 +100,55 @@ var helptext = `**Commands:**
   }
 })
 
-   
-client.on('message', message => {
+//Moderation   
+client.on('message', async message => {
   if (message.author == client.user) return;
   const args = message.content.slice(config.prefix).trim().split(/ +/g);    
-  
+
     if (message.content.startsWith('-yeet')) {
       console.log(message.author + 'issued command: "yeet"')
       const user = message.mentions.users.first() || message.guild.members.get(args[0]);;
       if (user) {
         const member = message.guild.member(user);
         let reason = args.slice(2).join(' ');
-        if (member) {
-        member.kick(reason).then(() => {
-          message.reply(`${user.tag} Was YEETED for: ${reason}`);
-          console.log(member + ' was kicked for ' + reason);
-        }).catch(err => {
-          message.reply('Unable to Yeet the skid, most likely either role hiearchy or no perms');
-          console.log('Unable to Yeet the skid');
-          console.error(err);
-            });
-           }
-          else {
-            message.reply('Skid is not in the server');
-            }
-           }
+        if (!message.member.roles.some(r=>["Admin", "BeGone Thot Givers"].includes(r.name)) ) 
+          return message.reply('Not enough permissions');
+          
+        
+
+
+          if (member) {
+            const delay = (msec) => new Promise((resolve) => setTimeout(resolve, msec)); 
+            const server = "(server) idk how to do this part"
+            user.send(`You have been moderated from: *${server}* for:  
+            
+**${reason}** 
+            
+            
+(_***ignore this is you havent been kicked)***_`);
+            message.channel.send(`${message.author} Has summoned the yeeter on ${user}!`);
+            await delay(1000);
+            member.kick(reason).then(() => {
+            message.channel.send(`${user.tag} Was YEETED for: 
+
+${reason}`);
+            console.log(`${user.tag} Was YEETED for: 
+
+            ${reason}`);
+           
+
+          }).catch(err => {
+            message.reply('Yeet failed');
+            console.log('Unable to Yeet the skid');
+            console.error(err);
+              });
+            }     
+          }
       else {
-       message.reply('No skid was mentioned');
+        message.reply('No skid was mentioned/Skid not in server');
           }
         }
-});
+      });
   
     
     
