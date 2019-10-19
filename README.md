@@ -26,3 +26,4 @@ Changelog:
 - b3: Implement kicking
 - b4: Banning and kicking  think
 - b6: Disabled moderation, removed attempt at music, fixed spamming, les optimize
+- b7b1: math commands, add,sin,pyth 
