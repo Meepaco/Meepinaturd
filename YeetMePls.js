@@ -1,4 +1,4 @@
-const version = 'beta 8'
+const version = 'beta 9'
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
@@ -7,22 +7,70 @@ const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
 
-
+// ${new Date()}
 // const ytdl = require('ytdl-core');
 // const queue = new Map();
 
+function timeStampy() {
 
+  var date = new Date();
+  
+  var year = date.getFullYear();
+
+  var month = date.getMonth() + 1;
+  month = (month < 10 ? "0" : "") + month;
+
+  var day  = date.getDate();
+  day = (day < 10 ? "0" : "") + day;
+
+  var hour = date.getHours();
+  hour = (hour < 10 ? "0" : "") + hour;
+
+  var min  = date.getMinutes();
+  min = (min < 10 ? "0" : "") + min;
+
+  var sec  = date.getSeconds();
+  sec = (sec < 10 ? "0" : "") + sec;
+
+  return hour + ":" + min + ":" + sec;
+}
+
+function dateStampy() {
+
+  var date = new Date();
+  
+  var year = date.getFullYear();
+
+  var month = date.getMonth() + 1;
+  month = (month < 10 ? "0" : "") + month;
+
+  var day  = date.getDate();
+  day = (day < 10 ? "0" : "") + day;
+
+  var hour = date.getHours();
+  hour = (hour < 10 ? "0" : "") + hour;
+
+  var min  = date.getMinutes();
+  min = (min < 10 ? "0" : "") + min;
+
+  var sec  = date.getSeconds();
+  sec = (sec < 10 ? "0" : "") + sec;
+
+  return `${year} ${month} ${day} ${hour} ${min} ${sec} (yyyy-mm-dd-hh-mm-ss)`
+
+}
 //loading
 client.on('ready', () => {
-  fs.appendFileSync('logs.txt', `-----------------------------------------------------------------------------------------------------
-  
-  
-  
-  
-  ${new Date()} ----- The bot has started
+  fs.appendFileSync('logs.txt', `
+-----------------------------------------------------------------------------------------------------
 
-  ${version}
-  Servers:
+
+
+
+The bot has started: ${new Date()}
+
+${version}
+Servers:
 
   `)
   console.log("Connected as " + client.user.tag)
@@ -30,7 +78,7 @@ client.on('ready', () => {
   client.guilds.forEach((guild) => {
   console.log(" - " + guild.name)
 
-  fs.appendFileSync('logs.txt', `- ${guild.name} 
+  fs.appendFileSync('logs.txt', `- ${guild.name}
   `)
   // console.log("**Channels**")  
   // guild.channels.forEach((channel) => {  
@@ -41,6 +89,9 @@ client.on('ready', () => {
   generalChannel.send("I is the online") 
   console.log("-----finished loading-----")    
   console.log(version)
+  fs.appendFileSync('logs.txt', `
+Boot completed
+`)
 })
 
 
@@ -119,32 +170,45 @@ Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds
       recMsg.channel.send(`> Cpu usage: ${usg}%`);
     })
     recMsg.channel.send(infoDump)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Requested bot info`)
   }
 
   if (recMsg == prefix + ("essay")) {
       recMsg.channel.send(config.bot.essay)
+      fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
       }
+
   if (recMsg == prefix + ("bwah")) {
       recMsg.channel.send(config.bot.bwah)
+      fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-bwah"`)
       }
+
   if (recMsg == prefix + "ping") {
   const m = await recMsg.channel.send("Ping?");
     m.edit(`**YEET! Latency is ${m.createdTimestamp - recMsg.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms**`);
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-ping" (${m.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
   }
 
   if (recMsg == prefix + ("help")) {
-      recMsg.channel.send(helptext)
-        }
-  if (recMsg == (prefix + "spam"))  {
-      recMsg.channel.send("`Do !spam help for arguements`")
-      console.log(`Author: " + ${recMsg.author} + "**Command**: " + ${recMsg}
-      `)
-        }    
+    recMsg.channel.send(helptext)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-help"`)
+      }
+   
   if (recMsg.content.startsWith(prefix + "spam")) {    //spam command
     var suffix = recMsg.content.split(' ').slice(1);
     var timesRun = 0;
     var TimesToRun = suffix[0];
     var WhatToSpam = recMsg.content.split(' ').slice(2).join(' ')  
+
+    console.log(`${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!
+     `)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!`)
       
       while (timesRun < TimesToRun) {
           if (timesRun == TimesToRun, TimesToRun > 100) {
@@ -157,17 +221,28 @@ Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds
     var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
     recMsg.channel.send(spamEnd)
     console.log(spamEnd)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} ${spamEnd}`)
+  }
+  else {
+    recMsg.channel.send("`Do -help for arguements`")
   }
 }
+
   if (recMsg == prefix + 'meth') {
     recMsg.channel.send(`Help with meth commands, Do '-meth ex' for details 
-    >>> ***---Opperations---***  
-    add
-    pyth (Pythagorean theorem)
-    sin (Sine law)`)
+>>> ***---Opperations---***  
+add
+pyth (Pythagorean theorem)
+sin (Sine law)`)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-meth"`)
     }
+
   if (recMsg == prefix + 'meth ex') {
     recMsg.channel.send(methEX)
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-meth ex"`)
   }
 
   if (recMsg.content.startsWith('-meth add')) {
@@ -185,26 +260,32 @@ Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds
     var addNum12 = parseFloat(0 + recMsg.content.split(' ').slice(12));
 
     recMsg.channel.send(addNum1 + addNum2 + addNum3 + addNum4 + addNum5 + addNum6 + addNum7 + addNum8 + addNum9 + addNum10 + addNum11 + addNum12);
-    }
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-meth add"`)
+  }
 
   if (recMsg.content.startsWith('-meth pyth')) {
     var aSide = parseFloat(0 + recMsg.content.split(' ').slice(2));
     var bSide = parseFloat(0 + recMsg.content.split(' ').slice(3));
     var cSide = parseFloat(0 + recMsg.content.split(' ').slice(4));
   
-    if (cSide == 0) {
+    if (cSide == 0 && bSide > 0 && cSide > 0) {
       recMsg.channel.send('> Side "c" is: ')
       recMsg.channel.send((aSide ** 2 + bSide ** 2) ** 0.5)
     }
-
-    if (bSide == 0) {
+    if (bSide == 0 && aSide > 0 && cSide > 0 && cSide > aSide) {
       recMsg.channel.send('> Side "b" is: ')
       recMsg.channel.send((cSide ** 2 - aSide **2) ** 0.5)
     }
-    if (aSide == 0) {
+    if (aSide == 0 && cSide > 0 && bSide > 0 && cSide > bSide) {
       recMsg.channel.send('> Side "a" is: ')
       recMsg.channel.send((cSide ** 2 - bSide **2) ** 0.5)
     }
+    else {
+      recMsg.channel.send('Please learn the basic theory of pythagorean.')
+    }
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-meth pyth"`)
   }
 
   if (recMsg.content.startsWith('-meth sin')) {
@@ -212,6 +293,8 @@ Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds
     var bSinAngle = parseFloat(0 + recMsg.content.split(' ').slice(4));
     var aSinSide = parseFloat(0 + recMsg.content.split(' ').slice(3));
     var bSinSide = parseFloat(0 + recMsg.content.split(' ').slice(5));
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-meth sin"`)
 
     if (aSinAngle == 0){
       complicate = ((aSinSide * Math.sin(bSinAngle * ConvToRan)/bSinSide) * ConvToRan);
@@ -244,17 +327,18 @@ client.on('message', async recMsg => {
       // }   for one big file thingy
     // })
     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+    fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${timeStampy()}`)
     recMsg.channel.send('Your account has been created, Type this command again to reset your balence.')
+    fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Created account`)
   }
-
-
-  
-
 
   if (recMsg.content == prefix + 'bal') {
     fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
       if (err) { //file doesnt exist
         recMsg.channel.send('You need to create an account first.')
+        fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-bal" but is retarded and didnt create their account first`)
       } else { //file does
         var lineReader = require('readline').createInterface({
           input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
@@ -262,14 +346,18 @@ client.on('message', async recMsg => {
         lineReader.on('line', function (line) {
           recMsg.channel.send(`> You have $${line.split(' ').slice(1)}`)
           })
+          fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-bal"`)
       }
-  });
-}
+    })
+  }
   
   if (recMsg.content == prefix + 'pay me') {
     fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
       if (err) {
         recMsg.channel.send('You need to create an account first.')
+        fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} Executed "-pay me" but is retarded and didnt create their account first`)
       } else {
         var lineReader = require('readline').createInterface({
           input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
@@ -278,11 +366,137 @@ client.on('message', async recMsg => {
           fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 100}`)
           recMsg.channel.send(`Here's $100`) 
         })
+        fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} was givin $100`)
       }
     });
   }
-  
 
+
+  if (recMsg.content == prefix + 'pulse') {
+    function myFunc(arg) {
+      console.log(`arg was => ${arg}`);
+    }
+    
+    setTimeout(myFunc, 1500, 'funky');
+  }
+
+
+  if (recMsg.content == prefix + 'daily') {
+    
+
+
+
+
+
+
+    fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
+      if (err) {
+        recMsg.channel.send('You need to create an account first.')
+        fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} begged for daily money but is retarded and didnt create their account first`)
+      } else {
+        var lineReader = require('readline').createInterface({
+          input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+        });
+        var lineReader2 = require('readline').createInterface({
+          input: require('fs').createReadStream(`./timer/${recMsg.author.id}.txt`)
+        });
+
+
+
+        lineReader2.on('line', function (line) {
+
+          function dailyPayout() {
+            fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+            recMsg.channel.send(`Here's $500, come back in 23 hours`)
+            fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+          }
+          fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} has requested their daily cash`)
+
+          // if(parseFloat(line.split(' ').slice(1)) == parseFloat(line.split(' ').slice(1))){
+          console.log(line)
+          
+          yr = line.substr(11, 4)
+          mh = line.substr(16, 2) 
+          dy = line.substr(19, 2)
+          hr = line.substr(22, 2)
+          min = line.substr(25, 2) 
+          sec = line.substr(28, 2)
+          
+
+          console.log(dateStampy())
+          console.log(yr)
+          console.log(mh)
+          console.log(dy)
+          console.log(hr)
+          console.log(min)
+          console.log(sec)
+          
+          stamp = dateStampy()
+          console.log(stamp)
+          yr1 = stamp.substr(0, 4)
+          mh1 = stamp.substr(5, 2) 
+          dy1 = stamp.substr(8, 2)
+          hr1 = stamp.substr(11, 2)
+          min1 = stamp.substr(14, 2) 
+          sec1 = stamp.substr(17, 2)
+          console.log('stamp ' + yr1)
+          console.log('stamp ' + mh1)
+          console.log('stamp ' + dy1)
+          console.log('stamp ' + hr1)
+          console.log('stamp ' + min1)
+          console.log('stamp ' + sec1)
+        
+
+          if (yr1 > yr){
+            dailyPayout()
+          }
+
+          if (mh1 > mh){
+            dailyPayout()
+          }
+
+          if (dy1 > dy) {
+            dailyPayout()
+          }
+          // if (timer = true) {
+          //   dailyPayout()
+          // }
+          else {
+            recMsg.channel.send('boiiiii to fast for me! Resets at midnight EST!')
+            fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} PAYMENT DENIED! side note: i dont fucking know why or how  this fucking else statement runs everytime the command is, i dont fucking know`)
+          }
+          
+
+  
+          // }
+           
+          // fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`) //82800000
+        })
+
+        // pholder = false
+
+        // if (pholder == false) {
+        //   recMsg.channel.send('boiiiiiiii too fast for me nigga')
+        // }
+//         if (pholder == true) {
+//           lineReader.on('line', function (line) {
+//             fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+//             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+//             recMsg.channel.send(`Here's $500, come back in 23 hours`)
+//             fs.appendFileSync('logs.txt', `
+// ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+//           })
+//       }
+        
+      }
+    });
+  }
 })
 
 client.login(config.bot.token);
@@ -392,7 +606,11 @@ client.login(config.bot.token);
 
 
 
-
+  // if (recMsg == (prefix + "spam"))  {
+  //   recMsg.channel.send("`Do !spam help for arguements`")
+  //   console.log(`Author: " + ${recMsg.author} + "**Command**: " + ${recMsg}
+  //   `)
+  // } 
 
 
 

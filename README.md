@@ -1,5 +1,10 @@
 A sketchy discord bot by Meepco
 
+install node
+then 
+npm install discord.js
+npm install node-os-utils
+
 
 
 Features:
@@ -7,15 +12,17 @@ Features:
 - Spam
 - Ping
 - Commands to paste stuff
-- Moderation (kick so far)
+<!-- - Moderation (kick so far) -->
+- Info cmds
+- basic economy.....?
+- logging (wip)
+
 
 
 
 Issues:
 
-- Spam always spams one less message
-- Specifying what to spam is dead
-- probs much more 
+- probs much but i didnt specify
 
 
 
@@ -28,3 +35,4 @@ Changelog:
 - b6: Disabled moderation, removed attempt at music, fixed spamming, les optimize
 - b7b1: math commands, add,sin,pyth
 - b8: add shop info, tweak help text, impliment some economy, basic startup logging les optimization 
+- b9: Streamlined spam cmd, fix pyth (need to fix sin tho), logging per command (ish), expand eco (daily)
