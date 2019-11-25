@@ -1,4 +1,4 @@
-const version = 'beta 9'
+const version = 'beta 9 b1?'
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
@@ -6,6 +6,8 @@ const prefix = config.bot.prefix;
 const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
+
+
 
 // ${new Date()}
 // const ytdl = require('ytdl-core');
@@ -59,6 +61,18 @@ function dateStampy() {
   return `${year} ${month} ${day} ${hour} ${min} ${sec} (yyyy-mm-dd-hh-mm-ss)`
 
 }
+
+// function dailyPayout() {
+//   lineReader.on('line', function (line) {
+//         // console.log('2', activee)
+//         fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+//         fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+//         recMsg.channel.send(`Here's $500, come back in 23 hours`)
+//         fs.appendFileSync('logs.txt', `
+// ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+//           })
+  
+// }
 //loading
 client.on('ready', () => {
   fs.appendFileSync('logs.txt', `
@@ -87,7 +101,8 @@ Servers:
   })   
   var generalChannel = client.channels.get("581873091173548061") // channel ID
   generalChannel.send("I is the online") 
-  console.log("-----finished loading-----")    
+  console.log("-----finished loading-----")  
+  console.log('the prefix is:', config.bot.prefix)  
   console.log(version)
   fs.appendFileSync('logs.txt', `
 Boot completed
@@ -144,14 +159,17 @@ var uptimeMS = client.uptime
 var milliseconds = parseInt((uptimeMS%1000)/100) // ms is unused
     , seconds = parseInt((uptimeMS/1000)%60)
     , minutes = parseInt((uptimeMS/(1000*60))%60)
-    , hours = parseInt((uptimeMS/(1000*60*60))%24);
+    , hours = parseInt((uptimeMS/(1000*60*60))%24)
+    , days = parseInt(uptimeMS/(1000*60*60*24))
 
   hours = (hours < 10) ? "0" + hours : hours;
   minutes = (minutes < 10) ? "0" + minutes : minutes;
   seconds = (seconds < 10) ? "0" + seconds : seconds;
-var infoDump = (`>>> __***Bot info***__
+
+var infoDump = (`>>> __**Bot info**__
+
 **Local Time:** ${new Date()}
-Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds
+Uptime: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds (${client.uptime}ms)
 
 
 **Running:** ${os.type} (${os.platform()}) **on** ${osu.cpu.model()}**,** ${osu.cpu.count()} cores (${os.arch()}) 
@@ -383,42 +401,45 @@ ${timeStampy()}: ${recMsg.author.id} was givin $100`)
 
 
   if (recMsg.content == prefix + 'daily') {
+    // var lineReader = require('readline').createInterface({
+    //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+    // });
+    var lineReader2 = require('readline').createInterface({
+      input: require('fs').createReadStream(`./timer/${recMsg.author.id}.txt`)
+    });
+
+    var activee = 0;
+   
     
 
-
-
-
-
+    
 
     fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
       if (err) {
         recMsg.channel.send('You need to create an account first.')
         fs.appendFileSync('logs.txt', `
 ${timeStampy()}: ${recMsg.author.id} begged for daily money but is retarded and didnt create their account first`)
-      } else {
-        var lineReader = require('readline').createInterface({
-          input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-        });
-        var lineReader2 = require('readline').createInterface({
-          input: require('fs').createReadStream(`./timer/${recMsg.author.id}.txt`)
-        });
-
-
-
+      } 
+      else {
+        
+//         function dailyPayout() {
+//           fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+//           fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+//           recMsg.channel.send(`Here's $500, come back in 23 hours`)
+//           fs.appendFileSync('logs.txt', `
+// ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+//                     }
+        
         lineReader2.on('line', function (line) {
+          var lineReader = require('readline').createInterface({
+            input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+          });
 
-          function dailyPayout() {
-            fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
-            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
-            recMsg.channel.send(`Here's $500, come back in 23 hours`)
-            fs.appendFileSync('logs.txt', `
-${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
-          }
+//           
           fs.appendFileSync('logs.txt', `
 ${timeStampy()}: ${recMsg.author.id} has requested their daily cash`)
 
           // if(parseFloat(line.split(' ').slice(1)) == parseFloat(line.split(' ').slice(1))){
-          console.log(line)
           
           yr = line.substr(11, 4)
           mh = line.substr(16, 2) 
@@ -427,75 +448,117 @@ ${timeStampy()}: ${recMsg.author.id} has requested their daily cash`)
           min = line.substr(25, 2) 
           sec = line.substr(28, 2)
           
-
-          console.log(dateStampy())
-          console.log(yr)
-          console.log(mh)
-          console.log(dy)
-          console.log(hr)
-          console.log(min)
-          console.log(sec)
-          
           stamp = dateStampy()
-          console.log(stamp)
           yr1 = stamp.substr(0, 4)
           mh1 = stamp.substr(5, 2) 
           dy1 = stamp.substr(8, 2)
           hr1 = stamp.substr(11, 2)
           min1 = stamp.substr(14, 2) 
           sec1 = stamp.substr(17, 2)
-          console.log('stamp ' + yr1)
-          console.log('stamp ' + mh1)
-          console.log('stamp ' + dy1)
-          console.log('stamp ' + hr1)
-          console.log('stamp ' + min1)
-          console.log('stamp ' + sec1)
-        
 
-          if (yr1 > yr){
-            dailyPayout()
+          // console.log(line) // debugging purpose
+
+          // console.log(dateStampy())
+          // console.log(yr)
+          // console.log(mh)
+          // console.log(dy)
+          // console.log(hr)
+          // console.log(min)
+          // console.log(sec)
+          
+          // console.log(stamp)
+          // console.log('stamp ' + yr1)
+          // console.log('stamp ' + mh1)
+          // console.log('stamp ' + dy1)
+          // console.log('stamp ' + hr1)
+          // console.log('stamp ' + min1)
+          // console.log('stamp ' + sec1)
+          
+          var timer = 1
+
+          if (yr1 > yr){ 
+            // dailyPayout()
+            lineReader.on('line', function (line) {
+              // console.log('2', activee)
+              fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+              recMsg.channel.send(`Here's $500, come back in 23 hours`)
+              fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+            })
+          }
+          
+          else if (mh1 > mh){
+            // dailyPayout()
+            lineReader.on('line', function (line) {
+              // console.log('2', activee)
+              fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+              recMsg.channel.send(`Here's $500, come back in 23 hours`)
+              fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+            })
           }
 
-          if (mh1 > mh){
-            dailyPayout()
+          else if (dy1 > dy) {
+            // dailyPayout()
+            lineReader.on('line', function (line) {
+              // console.log('2', activee)
+              fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+              recMsg.channel.send(`Here's $500, come back in 23 hours`)
+              fs.appendFileSync('logs.txt', `
+${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+            })
           }
-
-          if (dy1 > dy) {
-            dailyPayout()
+          
+          else if (timer == 1) {
+            console.log('0', activee)
+            recMsg.channel.send('triggered')
+            // dailyPayout()
+      
+            lineReader.on('line', function (line) {
+              console.log('2', activee)
+              fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+              recMsg.channel.send(`Here's $500, come back in 23 hours`)
+              fs.appendFileSync('logs.txt', `
+      ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+            })
           }
-          // if (timer = true) {
-          //   dailyPayout()
-          // }
           else {
             recMsg.channel.send('boiiiii to fast for me! Resets at midnight EST!')
             fs.appendFileSync('logs.txt', `
-${timeStampy()}: ${recMsg.author.id} PAYMENT DENIED! side note: i dont fucking know why or how  this fucking else statement runs everytime the command is, i dont fucking know`)
+${timeStampy()}: ${recMsg.author.id} PAYMENT DENIED!`)
           }
+          })
+
           
-
-  
-          // }
-           
-          // fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`) //82800000
-        })
-
-        // pholder = false
-
-        // if (pholder == false) {
-        //   recMsg.channel.send('boiiiiiiii too fast for me nigga')
-        // }
-//         if (pholder == true) {
-//           lineReader.on('line', function (line) {
-//             fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
-//             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
-//             recMsg.channel.send(`Here's $500, come back in 23 hours`)
-//             fs.appendFileSync('logs.txt', `
-// ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
-//           })
-//       }
+        
         
       }
     });
+    // fuckingworkforfucksaves = activee
+    // console.log('ahhhhhh', fuckingworkforfucksaves)
+//     while (activee > 0) {
+          
+//       lineReader.on('line', function (line) {
+//         console.log('2', activee)
+//         fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${dateStampy()}`)
+//         fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
+//         recMsg.channel.send(`Here's $500, come back in 23 hours`)
+//         fs.appendFileSync('logs.txt', `
+// ${timeStampy()}: ${recMsg.author.id} recieved their daily $500`)
+//         // active =-1
+//         // console.log('3', activee)
+//       })
+      
+//       activee = 0
+//       console.log('3', activee) 
+//     }
+
+
+
   }
 })
 

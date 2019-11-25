@@ -16,6 +16,7 @@ Features:
 - Info cmds
 - basic economy.....?
 - logging (wip)
+- proper economy (wip)
 
 
 
@@ -36,3 +37,4 @@ Changelog:
 - b7b1: math commands, add,sin,pyth
 - b8: add shop info, tweak help text, impliment some economy, basic startup logging les optimization 
 - b9: Streamlined spam cmd, fix pyth (need to fix sin tho), logging per command (ish), expand eco (daily)
+- b10 b1: Add days display to the uptime, (painfully) fixed daily cmd
