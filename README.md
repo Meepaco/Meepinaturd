@@ -41,3 +41,4 @@ Changelog:
 - b9: Streamlined spam cmd, fix pyth (need to fix sin tho), logging per command (ish), expand eco (daily)
 - b10 b1: Add days display to the uptime, (painfully) fixed daily cmd
 - b10 b2: gettin dirty with rich embeds, gambling
+- b11: add dab and do other misc econ tweaks, fix not displaying proper pfp in embed
