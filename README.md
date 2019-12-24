@@ -1,13 +1,16 @@
-A sketchy discord bot by Meepco
+<h1 align="center">Meepinaturd</h1>
+<p align="center">
+ <strong>A Sketchy Discord Bot By Meepco </strong></div>
+</p>
 
-install node
-then 
+## Setting Up
+### install node, then: 
 npm install discord.js
 npm install node-os-utils
 
 
 
-Features:
+## Features
 
 - Spam
 - Ping
@@ -19,18 +22,28 @@ Features:
 - proper economy (wip)
 - probs much but i didnt specify
 
+ 
+## To do
+
+- expand/finish econ (for the relative future)
+- probs much more that i didn't specify
+
+
+## Changelog
+
+### 1.0.0
+ - ratelimit taking of inputs, ratelimit spam
+ - fixed dab and daily conflicting
+ - heavy deprecation (useless stuff, long long commented out)
+ - kil-the-bot command
+ - restructure info cmd
+ - changed rich embed function again...
+ - Remove meth 
 
 
 
 
-Issues:
-
-- probs much but i didnt specify
-
-
-
-Changelog:
-
+### Old Builds
 - b1: initial release
 - b2: idk tbh
 - b3: Implement kicking
