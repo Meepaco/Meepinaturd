@@ -8,19 +8,25 @@
 npm install discord.js
 npm install node-os-utils
 
+Go to Retrograde.json and do your token stuff and discord id stuff.
 
 
 ## Features
 
 - Spam
 - Ping
-- Commands to paste stuff
-<!-- - Moderation (kick so far) -->
-- Info cmds
-- basic economy.....?
+- Commands
+``` 
+Info
+Copypasta
+Ping
+Spam (not recomended to abuse the API with)
+help
+```
+<!-- - Moderation -->
+- Economy
 - logging (wip)
-- proper economy (wip)
-- probs much but i didnt specify
+
 
  
 ## To do
@@ -34,8 +40,9 @@ npm install node-os-utils
 ### 1.0.0
  - ratelimit taking of inputs, ratelimit spam
  - fixed dab and daily conflicting
- - heavy deprecation (useless stuff, long long commented out)
- - kil-the-bot command
+ - add stalk
+ - heavy deprecation and dode cleanup
+ - kill-the-bot command
  - restructure info cmd
  - changed rich embed function again...
  - Remove meth 
