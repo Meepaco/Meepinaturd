@@ -7,7 +7,7 @@ const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
 
-
+// https://www.youtube.com/watch?v=nrD7rzidZ84 <-- fix nuking when internet loss hopefully
 // rate limiter gang
 const sloTFdownDab = new Set();
 const sloTFdownDaily = new Set();
@@ -58,9 +58,9 @@ function sleep(ms) {
 }
 
 function clientUptime() { 
- 
   var totalSeconds = (client.uptime / 1000);
   var days = Math.floor(totalSeconds / 86400);
+  totalSeconds %= 86400;
   var hours = Math.floor(totalSeconds / 3600);
   totalSeconds %= 3600;
   var minutes = Math.floor(totalSeconds / 60);
@@ -87,7 +87,7 @@ function clientUptime() {
 
 
 
-
+// this monstrocity...
 
 function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
   
@@ -415,7 +415,7 @@ start: Creates an account
 bal: Check your balance
 gamble <number>: Try your luck...
 dab: Hit a dab!
-stalk: High rick, high reward`
+stalk: High risk, high reward`
     
 
     var bytesToMB = 1 / 1048576  
@@ -797,9 +797,11 @@ client.on('message', async recMsg => {
                     moneyWon = moneyWon * -1
                   }
 
+                  moneyWon = (Math.round(moneyWon * 1.3432473246))
+
                   lineReader.on('line', function (line) {
-                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', (Math.round(moneyWon * 1.3432473246)))}`, 15278883))
+                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
                   })
                 } 
               })
@@ -888,9 +890,11 @@ client.on('message', async recMsg => {
                   moneyWon = moneyWon * -1
                 }
 
+                moneyWon = (Math.round(moneyWon * 1.3432473246))
+
                 lineReader.on('line', function (line) {
-                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', (Math.round(moneyWon * 1.3432473246)))}`, 15278883))
+                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
+                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
                 })
               } 
             })
@@ -1137,155 +1141,3 @@ client.login(config.bot.token);
 //                   }
 //                 }        
 //               });
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-      // date = new Date
-      // hours = date.getHours()
-
-      // console.log(hours)
-      // var hoursForSkids = {}
-      // console.log('before if')
-      // console.log(hoursForSkids[recMsg.author.id])
-
-      // if (hoursForSkids[recMsg.author.id] == undefined) {
-      //   hoursForSkids[recMsg.author.id] = hours
-      //   console.log('if')
-      //   console.log(hoursForSkids[recMsg.author.id])
-      // }
-
-      // if (hoursForSkids[recMsg.author.id] == >) {
-      // }
-
-      
-
-
-      // var sloDownMate = {};
-      // // sloDownMate[recMsg.author.id] = 25200000 // 7 hours
-      
-      // if (sloDownMate[recMsg.author.id] == undefined) {
-      //   console.log(sloDownMate[recMsg.author.id])
-      //   sloDownMate[recMsg.author.id] = 0
-      // }
-      // sloDownMate[recMsg.author.id] = sloDownMate[recMsg.author.id] + 0;// 5 sec
-      // console.log(sloDownMate[recMsg.author.id])
-
-      // if (sloDownMate[recMsg.author.id] > 0) {
-
-      //   while (sloDownMate[recMsg.author.id] > 0) {
-      //     await sleep(1000)
-      //     sloDownMate[recMsg.author.id] -= 1
-      //     console.log(sloDownMate)
-
-      //   }
-      // }
-
-
-  //   var ability = {}
-  //   console.log(ability[recMsg.author.id])
-    
-    
-  //     // Set the date we're counting down to
-  //   var countDownDate = new Date().getTime() + 7000;
-
-  //   // Update the count down every 1 second
-  //   var x = setInterval(function() {
-
-  //   // Get today's date and time
-  //   var now = new Date().getTime();
-
-  //   // Find the distance between now and the count down date
-  //   var distance = countDownDate - now;
-
-  //   // Time calculations for days, hours, minutes and seconds
-  //   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  //   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  //   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  //   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  //   // Display the result in the element with id="demo"
-    
-  //   console.log( days + "d " + hours + "h "
-  //   + minutes + "m " + seconds + "s ");
-
-  //   // If the count down is finished, write some text
-  //   if (distance < 0) {
-  //     clearInterval(x);
-  //     ability[recMsg.author.id] = 1
-  //     console.log('done')
-  //   }
-  // }, 1000);
-  //   console.log('check abiol')
-  //   console.log(ability[recMsg.author.id])
-
-
-
-//   var commands = new Map([
-//     ['fun', 10],
-//     ['misc', 20],
-//     ['play', 20],
-//     ['queue', 25]
-// ]);
-
-// var commandCooldown = new Map([
-//     ['fun', new Map()],
-//     ['misc', new Map()],
-//     ['play', new Map()],
-//     ['queue', new Map()]
-// ]);
-
-// var handler = function(message, command) {
-    
-//     let delay = () => {
-//         setTimeout(() => {
-//             commandCooldown.get(command).delete(message.author.id);
-//             message.channel.send(`${message.member} cooldown has expired for ${command} command.`)
-//         }, commands.get(command) * 1000);
-//     }
-
-//     if(commandCooldown.get(command).has(message.author.id)) {
-//         let init = commandCooldown.get(command).get(message.author.id);
-//         let curr = new Date();
-//         let diff = Math.round((curr-init)/1000);
-//         let time = commands.get(command);
-//         message.channel.send(`${time-diff} seconds left for ${command} command.`)
-//     }
-//     else {
-//         if(command === 'fun') {
-//             // Handle Command
-//             message.channel.send("Fun Command.");
-//             commandCooldown.get(command).set(message.author.id, new Date());
-//             delay();
-//         }
-//         else if(command === 'misc') {
-//             message.channel.send("Misc Command.");
-//             commandCooldown.get(command).set(message.author.id, new Date());
-//             delay();
-//         }
-//         else if(command === 'play') {
-//             message.channel.send("play Command.");
-//             commandCooldown.get(command).set(message.author.id, new Date());
-//             delay();
-//         }
-//         else if(command === 'queue') {
-//             message.channel.send("queue Command.");
-//             commandCooldown.get(command).set(message.author.id, new Date());
-//             delay();
-//         }
-//     }
-//     console.log(commandCooldown)
-// }
