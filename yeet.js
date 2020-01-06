@@ -1,4 +1,4 @@
-const version = 'v1.0.0'
+const version = 'v1.0.1'
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
@@ -14,6 +14,7 @@ const sloTFdownDaily = new Set();
 const antiSpam = new Set();
 const antiSpamEcon = new Set();
 const sloTFdownStalk = new Set();
+const sloTFdownSpam = new Set();
 
 
 function timeStampy() {
@@ -361,7 +362,7 @@ Servers:
   // console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`) 
   //        })         
   })   
-  var generalChannel = client.channels.get("581873091173548061") // channel ID
+  var generalChannel = client.channels.get(config.bot.testingChannel) // channel ID
 
 
 
@@ -411,25 +412,29 @@ skelly: Totally not NSFW...
 
 ---Economy---
 
-start: Creates an account
-bal: Check your balance
+reset bal: Resets balance
+bal <mention user>: Check balance
 gamble <number>: Try your luck...
 dab: Hit a dab!
-stalk: High risk, high reward`
+stalk: High risk indecency, high rewards...`
     
 
     var bytesToMB = 1 / 1048576  
   
 
     if (recMsg == prefix + ('info')) {
-
+      // var memusg = process.memoryUsage()
+      const used = process.memoryUsage().heapUsed / 1024 / 1024;
+      
       osu.cpu.usage()
       .then(usg => {
+        
 
         recMsg.channel.send(richEmbed('title-field-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL, "Bot Info", undefined, 13691445, 'Uptime', clientUptime(), 
         
         'Bot', `Version: ${version}
-Node: ${process.version}`, 
+Node: ${process.version}
+Memory Usg: ${Math.round(used * 100) / 100} MB`, 
 
         'CPU', 
 `**CPU:** ${osu.cpu.model()} (${os.arch()}), ${osu.cpu.count()} core(s) 
@@ -490,7 +495,7 @@ API: ${Math.round(client.ping)}ms`))
     }
 
     if (recMsg.content.startsWith(prefix + "spam")) {    //spam command
-      if (sloTFdown.has(recMsg.author.id)) {
+      if (sloTFdownSpam.has(recMsg.author.id)) {
         recMsg.channel.send("You may not abuse my spam command, thank you.");
       } 
       
@@ -516,7 +521,7 @@ ${timeStampy()}: ${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${Tim
             if (timesRun > 0) {   
               var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
               recMsg.channel.send(spamEnd)
-              console.log(spamEnd)
+              // console.log(spamEnd)
               fs.appendFileSync('logs.txt', `
 ${timeStampy()}: ${recMsg.author.id} ${spamEnd}`)
             }
@@ -526,11 +531,24 @@ ${timeStampy()}: ${recMsg.author.id} ${spamEnd}`)
           recMsg.channel.send('Invalid command usage')
         }
 
-        sloTFdown.add(recMsg.author.id);
+        sloTFdownSpam.add(recMsg.author.id);
           setTimeout(() => {
-          sloTFdown.delete(recMsg.author.id);
+          sloTFdownSpam.delete(recMsg.author.id);
           }, 82800000); //23 hrs
       }
+    }
+
+    if (recMsg.content == prefix + "alt f4") {
+      if (recMsg.author.id == config.bot.owner) { // user id you want to give kill-the-bot perms too, put in json
+        console.log('User terminated')
+        recMsg.channel.send('au revoir!')
+        await sleep(3000)
+        process.exit()
+      }
+      else {
+        recMsg.channel.send('haha lol XDDDDDDD you cannot kill the bot.')
+      }
+      
     }
       
 
@@ -547,6 +565,8 @@ ${timeStampy()}: ${recMsg.author.id} ${spamEnd}`)
 //moneyyyyyy
 
 client.on('message', async recMsg => {
+  // console.log(recMsg)
+  // // recMsg = recMsg.toLowerCase()
   if (recMsg.author == client.user) {
     return
   }
@@ -556,44 +576,60 @@ client.on('message', async recMsg => {
   } 
   else {
   
-    if (recMsg.content == prefix + 'start') {
+  //   if (recMsg.content == prefix + 'start') {
+
+  //     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+  //     // fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${timeStampy()}`)
+  //     recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Account created, use this command again to reset your balance.', 14685520))
+        
+  //     fs.appendFileSync('logs.txt', `
+  // ${timeStampy()}: ${recMsg.author.id} Created account`)
+  //   }
+      
+    if (recMsg.content == prefix + 'reset bal') {
 
       fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
       // fs.writeFileSync(`./timer/${recMsg.author.id}.txt`, `lastDaily= ${timeStampy()}`)
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Account created, use this command again to reset your balance.', 14685520))
+      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Balence reset.', 14685520))
         
       fs.appendFileSync('logs.txt', `
-  ${timeStampy()}: ${recMsg.author.id} Created account`)
+  ${timeStampy()}: ${recMsg.author.id} Reset Bal`)
     }
 
-    if (recMsg.content == prefix + 'bal') {
-      fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-        if (err) { 
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
-            
-        } else { 
-          var lineReader = require('readline').createInterface({
-            input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-          });
-          lineReader.on('line', function (line) {
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You have $${line.split(' ').slice(1)}`, 14685520))
-          })
-        }
-      })
-    }
+    if (recMsg.content.startsWith(prefix + 'bal') || recMsg.content.startsWith(prefix + 'balance') || recMsg.content.startsWith(prefix + 'money')) {
+      var getUseriD = (recMsg.content.split(' ').slice(1)).toString(); 
+      var useriD = getUseriD.replace('@', '').replace("<", '').replace("!", '').replace(">", '')
     
-    if (recMsg.content == prefix + "alt f4") {
-      if (recMsg.author.id == config.bot.owner) { // user id you want to give kill-the-bot perms too, put in json
-        console.log('User terminated')
-        recMsg.channel.send('au revoir!')
-        await sleep(3000)
-        process.exit()
+      if (useriD == undefined, useriD == '') {
+        useriD = recMsg.author.id
+      }
+      // console.log(getUseriD)
+      // console.log(useriD)
+
+      var guild = recMsg.guild // is user in the server?
+    
+      if (guild.member(useriD)) {
+        // console.log('yes, teh skid is here')
+        fs.stat(`./moneys/${useriD}.txt`, function(err) {  
+          if (err) { 
+            fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+              
+          } else { 
+            var lineReader = require('readline').createInterface({
+              input: require('fs').createReadStream(`./moneys/${useriD}.txt`)
+            });
+            lineReader.on('line', function (line) {
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Balance for <@!${useriD}>: $${line.split(' ').slice(1)}`, 14685520))
+            })
+          }
+        })
       }
       else {
-        recMsg.channel.send('haha lol XDDDDDDD you cannot kill the bot.')
+        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Member not found.`, 14685520))
       }
-      
     }
+    
     
     if (recMsg.content.startsWith(prefix + 'backdoor')) { // we dont talk about this...
       var backdoorMoney = parseFloat(0 + recMsg.content.split(' ').slice(1));
@@ -601,7 +637,8 @@ client.on('message', async recMsg => {
       if (backdoorMoney > 0) {
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
+            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
         
 
             fs.appendFileSync('logs.txt', `
@@ -612,7 +649,7 @@ client.on('message', async recMsg => {
             });
 
             lineReader.on('line', function (line) {
-              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + backdoorMoney)}`)
+              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${backdoorMoney}`)
               
               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Yes.', 14685520))
             })
@@ -637,10 +674,11 @@ client.on('message', async recMsg => {
         
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
+            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
         
-            fs.appendFileSync('logs.txt', `
-    ${timeStampy()}: ${recMsg.author.id} begged for daily money but didnt create their account first`)
+    //         fs.appendFileSync('logs.txt', `
+    // ${timeStampy()}: ${recMsg.author.id} begged for daily money but didnt create their account first`)
           } 
 
           else {       
@@ -650,7 +688,7 @@ client.on('message', async recMsg => {
 
             lineReader.on('line', function (line) {
               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
-              recMsg.channel.send(`Here's $500`)
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "Here's $500", 14685520))
             })
           }
         })
@@ -678,9 +716,9 @@ client.on('message', async recMsg => {
         
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
+            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
               
-
           } else { 
             var lineReader = require('readline').createInterface({
               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
@@ -690,9 +728,9 @@ client.on('message', async recMsg => {
               if (parseFloat(line.split(' ').slice(1)) >= moneyBet) {
             
                 if (yesOrNo > 60) {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
+                  // var lineReader = require('readline').createInterface({
+                  //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  // });
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
                     recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You somehow won and got ${moneyWon}`, 14685520))
@@ -704,13 +742,13 @@ client.on('message', async recMsg => {
                 }
 
                 else {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
+                  // var lineReader = require('readline').createInterface({
+                  //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  // });
 
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-                    recMsg.channel.send(`lol rip u lost`)
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "lol rip u lost", 14685520))
                   })
                 } 
               }
@@ -727,7 +765,8 @@ client.on('message', async recMsg => {
     }
 
 
-    if (recMsg.content.startsWith(prefix + 'stalk')) {
+    if (recMsg == prefix + 'stalk') {
+      // console.log('triggered')
 
       // var yesOrNo = Math.floor(Math.random() * Math.floor(101)) //random number...
       var addOrTake = Math.floor(Math.random() * Math.floor(34))
@@ -754,15 +793,16 @@ client.on('message', async recMsg => {
 
 
       if (sloTFdownStalk.has(recMsg.author.id)) {
-        recMsg.channel.send("You can only stalk someone once every 8 hours");
+        recMsg.channel.send("You can only stalk someone once every 7 hours");
       } 
       else {
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
-              
-
-          } else { 
+            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+          } 
+          
+          else { 
             var lineReader = require('readline').createInterface({
               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
             });
@@ -774,14 +814,17 @@ client.on('message', async recMsg => {
                 dabMessageNegative = config.bot.stalkMsgNeg[Math.floor(Math.random() * Math.floor(config.bot.stalkMsgNeg.length))]
             
                 if (addOrTake > 19) {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
+                  // var lineReader = require('readline').createInterface({
+                  //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  // });
                   
                   if (moneyWon < 0) {
                     moneyWon = moneyWon * -1
                   }
-                  
+                  var lineReader = require('readline').createInterface({
+                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  });
+
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
                     recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
@@ -789,9 +832,9 @@ client.on('message', async recMsg => {
                 }
 
                 else {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
+                  // var lineReader = require('readline').createInterface({
+                  //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  // });
 
                   if (moneyWon < 0) {
                     moneyWon = moneyWon * -1
@@ -799,24 +842,27 @@ client.on('message', async recMsg => {
 
                   moneyWon = (Math.round(moneyWon * 1.3432473246))
 
+                  var lineReader = require('readline').createInterface({
+                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                  });
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
                     recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
+            
                   })
                 } 
               })
-            }
-          })
-        }
-  //     sloTFdownDab.add(recMsg.author.id);
-  //     setTimeout(() => {
-  //       sloTFdownDab.delete(recMsg.author.id);
-  //     }, 25200000); //25200000‬‬ 7 hrs
-  // }
-      sloTFdownStalk.add(recMsg.author.id);
-      setTimeout(() => {
-        sloTFdownStalk.delete(recMsg.author.id);
-      }, 25200000); //   25200000 7 hrs
+              sloTFdownStalk.add(recMsg.author.id);
+              setTimeout(() => {
+                sloTFdownStalk.delete(recMsg.author.id);
+              }, 25200000); //   25200000 7 hrs
+          }
+        })
+      }
+      // sloTFdownStalk.add(recMsg.author.id);
+      // setTimeout(() => {
+      //   sloTFdownStalk.delete(recMsg.author.id);
+      // }, 25200000); //   25200000 7 hrs
   }
 
 
@@ -850,11 +896,12 @@ client.on('message', async recMsg => {
       recMsg.channel.send("You can only dab once every 4 hours");
     } 
     else {
+      
       fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
         if (err) {
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'You need to create an account first.', 14685520))
-            
-
+          fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+        
         } else { 
           var lineReader = require('readline').createInterface({
             input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
@@ -867,14 +914,17 @@ client.on('message', async recMsg => {
               dabMessageNegative = config.bot.dabMsgNeg[Math.floor(Math.random() * Math.floor(config.bot.dabMsgNeg.length))]
           
               if (addOrTake > 0) {
-                var lineReader = require('readline').createInterface({
-                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                });
+                // var lineReader = require('readline').createInterface({
+                //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                // });
                 
                 if (moneyWon < 0) {
                   moneyWon = moneyWon * -1
                 }
-                
+                var lineReader = require('readline').createInterface({
+                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                });
+
                 lineReader.on('line', function (line) {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
                   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
@@ -882,15 +932,19 @@ client.on('message', async recMsg => {
               }
 
               else {
-                var lineReader = require('readline').createInterface({
-                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                });
+                // var lineReader = require('readline').createInterface({
+                //   input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                // });
 
                 if (moneyWon < 0) {
                   moneyWon = moneyWon * -1
                 }
 
                 moneyWon = (Math.round(moneyWon * 1.3432473246))
+                
+                var lineReader = require('readline').createInterface({
+                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+                });
 
                 lineReader.on('line', function (line) {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
@@ -898,13 +952,17 @@ client.on('message', async recMsg => {
                 })
               } 
             })
+            sloTFdownDab.add(recMsg.author.id);
+            setTimeout(() => {
+              sloTFdownDab.delete(recMsg.author.id);
+            }, 14400000); // 14400000 4 hrs
           }
         })
       }
-      sloTFdownDab.add(recMsg.author.id);
-      setTimeout(() => {
-        sloTFdownDab.delete(recMsg.author.id);
-      }, 14400000); // 14400000 4 hrs
+      // sloTFdownDab.add(recMsg.author.id);
+      // setTimeout(() => {
+      //   sloTFdownDab.delete(recMsg.author.id);
+      // }, 14400000); // 14400000 4 hrs
   }
  
 
