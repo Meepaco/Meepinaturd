@@ -6,9 +6,9 @@
 ## Setting Up
 ### install node, then: 
 npm install discord.js
-npm install node-os-utils
+npm install node-os-utils 
 
-Go to Retrograde.json and do your token stuff and discord id stuff.
+Go to Retrograde.json and do your token, owner id, channel id stuff.
 
 
 ## Features
@@ -32,16 +32,34 @@ help
 ## To do
 
 - expand/finish econ (for the relative future)
+- sort out the mess of logging
+- case insensitive cmds
+- ditch line reader
+- make bot "error-crash proof"
+- bot status
 - probs much more that i didn't specify
 
 
 ## Changelog
 
+### 1.0.1
+- check bal of other people
+- info cmd: add bot memory usg
+- un-breaked spam
+- automaticly create account if not created already
+- (hopefully) richembedded everything that was supposed to be
+
+- fix money being addded wrong
+- fix info cmd uptime
+- fix typo in help cmd
+- fix spelling in readme (oops)
+- remove useless stuff from graveyard
+
 ### 1.0.0
  - ratelimit taking of inputs, ratelimit spam
  - fixed dab and daily conflicting
  - add stalk
- - heavy deprecation and dode cleanup
+ - heavy deprecation and code cleanup
  - kill-the-bot command
  - restructure info cmd
  - changed rich embed function again...
@@ -54,7 +72,7 @@ help
 - b1: initial release
 - b2: idk tbh
 - b3: Implement kicking
-- b4: Banning and kicking  think
+- b4: Banning and kicking
 - b6: Disabled moderation, removed attempt at music, fixed spamming, les optimize
 - b7b1: math commands, add,sin,pyth
 - b8: add shop info, tweak help text, impliment some economy, basic startup logging les optimization 
