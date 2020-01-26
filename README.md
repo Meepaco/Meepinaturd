@@ -32,15 +32,30 @@ help
 ## To do
 
 - expand/finish econ (for the relative future)
-- sort out the mess of logging
-- case insensitive cmds
+- ~~sort out the mess of logging~~
+- ~~case insensitive cmds~~
 - ditch line reader
 - make bot "error-crash proof"
-- bot status
+- ~~bot status~~
+- cleanup code (again)
 - probs much more that i didn't specify
 
 
 ## Changelog
+
+### 1.1
+- "testing channel"
+- fix gamble cmd
+- tweaked embed colours
+- pay cmd
+- more messages for stalk/dab
+- user info cmd
+
+**Technical BS:**
+- (somewhat) fixed the mess of logging
+- (somewhat) poorly doccumented functions
+- updated boot screen
+- json version check
 
 ### 1.0.1
 - check bal of other people
