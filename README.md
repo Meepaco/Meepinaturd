@@ -8,7 +8,13 @@
 npm install discord.js
 npm install node-os-utils 
 
-Go to Retrograde.json and do your token, owner id, channel id stuff.
+npm install simple-youtube-api
+npm install ytdl-core
+npm install opusscript
+
+good luck installing ffmpeg: https://chocolatey.org/packages/ffmpeg
+
+Go to Retrograde.json and do your token, owner id, channel id, presense settings, google api stuff.
 
 
 ## Features
@@ -43,6 +49,18 @@ help
 
 ## Changelog
 
+### 1.2: SKETCHY MOOSIC
+
+- Added music and hopefully it doesnt break
+- bot invite link cmd
+- time left in timer is now shown
+
+- tweaked help display and ping cmd
+- nerf spam rate limit to 12 hrs
+- patched up rich embed to be auto-parse based on sketchy logic
+- fix spam can cause bot crash 
+
+
 ### 1.1
 - "testing channel"
 - fix gamble cmd
@@ -50,6 +68,7 @@ help
 - pay cmd
 - more messages for stalk/dab
 - user info cmd
+
 
 **Technical BS:**
 - (somewhat) fixed the mess of logging
