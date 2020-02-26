@@ -12,7 +12,7 @@ npm install simple-youtube-api
 npm install ytdl-core
 npm install opusscript
 
-good luck installing ffmpeg: https://chocolatey.org/packages/ffmpeg
+good luck installing ffmpeg!  (this may help -> https://chocolatey.org/packages/ffmpeg)
 
 Go to Retrograde.json and do your token, owner id, channel id, presense settings, google api stuff.
 
@@ -28,23 +28,29 @@ Copypasta
 Ping
 Spam (not recomended to abuse the API with)
 help
+MOOSIC
 ```
 <!-- - Moderation -->
 - Economy
-- logging (wip)
+- logging (wip?)
 
 
  
 ## To do
 
 - expand/finish econ (for the relative future)
-- ~~sort out the mess of logging~~
-- ~~case insensitive cmds~~
+- ~~sort out the mess of logging~~ its not a mess anymore, its just very unfinished
+- ~~case insensitive cmds~~ 
 - ditch line reader
 - make bot "error-crash proof"
 - ~~bot status~~
 - cleanup code (again)
-- probs much more that i didn't specify
+- json config from discord
+- trust roles
+- ~~FULLY WORKING MUSIC AHHHHHHHH~~ i give up completing this
+
+- probs much more that I didn't specify
+
 
 
 ## Changelog
@@ -59,6 +65,8 @@ help
 - nerf spam rate limit to 12 hrs
 - patched up rich embed to be auto-parse based on sketchy logic
 - fix spam can cause bot crash 
+- a much needed code cleanup
+- restructure renograde.json
 
 
 ### 1.1
