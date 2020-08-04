@@ -1,5 +1,5 @@
-const version = 'v1.2'
-const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3'
+const version = 'v1.3b1'
+const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.2'
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
@@ -13,15 +13,9 @@ const fs = require('fs');
 // npm install discord.js
 // npm install node-os-utils 
 
-// npm install simple-youtube-api
-// npm install ytdl-core
-// npm install opusscript
-
-// good luck installing ffmpeg!  (this may help -> https://chocolatey.org/packages/ffmpeg)
-
-// Go to Retrograde.json and do your token, owner id, channel id, presense settings, google api stuff.
-
-
+// Go to Retrograde.json and do your token, owner id, channel id stuff.
+// https://www.youtube.com/watch?v=nrD7rzidZ84 <-- fix nuking when internet loss hopefully
+// return this.reconnect()          dsicord.js/scr/client/websocket/packets/websocketconnections.js
 
 // rate limiter gang
 const sloTFdownDab = new Set();
@@ -29,7 +23,8 @@ const sloTFdownDaily = new Set();
 const antiSpam = new Set();
 const antiSpamEcon = new Set();
 const sloTFdownStalk = new Set();
-const sloTFdownSpam = new Set();
+// const sloTFdownSpam = new Set();
+
 
 
 function timer(callback, delay) {
@@ -61,26 +56,39 @@ function timer(callback, delay) {
 
 
 function timeStampy() {
-  ` Gets the current time
+  // ` Gets the current time
 
-  returns:
-    string: The time
-  `
-  var date = new Date();
+  // returns:
+  //   string: The time
+  // `
+  // var date = new Date();
   
-  var year = date.getFullYear();
-  var month = date.getMonth() + 1;
-  month = (month < 10 ? "0" : "") + month;
-  var day  = date.getDate();
-  day = (day < 10 ? "0" : "") + day;
-  var hour = date.getHours();
-  hour = (hour < 10 ? "0" : "") + hour;
-  var min  = date.getMinutes();
-  min = (min < 10 ? "0" : "") + min;
-  var sec  = date.getSeconds();
-  sec = (sec < 10 ? "0" : "") + sec;
+  // var year = date.getFullYear();
+  // var month = date.getMonth() + 1;
+  // month = (month < 10 ? "0" : "") + month;
+  // var day  = date.getDate();
+  // day = (day < 10 ? "0" : "") + day;
+  // var hour = date.getHours();
+  // hour = (hour < 10 ? "0" : "") + hour;
+  // var min  = date.getMinutes();
+  // min = (min < 10 ? "0" : "") + min;
+  // var sec  = date.getSeconds();
+  // sec = (sec < 10 ? "0" : "") + sec;
 
-  return hour + ":" + min + ":" + sec;
+
+  var date = new Date();
+  var dateStr =
+    date.getFullYear() + "-" +
+    ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+    ("00" + date.getDate()).slice(-2) + " " +
+    
+    ("00" + date.getHours()).slice(-2) + ":" +
+    ("00" + date.getMinutes()).slice(-2) + ":" +
+    ("00" + date.getSeconds()).slice(-2);
+  // console.log(dateStr);
+
+  // return hour + ":" + min + ":" + sec;
+  return dateStr
 }
 
 
@@ -162,6 +170,343 @@ function timeParse(time) {
 
 
 // this monstrocity...
+
+
+// function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
+//   `This function handles the formatting of rich embed messages
+  
+//   Parameters:
+//     whichOneToUse:
+//       define which of the formats to use
+//     userName:
+//       user to display
+//     usersNameURL:
+//       user's profile picture/picture
+//     title:
+//       title of msg
+//     description
+//       the message, usually when there is no fields in use
+//     colour:
+//       colour number code thingy of teh righ embed
+//     field#Name: 
+//       title of the field
+//     field#:
+//       the message
+
+//     returns:
+//       alot to type here that i dont want to. A better system is needed here...
+//     `
+
+//   if (whichOneToUse == 'desc')  { //desc only
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       description: description,
+      
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//         }
+//       }
+//     });
+//     return embedded
+//   }
+
+//   else if (whichOneToUse == 'title') { // title only
+
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+     
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   }
+
+//   else if (whichOneToUse == 'title-desc') { // title and disc
+
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+//       description: description,
+    
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   }
+
+//   else if (whichOneToUse == 'title-desc-field') { //title, desc, 1 field
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+
+//       description: description,
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+//   }
+
+//   else if (whichOneToUse == 'title-field') { //title, NO DESC, 1 field
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+//   }
+
+//   else if (whichOneToUse == 'title-desc-field-field') { // title, desc, 2 fields
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+//       // url: "",
+//       description: description,
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//         {
+//           name: field2Name,
+//           value: field2
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+
+//   }
+
+//   else if (whichOneToUse == 'title-field-field') { // title, NO desc, 2 fields
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+    
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//         {
+//           name: field2Name,
+//           value: field2
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+
+//   }
+
+//   else if (whichOneToUse == 'title-field-field-field-field') { // title, NO desc, 2 fields
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+    
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//         {
+//           name: field2Name,
+//           value: field2
+//         },
+//         {
+//           name: field3Name,
+//           value: field3
+//         },
+//         {
+//           name: field4Name,
+//           value: field4
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+
+//   }
+
+//   else if (whichOneToUse == 'title-desc-field-field-field') { // title, NO desc, 2 fields
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+//       description: description,
+    
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//         {
+//           name: field2Name,
+//           value: field2
+//         },
+//         {
+//           name: field3Name,
+//           value: field3
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+
+//   }
+
+//   else if (whichOneToUse == 'title-desc-field-field-field-field') { // title, NO desc, 2 fields
+//     embedded = ({embed: {
+//       color: colour,
+//       author: {
+//         name: usersName,
+//         icon_url: usersNameURL
+//       },
+//       title: title,
+//       description: description,
+    
+//       fields: [{
+//           name: field1Name,
+//           value: field1
+//         },
+//         {
+//           name: field2Name,
+//           value: field2
+//         },
+//         {
+//           name: field3Name,
+//           value: field3
+//         },
+//         {
+//           name: field4Name,
+//           value: field4
+//         },
+//       ],
+//       timestamp: new Date(),
+//       footer: {
+//         text: "A sketchy discord bot by Meepco"
+//       }
+//     }
+//   });
+//   return embedded
+
+//   }
+//   else if (whichOneToUse == 'title-desc-field-field-field-field-field-field') { // title, desc, 6 fields
+//   embedded = ({embed: {
+//         color: colour,
+//         author: {
+//           name: usersName,
+//           icon_url: usersNameURL
+//         },
+//         title: title,
+//         // url: "",
+//         description: description,
+//         fields: [{
+//             name: field1Name,
+//             value: field1
+//           },
+//           {
+//             name: field2Name,
+//             value: field2
+//           },
+//           {
+//             name: field3Name,
+//             value: field3
+//           },
+//           {
+//             name: field4Name,
+//             value: field4
+//           },
+//           {
+//             name: field5Name,
+//             value: field5
+//           },
+//           {
+//             name: field6Name,
+//             value: field6
+//           }
+//         ],
+//         timestamp: new Date(),
+//         footer: {
+//           text: "A sketchy discord bot by Meepco"
+//         }
+//       }
+//     });
+//   return embedded
+//   }
+// }
+
+
 function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
   `This function handles the formatting of rich embed messages
   
@@ -521,6 +866,58 @@ fs.appendFileSync('logs.txt', `${dateStr} - ${level} - ${stuffToLog}
 `)
 }
 
+
+function chatLogme(server, channel, dood, stuffToLog) {
+  `This function handles logging
+   
+  parameters:
+    level:
+      level of logging (DEBUG, WARNING, INFO, ERROR, CRITICAL)
+    stuffToLog:
+      content to be logged`
+
+  // var date = new Date();
+  // var dateStr =
+  //   date.getFullYear() + "-" +
+  //   ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+  //   ("00" + date.getDate()).slice(-2) + " " +
+    
+  //   ("00" + date.getHours()).slice(-2) + ":" +
+  //   ("00" + date.getMinutes()).slice(-2) + ":" +
+  //   ("00" + date.getSeconds()).slice(-2);
+  // console.log(dateStr);
+
+  // fs.stat(`./${server}`, function(err) {  
+  //   if (err) {
+  //      // file does not exist
+  //   } else {
+  //       // file exists
+  //   }
+
+  try {
+    fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${server} - ${channel} - ${dood}: ${stuffToLog}
+`)
+  }
+  catch {
+    if (!fs.existsSync(`./${server}`)){
+      fs.mkdirSync(`./${server}`);
+    }
+
+    fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${server} - ${channel} - ${dood}: ${stuffToLog}
+`)
+    }
+
+
+  
+  
+  
+
+
+  
+  
+// fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${channel} - ${dood} - ${stuffToLog}
+// `)
+}
 // function balReset(usriD) {
 //   `this function is used to reset balence so i dont have to spam this everywhere in econ`
 //   fs.writeFileSync(`./moneys/${usriD}.txt`, `ur_money= 0`)
@@ -552,8 +949,8 @@ Node Version:  ${process.version}
 Servers:`)
 
   console.log("Connected as " + client.user.tag)
-  console.log("Servers:") 
-  client.guilds.forEach((guild) => {
+  console.log("Servers:")  
+  client.guilds.cache.forEach((guild) => {
   console.log(" - " + guild.name)
 
   fs.appendFileSync('logs.txt', `- ${guild.name}
@@ -564,6 +961,22 @@ Servers:`)
   // console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`) 
   //        })         
   })   
+
+
+  var generalChannel = client.channels.cache.get(config.bot.testingChannel) // testing channel ID
+  generalChannel.send(richEmbed('desc' ,client.user.username, client.user.avatarURL, undefined,'I is the online',3447003))
+
+  console.log(`--------------------------
+the prefix is: ${config.bot.prefix}  
+bot: ${version}
+JSON: ${config.bot.jsonVersion} (expected: ${whatTheJsonVersionShouldBeForThisVersonOfTheBot})
+node: ${process.version}
+-----finished loading-----`)
+
+  if (config.bot.jsonVersion != whatTheJsonVersionShouldBeForThisVersonOfTheBot) {
+    generalChannel.send('JSON version mismatch, you may run into issues')
+    logme('ERROR', 'JSON version mismatch, you may run into issues')
+  }
 
   if (config.bot.usePresense == "true") {
     logme('DEBUG', 'Setting up presense')
@@ -576,22 +989,7 @@ Servers:`)
           }
       });
     logme('DEBUG', 'Done setting up presense')
-    console.log('Presense is on')
-  }
-
-  var generalChannel = client.channels.get(config.bot.testingChannel) // testing channel ID
-  generalChannel.send(richEmbed('desc' ,client.user.username, client.user.avatarURL, undefined,'I is the online',3447003))
-
-  console.log(`--------------------------
-the prefix is: ${config.bot.prefix}  
-bot: ${version}
-JSON: ${config.bot.jsonVersion} (expected: ${whatTheJsonVersionShouldBeForThisVersonOfTheBot})
-node: ${process.version}
------finished loading-----`)
-
-  if (config.bot.jsonVersion != whatTheJsonVersionShouldBeForThisVersonOfTheBot) {
-    generalChannel.send('JSON seems to not match what it should be for the bot, you may run into issues')
-    logme('ERROR', 'JSON seems to not match what it should be for the bot, you may run into issues')
+    console.log('Presense enabled')
   }
 
   logme('INFO', 'Boot completed')
@@ -610,12 +1008,9 @@ client.on('message', async recMsg => {
   else {
 
 
-    var helpGaneral = `**spam <amount> <thing>:** Spams user defined message (x) number of times, 100 max (DO NOT SPAM WITHOUT MESSAGE)
+    var helpGaneral = `
 **ping:** Gets latency.
 **help:** Shows this message.
-**help music:** Shows Music commands
-~~yeet <member> <reason>: kicks member
-ban <member> <reason>: bans member~~ dead until further notice
 **info:** shows bot info
 **alt f4:** just dont...
 **invite:** Get a bot invite link`
@@ -627,13 +1022,16 @@ ban <member> <reason>: bans member~~ dead until further notice
 **pay <user> <amount>:** Pay someone
 **gamble <number>:** Try your luck...
 **dab:** Hit a dab!
-**stalk:** High risk indecency, high rewards...`
+**stalk:** A high risk indecency, for high rewards...`
     
+    if (recMsg.content.toLowerCase() == prefix + ('help-depricated')) {
+      recMsg.channel.send("**Removed/disable commands** \n`yeet <member> <reason>: kicks member\nban <member> <reason>: bans member\n**spam <amount> <thing>:** Spams user defined message (x) number of times, 100 max (DO NOT SPAM WITHOUT MESSAGE)`")
 
-    var bytesToMB = 1 / 1048576  
+    }
+    
   
-
     if (recMsg.content.toLowerCase() == prefix + ('info')) {
+      var bytesToMB = 1 / 1048576  
       // var memusg = process.memoryUsage()
       // console.log(os.loadavg())
       // console.log(os.hostname())
@@ -698,9 +1096,9 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
 
     if (recMsg.content.toLowerCase() == prefix + "ping") {
       const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
-      
-      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Client: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
-API: ${Math.round(client.ping)}ms`))
+
+      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
+API: ${Math.round(client.ws.ping)}ms`))
     
       console.log(`Pong! ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "ping" - ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
@@ -713,55 +1111,54 @@ API: ${Math.round(client.ping)}ms`))
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "help"`)
     }
 
-    if (recMsg.content.toLowerCase().startsWith(prefix + "spam")) {    //spam command
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
+    // if (recMsg.content.toLowerCase().startsWith(prefix + "spam")) {    //spam command
+    //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
 
-      if (sloTFdownSpam.has(recMsg.author.id)) {
-        recMsg.channel.send(`You may not abuse my spam command, thank you. You can use this in ${timeParse(spamTimeRemaining.getTimeLeft())}.`);
-        logme('DEBUG', ` Spam request rejected (avalable in ${timeParse(spamTimeRemaining.getTimeLeft())})`)
-      } 
+    //   if (sloTFdownSpam.has(recMsg.author.id)) {
+    //     recMsg.channel.send(`You may not abuse my spam command, thank you. You can use this in ${timeParse(spamTimeRemaining.getTimeLeft())}.`);
+    //     logme('DEBUG', ` Spam request rejected (avalable in ${timeParse(spamTimeRemaining.getTimeLeft())})`)
+    //   } 
       
-      else {
-        logme('DEBUG', `Spam granted -- "${WhatToSpam}" x${TimesToRun}`)
-        try {
-          var suffix = recMsg.content.split(' ').slice(1);
-          var timesRun = 0;
-          var TimesToRun = suffix[0];
-          var WhatToSpam = recMsg.content.split(' ').slice(2).join(' ')  
-          console.log(WhatToSpam)
+    //   else {
+    //     logme('DEBUG', `Spam granted -- "${WhatToSpam}" x${TimesToRun}`)
+    //     try {
+    //       var suffix = recMsg.content.split(' ').slice(1);
+    //       var timesRun = 0;
+    //       var TimesToRun = suffix[0];
+    //       var WhatToSpam = recMsg.content.split(' ').slice(2).join(' ')  
 
-        if (WhatToSpam != undefined && WhatToSpam != '') {
-          console.log(`${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!
-          `)
+    //     if (WhatToSpam != undefined && WhatToSpam != '') {
+    //       console.log(`${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!
+    //       `)
 
-            while (timesRun < TimesToRun) {
-                if (timesRun == TimesToRun, TimesToRun > 100) {
-                  break    
-                }
-                recMsg.channel.send(WhatToSpam)
-                timesRun = timesRun + 1;    
-            }   
-            if (timesRun > 0) {   
-              var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
-              recMsg.channel.send(spamEnd)
-            }
-          }
-          else {
-            recMsg.channel.send('You need to define what to spam')
-          }
-        }
+    //         while (timesRun < TimesToRun) {
+    //             if (timesRun == TimesToRun, TimesToRun > 100) {
+    //               break    
+    //             }
+    //             recMsg.channel.send(WhatToSpam)
+    //             timesRun = timesRun + 1;    
+    //         }   
+    //         if (timesRun > 0) {   
+    //           var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
+    //           recMsg.channel.send(spamEnd)
+    //         }
+    //       }
+    //       else {
+    //         recMsg.channel.send('You need to define what to spam')
+    //       }
+    //     }
 
-        catch {
-          recMsg.channel.send('Error')
-          logme('DEBUG', ` Spam gave an error`)
-        }
+    //     catch {
+    //       recMsg.channel.send('Error')
+    //       logme('DEBUG', ` Spam gave an error`)
+    //     }
 
-        sloTFdownSpam.add(recMsg.author.id);
-          spamTimeRemaining = new timer(function() {
-            sloTFdownDaily.delete(recMsg.author.id);
-          }, 43200000) // 12 hrs
-      }
-    }
+    //     sloTFdownSpam.add(recMsg.author.id);
+    //       spamTimeRemaining = new timer(function() {
+    //         sloTFdownDaily.delete(recMsg.author.id);
+    //       }, 43200000) // 12 hrs
+    //   }
+    // }
 
     if (recMsg.content == prefix + "alt f4") {
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "alt f4"`)
@@ -809,16 +1206,16 @@ API: ${Math.round(client.ping)}ms`))
         // console.log(idofskid)
         // recMsg.channel.send('Created: ' + accountCreate)
 
-        const user = recMsg.mentions.users.first() || recMsg.author;
+        var user = recMsg.mentions.users.first() || recMsg.author;
         var guildUsr = recMsg.guild.member(recMsg.mentions.users.first());
 
         if (guildUsr == undefined) {
           guildUsr = recMsg.guild.member(recMsg.author)
         }
 
-        const dateCreate = user.createdAt.toLocaleDateString();
-        const dateJoin = guildUsr.joinedAt.toLocaleDateString();
-        var usrRoles = guildUsr.highestRole.name
+        var dateCreate = user.createdAt.toLocaleDateString();
+        var dateJoin = guildUsr.joinedAt.toLocaleDateString();
+        var usrRoles = 'placeholder' //guildUsr.highestRole.name
 
         // const status = user.presence.game.name
         // console.log(dateCreate)
@@ -831,7 +1228,7 @@ API: ${Math.round(client.ping)}ms`))
         logme('DEBUG', `Date Join: ${dateJoin}`)
         logme('DEBUG', `Highest role: ${usrRoles}`)
 
-        recMsg.channel.send(richEmbed('title-desc-field-field-field-field', user.username, user.avatarURL, "User info", `<@!${useriD}>`, 13691445, 'ID', user.id, 'Created', dateCreate, 'Joined', dateJoin, 'Highest Role', usrRoles))
+        recMsg.channel.send(richEmbed('title-desc-field-field-field-field', user.username, user.avatarURL, "User info", `<@!${useriD}>`, 13691445, 'ID', user.id, 'Account Created', dateCreate, 'Joined Server', dateJoin, 'Highest Role', usrRoles))
         logme('DEBUG', `user cmd success`)
       }
 
@@ -843,24 +1240,7 @@ API: ${Math.round(client.ping)}ms`))
     }
 
     if (recMsg.content.toLowerCase() == prefix + ("invite")) {
-      // recMsg.channel.send('Add this bot ---> ' + config.bot.botInviteLink)
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Add this bot ---> ' + config.bot.botInviteLink, 13691445))
-//       fs.appendFileSync('logs.txt', `
-// ${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
-    }
-
-    if (recMsg.content.toLowerCase() == prefix + ("help music")) {
-      moosicHelp = `Moosic Commands
-      
-      ${config.bot.prefix}play <link/title>
-      ${config.bot.prefix}skip
-      ${config.bot.prefix}pause
-      ${config.bot.prefix}np (Now Playing/Queue)
-      ${config.bot.prefix}resume
-      ${config.bot.prefix}volume <number>`
-      // recMsg.channel.send('Add this bot ---> ' + config.bot.botInviteLink)
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, moosicHelp, 13691445))
+      recMsg.channel.send('Add this bot ---> ' + config.bot.botInviteLink)
 //       fs.appendFileSync('logs.txt', `
 // ${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
@@ -875,8 +1255,8 @@ API: ${Math.round(client.ping)}ms`))
 
 
 
-//economy
 
+//moneyyyyyy
 client.on('message', async recMsg => {
 
   if (recMsg.author == client.user) {
@@ -914,7 +1294,7 @@ client.on('message', async recMsg => {
         fs.stat(`./moneys/${useriD}.txt`, function(err) {  
           if (err) { 
             fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 2727567))
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
             // balReset(useriD)
 
@@ -1354,223 +1734,38 @@ client.on('message', async recMsg => {
 })
 
 
+//chat loging
+client.on('message', async recMsg => {
+
+  // if (recMsg.author == client.user) {
+  //   return
+  // }
 
 
+  if (recMsg.author == client.user) {
+    // console.log('the bot said something')
+    // console.log(recMsg.content)
+    chatLogme(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, `${recMsg.content} (may not log properly cuz rich embeds)` )
+  }
 
+  else {
+    // console.log(recMsg.content)
+    // console.log(recMsg.author.username)
+    // console.log(recMsg.guild.name)
+    // console.log(client.user.message.content)
+    // console.log(client.user)
+    // console.log(recMsg.guild)
+    // console.log(recMsg.channel)
 
+    // function chatLogme(server, channel, dood, stuffToLog) 
+    // currentServer = recMsg.guild.name
 
-
-
-
-
-
-
-
-// Sketchy music... 
-
-const { Client, Util } = require('discord.js');
-// const { TOKEN, PREFIX, GOOGLE_API_KEY } = require('./config');
-const YouTube = require('simple-youtube-api');
-const ytdl = require('ytdl-core');
-client.music = require("discord.js-musicbot-addon");
-// const ffmpeg = require('ffmpeg');
-
-// const client = new Client({ disableEveryone: true });
-
-const youtube = new YouTube(config.bot.apiKey);
-const queue = new Map();
-
-client.on('warn', console.warn);
-client.on('error', console.error);
-client.on('ready', () => console.log('Music Ready'));
-client.on('disconnect', () => console.log('Disconnected, reconnecting now...'));
-client.on('reconnecting', () => console.log('Reconnecting...'));
-
-client.on('message', async msg => { // eslint-disable-line
-	if (msg.author.bot) return undefined;
-	if (!msg.content.startsWith(config.bot.prefix)) return undefined;
-
-	const args = msg.content.split(' ');
-	const searchString = args.slice(1).join(' ');
-	const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
-	const serverQueue = queue.get(msg.guild.id);
-
-	let command = msg.content.toLowerCase().split(' ')[0];
-	command = command.slice(config.bot.prefix.length)
-
-	if (command === 'play') {
-		const voiceChannel = msg.member.voiceChannel;
-		if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-		const permissions = voiceChannel.permissionsFor(msg.client.user);
-		if (!permissions.has('CONNECT')) {
-			return msg.channel.send('Insufficient permissions to connect.');
-		}
-		if (!permissions.has('SPEAK')) {
-			return msg.channel.send('Insufficient permissions to speak.');
-		}
-
-		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-			const playlist = await youtube.getPlaylist(url);
-			const videos = await playlist.getVideos();
-			for (const video of Object.values(videos)) {
-				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
-			}
-			return msg.channel.send(`Queued **${playlist.title}** playlist.`);
-    } 
-    
-    else {
-			try {
-				var video = await youtube.getVideo(url);
-      } 
-      
-      catch (error) {
-				try {
-					var videos = await youtube.searchVideos(searchString, 10);
-					let index = 0;
-					msg.channel.send(`
-__**Song selection:**__
-${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-Select a song (1-10)
-					`);
-					// eslint-disable-next-line max-depth
-					try {
-						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-							maxMatches: 1,
-							time: 10000,
-							errors: ['time']
-						});
-          } 
-          
-          catch (err) {
-						console.error(err);
-						return msg.channel.send('No/invalid value entered, cancelling.');
-					}
-					const videoIndex = parseInt(response.first().content);
-					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-        } 
-        
-        catch (err) {
-					console.error(err);
-					return msg.channel.send('No search results.');
-				}
-			}
-			return handleVideo(video, msg, voiceChannel);
-		}
-  } 
-
-
-  else if (command === 'skip') {
-		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel.');
-		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		serverQueue.connection.dispatcher.end('Skip command has been used');
-		return undefined;
-  } 
+    chatLogme(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, recMsg.content)
+  }
   
-  else if (command === 'stop') {
-		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		serverQueue.songs = [];
-		serverQueue.connection.dispatcher.end('Stop command has been used');
-		return undefined;
-	} else if (command === 'volume') {
-		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		if (!args[1]) return msg.channel.send(`The volume is: **${serverQueue.volume}**`);
-		serverQueue.volume = args[1];
-		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
-		return msg.channel.send(`Volume set to: **${args[1]}**`);
-	} else if (command === 'np') {
-		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		return msg.channel.send(`🎶 Now playing: **${serverQueue.songs[0].title}**`);
-	} else if (command === 'queue') {
-		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-		return msg.channel.send(`
-__**Song queue:**__
-${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-**Now playing:** ${serverQueue.songs[0].title}
-		`);
-	} else if (command === 'pause') {
-		if (serverQueue && serverQueue.playing) {
-			serverQueue.playing = false;
-			serverQueue.connection.dispatcher.pause();
-			return msg.channel.send('Paused.');
-		}
-		return msg.channel.send('There is nothing playing.');
-	} else if (command === 'resume') {
-		if (serverQueue && !serverQueue.playing) {
-			serverQueue.playing = true;
-			serverQueue.connection.dispatcher.resume();
-			return msg.channel.send('Resumed.');
-		}
-		return msg.channel.send('There is nothing playing.');
-	}
+  
 
-	return undefined;
-});
-
-async function handleVideo(video, msg, voiceChannel, playlist = false) {
-	const serverQueue = queue.get(msg.guild.id);
-	// console.log(video);
-	const song = {
-		id: video.id,
-		title: Util.escapeMarkdown(video.title),
-		url: `https://www.youtube.com/watch?v=${video.id}`
-	};
-	if (!serverQueue) {
-		const queueConstruct = {
-			textChannel: msg.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 5,
-			playing: true
-		};
-		queue.set(msg.guild.id, queueConstruct);
-
-		queueConstruct.songs.push(song);
-
-		try {
-			var connection = await voiceChannel.join();
-			queueConstruct.connection = connection;
-			play(msg.guild, queueConstruct.songs[0]);
-		} catch (error) {
-			console.error(`Failed to join voice channel: ${error}`);
-			queue.delete(msg.guild.id);
-			return msg.channel.send(`Failed to join voice channel: ${error}`);
-		}
-	} else {
-		serverQueue.songs.push(song);
-		// console.log(serverQueue.songs);
-		if (playlist) return undefined;
-		else return msg.channel.send(`**${song.title}** added to queue!`);
-	}
-	return undefined;
-}
-
-function play(guild, song, mode) {
-	const serverQueue = queue.get(guild.id);
-
-	if (!song) {
-		serverQueue.voiceChannel.leave();
-		queue.delete(guild.id);
-		return;
-	}
-	// console.log(serverQueue.songs);
-
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-		.on('end', reason => {
-			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-			else console.log(reason);
-			serverQueue.songs.shift();
-			play(guild, serverQueue.songs[0]);
-		})
-		.on('error', error => console.error(error));
-	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-	serverQueue.textChannel.send(`Playing: **${song.title}** ${song.url}`);
-}
-
+})
 
 client.login(config.bot.token);
 
@@ -1595,11 +1790,13 @@ client.login(config.bot.token);
 
 
 
+
+
+
+
+
 //plz ignore my references
 
-
-
-// if(message.member.guild.me.hasPermission('ADMINISTRATOR') || message.member.guild.me.hasPermmission('MANAGE_MESSAGES'))
 
 // fs.stat('path-to-your-file', function(err) {  
 //   if (err) {
@@ -1766,378 +1963,14 @@ client.login(config.bot.token);
 
 
 
-// function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
-//   `This function handles the formatting of rich embed messages
-  
-//   Parameters:
-//     whichOneToUse:
-//       define which of the formats to use
-//     userName:
-//       user to display
-//     usersNameURL:
-//       user's profile picture/picture
-//     title:
-//       title of msg
-//     description
-//       the message, usually when there is no fields in use
-//     colour:
-//       colour number code thingy of teh righ embed
-//     field#Name: 
-//       title of the field
-//     field#:
-//       the message
 
-//     returns:
-//       alot to type here that i dont want to. A better system is needed here...
-//     `
-
-//   if (whichOneToUse == 'desc')  { //desc only
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       description: description,
-      
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//         }
-//       }
-//     });
-//     return embedded
-//   }
-
-//   else if (whichOneToUse == 'title') { // title only
-
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-     
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   }
-
-//   else if (whichOneToUse == 'title-desc') { // title and disc
-
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field') { //title, desc, 1 field
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-
-//       description: description,
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-//   }
-
-//   else if (whichOneToUse == 'title-field') { //title, NO DESC, 1 field
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field') { // title, desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       // url: "",
-//       description: description,
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-field-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//         {
-//           name: field4Name,
-//           value: field4
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//         {
-//           name: field4Name,
-//           value: field4
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-//   else if (whichOneToUse == 'title-desc-field-field-field-field-field-field') { // title, desc, 6 fields
-//   embedded = ({embed: {
-//         color: colour,
-//         author: {
-//           name: usersName,
-//           icon_url: usersNameURL
-//         },
-//         title: title,
-//         // url: "",
-//         description: description,
-//         fields: [{
-//             name: field1Name,
-//             value: field1
-//           },
-//           {
-//             name: field2Name,
-//             value: field2
-//           },
-//           {
-//             name: field3Name,
-//             value: field3
-//           },
-//           {
-//             name: field4Name,
-//             value: field4
-//           },
-//           {
-//             name: field5Name,
-//             value: field5
-//           },
-//           {
-//             name: field6Name,
-//             value: field6
-//           }
-//         ],
-//         timestamp: new Date(),
-//         footer: {
-//           text: "A sketchy discord bot by Meepco"
-//         }
-//       }
-//     });
-//   return embedded
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//--------------------------------------------------------------
-// TLDR: This is a copy of my last attempt on
-// a local music player addition, i have no idea 
-// literally of what im doing and i give up.
-
-// There is literally every possible method
-// of listining to music other than discord.
-// I give up. Maybe some day i will fi ish this
-//--------------------------------------------------------------
-
-
-// var songsAvalible = []
-// var moosicQueueueue = []
-
-
+// Sketchy music... also somewhat works but dont trust it 
 
 
 // const { Client, Util } = require('discord.js');
 // // const { TOKEN, PREFIX, GOOGLE_API_KEY } = require('./config');
 // const YouTube = require('simple-youtube-api');
 // const ytdl = require('ytdl-core');
-// client.music = require("discord.js-musicbot-addon");
 // // const ffmpeg = require('ffmpeg');
 
 // // const client = new Client({ disableEveryone: true });
@@ -2145,15 +1978,10 @@ client.login(config.bot.token);
 // const youtube = new YouTube(config.bot.apiKey);
 
 // const queue = new Map();
-
 // client.on('warn', console.warn);
-
 // client.on('error', console.error);
-
 // client.on('ready', () => console.log('Music Ready'));
-
 // client.on('disconnect', () => console.log('Disconnected, reconnecting now...'));
-
 // client.on('reconnecting', () => console.log('Reconnecting...'));
 
 // client.on('message', async msg => { // eslint-disable-line
@@ -2187,14 +2015,10 @@ client.login(config.bot.token);
 // 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
 // 			}
 // 			return msg.channel.send(`Queued **${playlist.title}** playlist.`);
-//     } 
-    
-//     else {
+// 		} else {
 // 			try {
 // 				var video = await youtube.getVideo(url);
-//       } 
-      
-//       catch (error) {
+// 			} catch (error) {
 // 				try {
 // 					var videos = await youtube.searchVideos(searchString, 10);
 // 					let index = 0;
@@ -2210,836 +2034,25 @@ client.login(config.bot.token);
 // 							time: 10000,
 // 							errors: ['time']
 // 						});
-//           } 
-          
-//           catch (err) {
+// 					} catch (err) {
 // 						console.error(err);
 // 						return msg.channel.send('No/invalid value entered, cancelling.');
 // 					}
 // 					const videoIndex = parseInt(response.first().content);
 // 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-//         } 
-        
-//         catch (err) {
+// 				} catch (err) {
 // 					console.error(err);
 // 					return msg.channel.send('No search results.');
 // 				}
 // 			}
 // 			return handleVideo(video, msg, voiceChannel);
 // 		}
-//   } 
-
-
-
-
-
-//   if (command === 'lplay') {
-// 		const voiceChannel = msg.member.voiceChannel;
-// 		if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-// 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-// 		if (!permissions.has('CONNECT')) {
-// 			return msg.channel.send('Insufficient permissions to connect.');
-// 		}
-// 		if (!permissions.has('SPEAK')) {
-// 			return msg.channel.send('Insufficient permissions to speak.');
-// 		}
-
-
-
-
-
-//     const localSong = msg.content.split(' ').slice(1).join(' ')
-//     console.log(localSong)
-
-//     fs.readdir(`./moosic`, function (err, files) {
-//       if (err) {
-//         console.log(err);
-//         return;
-//       }
-//       // console.log(files);
-//       // songsAvalible.push(files)
-//       songsAvalible = files
-//       // songsAvalible.push('yahhh')
-//       // msg.channel.send(files)
-//     });
-//     console.log('songs we have')
-//     console.log(songsAvalible)
-
-//     fs.stat(`./moosic/${localSong}.mp3`, function(err) {  
-      
-//       if (err) {
-//         msg.channel.send('Learn to fucking spell because i can not fucking get partial match searching to work and stackoverflow is not helping whatsoever')
-//         // console.log('digging deepre...')
-//         // file does not exist
-//         // msg.channel.send('We dont have')
-
-//         // msg.channel.send('Did you mean:')
-//         // var simularFiles = []
-
-
-
-
-//         // let URL1 = "www.site.com/something/car/123"
-//         // let URL2 = "www.site.com/something/somethingelse/banana/"
-
-//         // let urlArray = ['/car/','/boat/','/apple/','/banana/'];
-//         // console.log(urlArray)
-
-//         // let localSongs = 'Alone'
-//         // console.log('to find:')
-//         // console.log(localSong)
-//         // let findMeDaddy = songsAvalible.findIndex(str => localSong.includes(str))
-//         // // let index2 = urlArray.findIndex(str => URL2.includes(str))
-
-//         // console.log(findMeDaddy)
-
-//         // songsAvalible.forEach(function(possibleMatch){
-//         //   //if word exist in url
-//         //   var MatchIndex = localSong.includes(possibleMatch);
-//         //   if(MatchIndex !== -1){
-//         //     console.log(MatchIndex);
-//         //   }
-//         // });
-
-// //         var url = 'www.site.com/car/somethingelse/banana/';
-// // var urlArray = ['/car/', '/boat/', '/apple/', '/banana/'];
-// // urlArray.forEach(function(word){
-// //   //if word exist in url
-// //   var wordIndex = url.includes(word);
-// //   if(wordIndex !== -1){
-// //     console.log(wordIndex);
-// //   }
-// // });
-
-
-
-
-//       //   for (index = 0; index < rates.length; ++index) {
-//       //     name = rates[index].name;
-//       //     if (name.substring(0, 4) === "Slow") {
-//       //         // newArr.push(rates[index]);
-//       //         console.l
-//       //     }
-//       // }
-
-
-//       //   if (songsAvalible.indexOf(`${localSong}.mp3`) > -1) {
-//       //     //In the array!
-//       //     console.log(songsAvalible.indexOf(`${localSong}.mp3`))
-//       // } else {
-//       //   msg.channel.send('We actually dont have this mate')
-//       //     //Not in the array
-//       // }
-//         // if (localSong.content == simularFiles) {
-//         //   simularFiles
-//         // }
-//       } 
-      
-//       else {
-//           moosicQueueueue.push(localSong)
-
-//           // console.log(moosicQueueueue)
-      
-//     console.log('curernt quququ')
-//     console.log(moosicQueueueue)
-
-//       VC.join()
-//     .then(connection => {
-//         const dispatcher = connection.playFile(`./moosic/${localSong}.mp3`);
-//         dispatcher.on("end", end => {VC.leave()});
-//     })
-//     .catch(console.error);
-    
-
-
-
-
-
-
-//     // const serverQueue = queue.get(msg.guild.id);
-//     // // console.log(video);
-//     // const song = {
-//     //   id: 'idk',
-//     //   title: Util.escapeMarkdown(localSong),
-//     //   url: `${config.moosicDirectory}/${localSong}`
-//     // };
-//     // console.log(serverQueue);
-
-//     // if (!serverQueue) {
-//     //   const queueConstruct = {
-//     //     textChannel: msg.channel,
-//     //     voiceChannel: voiceChannel,
-//     //     connection: null,
-//     //     songs: [],
-//     //     volume: 5,
-//     //     playing: true
-//     //   };
-//     //   queue.set(msg.guild.id, queueConstruct);
-  
-//     //   queueConstruct.songs.push(song);
-  
-//     //   try {
-//     //     var connection = voiceChannel.join();
-//     //     queueConstruct.connection = connection;
-//     //     play(msg.guild, queueConstruct.songs[0], 'local');
-//     //   } catch (error) {
-//     //     console.error(`Failed to join voice channel: ${error}`);
-//     //     queue.delete(msg.guild.id);
-//     //     return msg.channel.send(`Failed to join voice channel: ${error}`);
-//     //   }
-//     // } else {
-//     //   serverQueue.songs.push(song);
-//     //   console.log(serverQueue.songs);
-//     //   if (playlist) return undefined;
-//     //   else return msg.channel.send(`**${song.title}** added to queue!`);
-//     // }
-    
-//   }
-
-// });
-
-
-
-
-
-
-
-
-
-
-//     // try {
-//     //   var video = await youtube.getVideo(url);
-//     // }
-//     // catch {
-//     //   console.log('We dont have it')
-//     // }
-
-    
-// // 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-// // 			// const playlist = await youtube.getPlaylist(url);
-// //       // const videos = await playlist.getVideos();
-// //       const localSong = msg.content.split(' ').slice(2).join(' ')
-// //       console.log(localSong)
-// // 			for (const video of Object.values(videos)) {
-// // 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-// // 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
-// // 			}
-// // 			return msg.channel.send(`Queued **${playlist.title}** playlist.`);
-// //     } 
-    
-// //     else {
-// // 			try {
-// // 				var video = await youtube.getVideo(url);
-// //       } 
-      
-// //       catch (error) {
-// // 				try {
-// // 					var videos = await youtube.searchVideos(searchString, 10);
-// // 					let index = 0;
-// // 					msg.channel.send(`
-// // __**Song selection:**__
-// // ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-// // Select a song (1-10)
-// // 					`);
-// // 					// eslint-disable-next-line max-depth
-// // 					try {
-// // 						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-// // 							maxMatches: 1,
-// // 							time: 10000,
-// // 							errors: ['time']
-// // 						});
-// //           } 
-          
-// //           catch (err) {
-// // 						console.error(err);
-// // 						return msg.channel.send('No/invalid value entered, cancelling.');
-// // 					}
-// // 					const videoIndex = parseInt(response.first().content);
-// // 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-// //         } 
-        
-// //         catch (err) {
-// // 					console.error(err);
-// // 					return msg.channel.send('No search results.');
-// // 				}
-// // 			}
-// // 			return handleVideo(video, msg, voiceChannel);
-// // 		}
-//   } 
-//   // async function handleVideo(video, msg, voiceChannel, playlist = false) {
-//   //   const serverQueue = queue.get(msg.guild.id);
-//   //   // console.log(video);
-//   //   const song = {
-//   //     id: video.id,
-//   //     title: Util.escapeMarkdown(video.title),
-//   //     url: `https://www.youtube.com/watch?v=${video.id}`
-//   //   };
-//   //   if (!serverQueue) {
-//   //     const queueConstruct = {
-//   //       textChannel: msg.channel,
-//   //       voiceChannel: voiceChannel,
-//   //       connection: null,
-//   //       songs: [],
-//   //       volume: 5,
-//   //       playing: true
-//   //     };
-//   //     queue.set(msg.guild.id, queueConstruct);
-  
-//   //     queueConstruct.songs.push(song);
-  
-//   //     try {
-//   //       var connection = await voiceChannel.join();
-//   //       queueConstruct.connection = connection;
-//   //       play(msg.guild, queueConstruct.songs[0]);
-//   //     } catch (error) {
-//   //       console.error(`Failed to join voice channel: ${error}`);
-//   //       queue.delete(msg.guild.id);
-//   //       return msg.channel.send(`Failed to join voice channel: ${error}`);
-//   //     }
-//   //   } else {
-//   //     serverQueue.songs.push(song);
-//   //     // console.log(serverQueue.songs);
-//   //     if (playlist) return undefined;
-//   //     else return msg.channel.send(`**${song.title}** added to queue!`);
-//   //   }
-//   //   return undefined;
-//   // }
-  
-//   // function play(guild, song) {
-//   //   const serverQueue = queue.get(guild.id);
-  
-//   //   if (!song) {
-//   //     serverQueue.voiceChannel.leave();
-//   //     queue.delete(guild.id);
-//   //     return;
-//   //   }
-//   //   // console.log(serverQueue.songs);
-  
-//   //   const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-//   //     .on('end', reason => {
-//   //       if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-//   //       else console.log(reason);
-//   //       serverQueue.songs.shift();
-//   //       play(guild, serverQueue.songs[0]);
-//   //     })
-//   //     .on('error', error => console.error(error));
-//   //   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-  
-//   //   serverQueue.textChannel.send(`Playing: **${song.title}** ${song.url}`);
-//   // }
-
-
-
-
-
-//   // function shuffleQueue(queue) {
-//   //   for (let i = queue.length - 1; i > 0; i--) {
-//   //     const j = Math.floor(Math.random() * (i + 1));
-//   //     [queue[i], queue[j]] = [queue[j], queue[i]];
-//   //     console.log('referwgwerge')
-//   //   }
-//   //   console.log('refe')
-//   // }
-
-
-
-
-// //   if (command === 'lplay') {
-// //     var songRequest = msg.content.split(' ').slice(1).join(' ')
-// //     console.log(songRequest)
-// //     const voiceChannel = msg.member.voiceChannel;
-// // 		if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-// // 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-// // 		if (!permissions.has('CONNECT')) {
-// // 			return msg.channel.send('Insufficient permissions to connect.');
-// // 		}
-// // 		if (!permissions.has('SPEAK')) {
-// // 			return msg.channel.send('Insufficient permissions to speak.');
-// //     }
-
-// //     var avalibleTracks = []
-// //     var toPlay = []
-
-// //     fs.readdir('./moosic/', function (err, files) {
-// //       if (err) {
-// //         console.log(err);
-        
-
-// //         // for (file in files) {
-// //         //   avalibleTracks.push(file)
-// //         // }
-// //       }
-// //       // console.log(files);
-
-      
-// //       // avalibleTracks = files
-      
-// //       avalibleTracks.push('ree')
-// //       for (ting in files){
-// //         // console.log(ting)
-// //         avalibleTracks.push(files[ting])
-// //       }
-// //       // console.log('avali tracke')
-// //       // console.log('avali tracke' + avalibleTracks)
-
-// //     // });
-
- 
-    
-// //     //  if (avalibleTracks.includes(`${songRequest}.mp3`)) {
-// //       // if (avalibleTracks.includes('ree')) {
-// //       // console.log('aval track 2')
-// //         // console.log('aval track 2' + avalibleTracks)
-// //         // console.log(avalibleTracks.indexOf('ree'))
-// //         if (avalibleTracks.indexOf('ree') > -1) {
-
-
-// //         //   function cloneMessage(servermessage) {
-// //         //     var clone ={};
-// //         //     for( var key in servermessage ){
-// //         //         if(servermessage.hasOwnProperty(key)) //ensure not adding inherited props
-// //         //             clone[key]=servermessage[key];
-// //         //     }
-// //         //     return clone;
-// //         // }
-
-
-
-// //           // toPlay.push(cloneMessage(songRequest))
-// //           toPlay.concat(songRequest)
-// //           console.log('queueue')
-// //           console.log(toPlay)
-// //           //In the array!
-// //       } else {
-// //         msg.channel.send('not found')
-// //           //Not in the array
-// //       }
-       
-// //     //    toPlay.push(songRequest)
-// //     //    console.log('queueue')
-// //     //    console.log(toPlay)
-
-// //     //   }
-// //     // else {
-// //     //     msg.channel.send('not found')
-// //     //   }
-
-// // //        for (song in toPlay) {
-       
-// // //        var VC = msg.member.voiceChannel;
-// // //     if (!VC)
-// // //         return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // // VC.join()
-// // //     .then(connection => {
-// // //         const dispatcher = connection.playFile(`./moosic/${toPlay[song]}.mp3`);
-// // //         dispatcher.on("end", end => {VC.leave()});
-// // //     })
-// // //     .catch(console.error);
-
-
-// // //   //   const serverQueue = queue.get(msg.guild.id);
-// // // 	// // console.log(video);
-// // // 	// const song = {
-// // // 	// 	id: video.id,
-// // // 	// 	title: Util.escapeMarkdown(video.title),
-// // // 	// 	url: `https://www.youtube.com/watch?v=${video.id}`
-// // //   // };
-  
-// // //     // await handleVideo(video2, msg, voiceChannel, true)
-  
-// // //   }
-// // })
-
-// // for (song in toPlay) {
-       
-// //   var VC = msg.member.voiceChannel;
-// // if (!VC)
-// //    return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // VC.join()
-// // .then(connection => {
-// //    const dispatcher = connection.playFile(`./moosic/${toPlay[song]}.mp3`);
-// //    dispatcher.on("end", end => {VC.leave()});
-// // })
-// // .catch(console.error);
-
-
-// // //   const serverQueue = queue.get(msg.guild.id);
-// // // // console.log(video);
-// // // const song = {
-// // // 	id: video.id,
-// // // 	title: Util.escapeMarkdown(video.title),
-// // // 	url: `https://www.youtube.com/watch?v=${video.id}`
-// // // };
-
-// // // await handleVideo(video2, msg, voiceChannel, true)
-
-// // }
-     
-
-    
-
-
-    
-// // //     var VC = msg.member.voiceChannel;
-// // //     if (!VC)
-// // //         return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // // VC.join()
-// // //     .then(connection => {
-// // //         const dispatcher = connection.playFile(`./moosic/${songRequest}.mp3`);
-// // //         dispatcher.on("end", end => {VC.leave()});
-// // //     })
-// // //     .catch(console.error);
-
-// //     // var voiceChannel = message.member.voiceChannel
-// //     // voiceChannel.join().then(connection =>{ENTER CODE HERE}).catch(err => console.log(err))
-
-// //     // const dispatcher = connection.playFile('./audiofile.mp3');
-// //     // dispatcher.on("end", end => {ENTER CODE HERE});
-
-
-
-
-// //   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // if (command === 'lplay') {
-// //   var songRequest = msg.content.split(' ').slice(1).join(' ')
-// //   console.log(songRequest)
-// //   const voiceChannel = msg.member.voiceChannel;
-// //   if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-// //   const permissions = voiceChannel.permissionsFor(msg.client.user);
-// //   if (!permissions.has('CONNECT')) {
-// //     return msg.channel.send('Insufficient permissions to connect.');
-// //   }
-// //   if (!permissions.has('SPEAK')) {
-// //     return msg.channel.send('Insufficient permissions to speak.');
-// //   }
-
-// //   var avalibleTracks = []
-// //   var toPlay = []
-
-// //   fs.readdir('./moosic/', function (err, files) {
-// //     if (err) {
-// //       console.log(err);
-      
-
-// //       // for (file in files) {
-// //       //   avalibleTracks.push(file)
-// //       // }
-// //     }
-// //     // console.log(files);
-
-    
-// //     // avalibleTracks = files
-    
-// //     avalibleTracks.push('ree')
-// //     for (ting in files){
-// //       // console.log(ting)
-// //       avalibleTracks.push(files[ting])
-// //     }
-// //     // console.log('avali tracke')
-// //     // console.log('avali tracke' + avalibleTracks)
-
-// //   // });
-
-
-  
-// //   //  if (avalibleTracks.includes(`${songRequest}.mp3`)) {
-// //     // if (avalibleTracks.includes('ree')) {
-// //     // console.log('aval track 2')
-// //       // console.log('aval track 2' + avalibleTracks)
-// //       // console.log(avalibleTracks.indexOf('ree'))
-// //       if (avalibleTracks.indexOf('ree') > -1) {
-
-
-// //       //   function cloneMessage(servermessage) {
-// //       //     var clone ={};
-// //       //     for( var key in servermessage ){
-// //       //         if(servermessage.hasOwnProperty(key)) //ensure not adding inherited props
-// //       //             clone[key]=servermessage[key];
-// //       //     }
-// //       //     return clone;
-// //       // }
-
-
-
-// //         // toPlay.push(cloneMessage(songRequest))
-// //         var video = songRequest
-// //         handleVideoLocal(video, msg, voiceChannel)
-// //         // toPlay.concat(songRequest)
-// //         // console.log('queueue')
-// //         // console.log(toPlay)
-// //         //In the array!
-// //     } else {
-// //       msg.channel.send('not found')
-// //         //Not in the array
-// //     }
-     
-// //   //    toPlay.push(songRequest)
-// //   //    console.log('queueue')
-// //   //    console.log(toPlay)
-
-// //   //   }
-// //   // else {
-// //   //     msg.channel.send('not found')
-// //   //   }
-
-// // //        for (song in toPlay) {
-     
-// // //        var VC = msg.member.voiceChannel;
-// // //     if (!VC)
-// // //         return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // // VC.join()
-// // //     .then(connection => {
-// // //         const dispatcher = connection.playFile(`./moosic/${toPlay[song]}.mp3`);
-// // //         dispatcher.on("end", end => {VC.leave()});
-// // //     })
-// // //     .catch(console.error);
-
-
-// // //   //   const serverQueue = queue.get(msg.guild.id);
-// // // 	// // console.log(video);
-// // // 	// const song = {
-// // // 	// 	id: video.id,
-// // // 	// 	title: Util.escapeMarkdown(video.title),
-// // // 	// 	url: `https://www.youtube.com/watch?v=${video.id}`
-// // //   // };
-
-// // //     // await handleVideo(video2, msg, voiceChannel, true)
-
-// // //   }
-// // })
-
-
-
-
-
-
-
-
-// // async function handleVideoLocal(video, msg, voiceChannel, playlist = false) {
-// // 	const serverQueue = queue.get(msg.guild.id);
-// // 	// console.log(video);
-// // 	const song = {
-// // 		id: 'video',
-// // 		title: Util.escapeMarkdown(songRequest),
-// //     url: 'placholder'
-// //     // name: songRequest
-// // 	};
-// // 	if (!serverQueue) {
-// // 		const queueConstruct = {
-// // 			textChannel: msg.channel,
-// // 			voiceChannel: voiceChannel,
-// // 			connection: null,
-// // 			songs: [],
-// // 			volume: 5,
-// // 			playing: true
-// // 		};
-// // 		queue.set(msg.guild.id, queueConstruct);
-
-// // 		queueConstruct.songs.push(song);
-
-// // 		try {
-// // 			var connection = await voiceChannel.join();
-// // 			queueConstruct.connection = connection;
-// // 			playLocal(msg.guild, queueConstruct.songs[0]);
-// // 		} catch (error) {
-// // 			console.error(`Failed to join voice channel: ${error}`);
-// // 			queue.delete(msg.guild.id);
-// // 			return msg.channel.send(`Failed to join voice channel: ${error}`);
-// // 		}
-// // 	} else {
-// // 		serverQueue.songs.push(song);
-// // 		// console.log(serverQueue.songs);
-// // 		if (playlist) return undefined;
-// // 		else return msg.channel.send(`**${song.title}** added to queue!`);
-// // 	}
-// // 	return undefined;
-// // }
-
-// // function playLocal(guild, song) {
-// // 	const serverQueue = queue.get(guild.id);
-
-// // 	if (!song) {
-// // 		serverQueue.voiceChannel.leave();
-// // 		queue.delete(guild.id);
-// // 		return;
-// // 	}
-// // 	// console.log(serverQueue.songs);
-
-// // 	const dispatcher = serverQueue.connection.playStream(`./moosic/${song.title}.mp3`)
-// // 		.on('end', reason => {
-// // 			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-// // 			else console.log(reason);
-// // 			serverQueue.songs.shift();
-// // 			play(guild, serverQueue.songs[0]);
-// // 		})
-// // 		.on('error', error => console.error(error));
-// // 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-// // 	serverQueue.textChannel.send(`Playing: **${song.title}**`);
-// // }
-
-// // // for (song in toPlay) {
-     
-// // // var VC = msg.member.voiceChannel;
-// // // if (!VC)
-// // //  return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // // VC.join()
-// // // .then(connection => {
-// // //  const dispatcher = connection.playFile(`./moosic/${toPlay[song]}.mp3`);
-// // //  dispatcher.on("end", end => {VC.leave()});
-// // // })
-// // // .catch(console.error);
-
-
-// // // //   const serverQueue = queue.get(msg.guild.id);
-// // // // // console.log(video);
-// // // // const song = {
-// // // // 	id: video.id,
-// // // // 	title: Util.escapeMarkdown(video.title),
-// // // // 	url: `https://www.youtube.com/watch?v=${video.id}`
-// // // // };
-
-// // // // await handleVideo(video2, msg, voiceChannel, true)
-
-// // // }
-   
-
-  
-
-
-  
-// // //     var VC = msg.member.voiceChannel;
-// // //     if (!VC)
-// // //         return msg.reply("MESSAGE IF NOT IN A VOICE CHANNEL")
-// // // VC.join()
-// // //     .then(connection => {
-// // //         const dispatcher = connection.playFile(`./moosic/${songRequest}.mp3`);
-// // //         dispatcher.on("end", end => {VC.leave()});
-// // //     })
-// // //     .catch(console.error);
-
-// //   // var voiceChannel = message.member.voiceChannel
-// //   // voiceChannel.join().then(connection =>{ENTER CODE HERE}).catch(err => console.log(err))
-
-// //   // const dispatcher = connection.playFile('./audiofile.mp3');
-// //   // dispatcher.on("end", end => {ENTER CODE HERE});
-
-
-
-
-// // }
-
-
-
-
-
-
-
-//   if (command === 'shuffle') {
-//     console.log('shuffke')
-//     const voiceChannel = msg.member.voiceChannel;
-// 		if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-// 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-// 		if (!permissions.has('CONNECT')) {
-// 			return msg.channel.send('Insufficient permissions to connect.');
-// 		}
-// 		if (!permissions.has('SPEAK')) {
-// 			return msg.channel.send('Insufficient permissions to speak.');
-//     }
-
-
-
-
-//      function shuffleQueue(queue) {
-//     for (let i = queue.length - 1; i > 0; i--) {
-//       const j = Math.floor(Math.random() * (i + 1));
-//       [queue[i], queue[j]] = [queue[j], queue[i]];
-//       console.log('referwgwerge')
-//     }
-//     console.log('refe')
-//   }
-//   console.log(shuffleQueue(message.guild.musicData.queue))
-
-//   //   function shuffle(ting) {
-//   //     var j, x, i;
-//   //     for (i = a.length - 1; i > 0; i--) {
-//   //         j = Math.floor(Math.random() * (i + 1));
-//   //         x = a[i];
-//   //         a[i] = a[j];
-//   //         a[j] = x;
-//   //     }
-//   //     return ting;
-//   // }
-//   // console.log(shuffle(queue))
-//   // console.log(serverQueue.songs)
-//     // try { 
-
-      
-//     //     // msg.channel.send(serverQueue)
-//     //     // console.log(serverQueue.songs)
-//     //     if (!serverQueue) {
-//     //       msg.channel.send('There is nothing playing.');
-//     //     }
-//     //     function shuffle(array) {
-//     //       var currentIndex = array.length, temporaryValue, randomIndex;
-  
-//     //       // While there remain elements to shuffle...
-//     //       while (0 !== currentIndex) {
-  
-//     //           // Pick a remaining element...
-//     //           randomIndex = Math.floor(Math.random() * currentIndex);
-//     //           currentIndex -= 1;
-  
-//     //           // And swap it with the current element.
-//     //           temporaryValue      = array[currentIndex];
-//     //           array[currentIndex] = array[randomIndex];
-//     //           array[randomIndex]  = temporaryValue;
-//     //       }
-  
-//     //       return array;
-//     //   }
-
-//     //   console.log(shuffle(serverQueue))
-
-//     //     shuffleQueue(serverQueue.songs)
-//     //      msg.channel.send(`
-//     //   __**Song queue:**__
-//     //   ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-//     //   **Now playing:** ${serverQueue.songs[0].title}
-// 		// `);
-//     //   }
-
-//     //   catch (err) {
-//     //     console.log(err)
-
-
-//       // }
-
-//   }
-
-//   else if (command === 'skip') {
+// 	} else if (command === 'skip') {
 // 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel.');
 // 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 // 		serverQueue.connection.dispatcher.end('Skip command has been used');
 // 		return undefined;
-//   } 
-  
-//   else if (command === 'stop') {
+// 	} else if (command === 'stop') {
 // 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
 // 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
 // 		serverQueue.songs = [];
@@ -3120,76 +2133,7 @@ client.login(config.bot.token);
 // 	return undefined;
 // }
 
-// function play(guild, song, mode) {
-
-
-// //   if (mode == 'local') {
-
-// //     const serverQueue = queue.get(guild.id);
-
-// // 	if (!song) {
-// // 		serverQueue.voiceChannel.leave();
-// // 		queue.delete(guild.id);
-// // 		return;
-// // 	}
-// // 	// console.log(serverQueue.songs);
-
-// // 	const dispatcher = serverQueue.connection.playStream(`./moosic/${moosicQueueueue[song]}.mp3`)
-// // 		.on('end', reason => {
-// // 			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-// // 			else console.log(reason);
-// // 			serverQueue.songs.shift();
-// // 			play(guild, serverQueue.songs[0]);
-// // 		})
-// // 		.on('error', error => console.error(error));
-// // 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-// //   serverQueue.textChannel.send(`Playing: **${song.title}**`);
-    
-
-// //   }
-
-
-
-
-  
-// //   else {
-    
-
-
-
-// //   const serverQueue = queue.get(guild.id);
-
-// // 	if (!song) {
-// // 		serverQueue.voiceChannel.leave();
-// // 		queue.delete(guild.id);
-// // 		return;
-// // 	}
-// // 	// console.log(serverQueue.songs);
-
-// // 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-// // 		.on('end', reason => {
-// // 			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-// // 			else console.log(reason);
-// // 			serverQueue.songs.shift();
-// // 			play(guild, serverQueue.songs[0]);
-// // 		})
-// // 		.on('error', error => console.error(error));
-// // 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-// // 	serverQueue.textChannel.send(`Playing: **${song.title}** ${song.url}`);
-  
-
-
-// //   // VC.join()
-// // // //     .then(connection => {
-// // // //         const dispatcher = connection.playFile(`./moosic/${toPlay[song]}.mp3`);
-// // // //         dispatcher.on("end", end => {VC.leave()});
-// // // //     })
-// // // //     .catch(console.error);
-
-
-// //   }
+// function play(guild, song) {
 // 	const serverQueue = queue.get(guild.id);
 
 // 	if (!song) {
@@ -3211,4 +2155,3 @@ client.login(config.bot.token);
 
 // 	serverQueue.textChannel.send(`Playing: **${song.title}** ${song.url}`);
 // }
-

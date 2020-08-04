@@ -8,13 +8,13 @@
 npm install discord.js
 npm install node-os-utils 
 
-npm install simple-youtube-api
+~~npm install simple-youtube-api
 npm install ytdl-core
-npm install opusscript
+npm install opusscript~~
 
 good luck installing ffmpeg!  (this may help -> https://chocolatey.org/packages/ffmpeg)
 
-Go to Retrograde.json and do your token, owner id, channel id, presense settings, google api stuff.
+Go to Retrograde.json and do your token, owner id, channel id, presense settings, ~~google api stuff~~.
 
 
 ## Features
@@ -26,34 +26,54 @@ Go to Retrograde.json and do your token, owner id, channel id, presense settings
 Info
 Copypasta
 Ping
-Spam (not recomended to abuse the API with)
+Spam (science purposes)
 help
-MOOSIC
 ```
 <!-- - Moderation -->
 - Economy
-- logging (wip?)
+- logging (wip)
 
 
  
 ## To do
 
 - expand/finish econ (for the relative future)
-- ~~sort out the mess of logging~~ its not a mess anymore, its just very unfinished
-- ~~case insensitive cmds~~ 
+- ~~sort out the mess of logging~~
+- ~~case insensitive cmds~~
 - ditch line reader
 - make bot "error-crash proof"
 - ~~bot status~~
 - cleanup code (again)
-- json config from discord
-- trust roles
-- ~~FULLY WORKING MUSIC AHHHHHHHH~~ i give up completing this
-
 - probs much more that I didn't specify
 
 
-
 ## Changelog
+
+### 1.3 Back From The Dead REEEEEEE!!!
+- Disabled moosic & spam completly
+
+- Add chat logging 
+    - rich embeds
+    - message deletes, edits, server join/leave, whatever
+
+- Fix whatever discord.js v12 broke
+    - ~~boot display~~
+    - ~~ping api latency~~
+    - ~~user cmd~~
+    - more stuff?
+
+- Fix typo(s)
+    
+- Allow edit json
+- update dsiplay text stuff???
+- blackjack
+- Remove useless/unnesesary logging
+- Revamp Econ
+    - Make so no need to do command again to create account.
+
+
+
+
 
 ### 1.2: SKETCHY MOOSIC
 
@@ -66,7 +86,6 @@ MOOSIC
 - patched up rich embed to be auto-parse based on sketchy logic
 - fix spam can cause bot crash 
 - a much needed code cleanup
-- restructure renograde.json
 
 
 ### 1.1
