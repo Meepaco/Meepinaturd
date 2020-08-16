@@ -49,7 +49,7 @@ help
 
 ## Changelog
 
-### 1.3 Back From The Dead REEEEEEE!!!
+### (WIP) 1.3 Back From The Dead REEEEEEE!!!
 - Disabled moosic & spam completly
 
 - Add chat logging 
@@ -65,9 +65,14 @@ help
 - Fix typo(s)
     
 - Allow edit json
+    - restrict to bot owner/owner's server?
+    - enable/disable switch
+    - password protect????
+    
 - update dsiplay text stuff???
 - blackjack
 - Remove useless/unnesesary logging
+- shove stuff into individual modules
 - Revamp Econ
     - Make so no need to do command again to create account.
 

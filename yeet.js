@@ -1,4 +1,4 @@
-const version = 'v1.3b1'
+const version = 'v1.3b2'
 const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.2'
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -7,6 +7,8 @@ const prefix = config.bot.prefix;
 const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
+
+const editJsonFile = require("edit-json-file");
 
 // Setting Up
 // install node, then: 
@@ -925,7 +927,14 @@ function chatLogme(server, channel, dood, stuffToLog) {
 //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
 // }
 
+function confEditor(thingyToEdit, thingyToPut) {
+  let configFile = editJsonFile('./Renograde.json')
 
+    configFile.set(`bot.${thingyToEdit}`, thingyToPut)
+    configFile.save()
+    // console.log(configFile.get());
+    // recMsg.channel.send(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+}
 
 
 
@@ -1245,6 +1254,208 @@ API: ${Math.round(client.ws.ping)}ms`))
 // ${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
     }
+
+    if (recMsg.content.toLowerCase().startsWith(prefix + "settings") || (recMsg.content.toLowerCase().startsWith(prefix + "set"))) {
+      
+
+      var thingyToEdit = recMsg.content.split(' ').slice(1)[0];
+      var thingyToPut = recMsg.content.split(' ').slice(2).join(' ')
+      if (thingyToEdit.toLowerCase() == 'usepresense' || thingyToEdit.toLowerCase() == 'presensemsg' || thingyToEdit.toLowerCase() == 'botinvitelink' || thingyToEdit.toLowerCase() == 'testingchannel' || thingyToEdit.toLowerCase() == 'owner') {
+        recMsg.channel.send('yeah uh.... this part is wip. So... uh... just use the slow way...')
+      }
+
+      else if (thingyToEdit == undefined) {
+
+        recMsg.channel.send(`You can edit the following settings. If you know what you are doing and want a faster way use ${prefix}(set)tings <item> <your change here>
+
+    usePresense
+    presenseMsg
+    botInviteLink
+    owner
+    testingChannel
+    permissions to use this
+
+
+  
+      
+      `)
+        // console.log('sdfsdfsfsd')
+        
+        recMsg.channel.send('Enter a setting to edit')
+        recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+                  // only accept messages by the user who sent the command
+                  // accept only 1 message, and return the promise after 30000ms = 30s
+    
+                  // first (and, in this case, only) message of the collection
+          if (collected.first().content.toLowerCase() == 'usepresense') {
+            thingyToEdit = 'usePresense'
+
+            recMsg.channel.send('Enter the new value (true/false)')
+            recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+              if (collected.first().content.toLowerCase() == 'true') {
+                thingyToPut = 'true'
+                confEditor('usePresense', 'true')
+                recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+              }
+
+              else if (collected.first().content.toLowerCase() == 'false') {
+                thingyToPut = 'false'
+                confEditor('usePresense', 'false')
+                recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+              }
+
+              else {
+                recMsg.reply('Not a valid value.');   
+              }   
+            }).catch(() => {
+              recMsg.reply('No answer after 30 seconds, operation canceled.');
+            });
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          else {
+            recMsg.reply('Not a valid setting to edit.');   
+          }   
+        }).catch(() => {
+          recMsg.reply('No answer after 30 seconds, operation canceled.');
+        });
+    
+    
+        
+      }
+
+      else {
+        recMsg.channel.send('Invalid usage of command')
+      }
+
+
+
+      
+
+
+      
+      console.log(thingyToEdit)
+      console.log('yeet')
+      console.log(thingyToPut)
+
+
+
+
+    //   if (thingyToEdit == 'usePresense') {
+    //     if (thingyToPut == 'true' || thingyToPut == 'false') {
+    //     let configFile = editJsonFile('./Renograde.json')
+  
+    //     configFile.set("bot.usePresense", thingyToPut)
+    //     configFile.save()
+    //     console.log(configFile.get());
+
+
+    //     }
+    //     else {
+    //       recMsg.channel.send('Invalid option. Options are (true/false)')
+    //     }
+
+
+
+
+    // }
+
+    
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+    if (recMsg.content.toLowerCase().startsWith(prefix + "test")) { 
+      recMsg.channel.send('andwere')
+    recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id,
+      {max: 1, time: 30000}).then(collected => {
+              // only accept messages by the user who sent the command
+              // accept only 1 message, and return the promise after 30000ms = 30s
+
+              // first (and, in this case, only) message of the collection
+              if (collected.first().content.toLowerCase() == 'yes') {
+                      recMsg.reply('Shutting down...');
+                      
+              }
+
+              else
+                      recMsg.reply('Operation canceled.');      
+      }).catch(() => {
+              recMsg.reply('No answer after 30 seconds, operation canceled.');
+      });
+
+
+    }
+
+
+  //   client.on('message', message => {
+  //     // Command handler, seen previously
+  //     switch (command) {
+  //             case 'shutdown': {
+  //                     message.reply('The bot will now shut down.\n'
+  //                             + 'Confirm with `yes` or deny with `no`.');
+  
+  //                     // First argument is a filter function - which is made of conditions
+  //                     // m is a 'Message' object
+  //                     message.channel.awaitMessages(m => m.author.id == message.author.id,
+  //                             {max: 1, time: 30000}).then(collected => {
+  //                                     // only accept messages by the user who sent the command
+  //                                     // accept only 1 message, and return the promise after 30000ms = 30s
+  
+  //                                     // first (and, in this case, only) message of the collection
+  //                                     if (collected.first().content.toLowerCase() == 'yes') {
+  //                                             message.reply('Shutting down...');
+  //                                             client.destroy();
+  //                                     }
+  
+  //                                     else
+  //                                             message.reply('Operation canceled.');      
+  //                             }).catch(() => {
+  //                                     message.reply('No answer after 30 seconds, operation canceled.');
+  //                             });
+  //                     break;
+  //             }  
+  //     }
+  // });
+
+
+
       
     antiSpam.add(recMsg.author.id);
     setTimeout(() => {
