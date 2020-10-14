@@ -1,5 +1,6 @@
-const version = 'v1.3b2'
-const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.2'
+// Welcome to my sketchy code
+const version = 'v1.3b4'
+const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3b3'
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('./Renograde.json');
@@ -1022,7 +1023,10 @@ client.on('message', async recMsg => {
 **help:** Shows this message.
 **info:** shows bot info
 **alt f4:** just dont...
-**invite:** Get a bot invite link`
+**invite:** Get a bot invite link
+**remind <time> <time unit> <message>
+
+Experemental: settings`
     var helpMessage = `**essay:** Best roast
 **bwah:** A simple wall of text
 **skelly:** Totally not NSFW...`
@@ -1031,11 +1035,12 @@ client.on('message', async recMsg => {
 **pay <user> <amount>:** Pay someone
 **gamble <number>:** Try your luck...
 **dab:** Hit a dab!
-**stalk:** A high risk indecency, for high rewards...`
+**stalk:** A high risk indecency, for high rewards...
+
+Experemental: blackjack`
     
     if (recMsg.content.toLowerCase() == prefix + ('help-depricated')) {
       recMsg.channel.send("**Removed/disable commands** \n`yeet <member> <reason>: kicks member\nban <member> <reason>: bans member\n**spam <amount> <thing>:** Spams user defined message (x) number of times, 100 max (DO NOT SPAM WITHOUT MESSAGE)`")
-
     }
     
   
@@ -1066,6 +1071,8 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
 `))
       })
     }
+
+
 
     if (recMsg.content.toLowerCase() == prefix + ("essay")) {
         recMsg.channel.send(config.bot.essay)
@@ -1099,9 +1106,38 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
     }
 
     if (recMsg.content.toLowerCase() == prefix + ("essay")) {
-      recMsg.channel.send(config.bot.essay)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay"`)
-  }
+      recMsg.channel.send(config.bot.essay2)
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay2"`)
+    }
+
+    // ehh temporary hardcode, i will make it better eventually...
+    if (recMsg.content.toLowerCase() == prefix + ("acc")) {
+      recMsg.channel.send('acc --set --current 500')
+      recMsg.channel.send('acc -s v 3920')
+    }
+    if (recMsg.content.toLowerCase() == prefix + ("uevent")) {
+      recMsg.channel.send('cat /sys/class/power_supply/bms/uevent')
+    }
+
+    if (recMsg.content.toLowerCase() == prefix + ("vanced")) {
+      recMsg.channel.send('chcon -R u:object_r:system_file:s0 /data/app/com.google.android.youtube-5Hl-a7B5elWgb4zmK0MWBg==')
+    }
+
+    if (recMsg.content.toLowerCase() == prefix + ("ssh")) {
+      recMsg.channel.send('/data/adb/modules/ssh/opensshd.init start')
+    }
+
+    if (recMsg.content.toLowerCase() == prefix + ("twrp")) {
+      recMsg.channel.send('adb backup -f aug12_2020 --twrp --compress data boot')
+    }
+
+
+  
+
+
+
+
+
 
     if (recMsg.content.toLowerCase() == prefix + "ping") {
       const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
@@ -1256,99 +1292,165 @@ API: ${Math.round(client.ws.ping)}ms`))
     }
 
     if (recMsg.content.toLowerCase().startsWith(prefix + "settings") || (recMsg.content.toLowerCase().startsWith(prefix + "set"))) {
-      
+      recMsg.channel.send('WARNING: This command is heavilly unfinished')
+      // if(recMsg.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])) {
+      //   recMsg.channel.send('yes')
+      // }
+      // console.log(recMsg.member.guild.me)
+      if (bot.config.useJsonEditor == 'true') {
+        var thingyToEdit = recMsg.content.split(' ').slice(1)[0];
+        var thingyToPut = recMsg.content.split(' ').slice(2).join(' ')
 
-      var thingyToEdit = recMsg.content.split(' ').slice(1)[0];
-      var thingyToPut = recMsg.content.split(' ').slice(2).join(' ')
-      if (thingyToEdit.toLowerCase() == 'usepresense' || thingyToEdit.toLowerCase() == 'presensemsg' || thingyToEdit.toLowerCase() == 'botinvitelink' || thingyToEdit.toLowerCase() == 'testingchannel' || thingyToEdit.toLowerCase() == 'owner') {
-        recMsg.channel.send('yeah uh.... this part is wip. So... uh... just use the slow way...')
-      }
+        if (config.bot.skidsAllowedToEditJson.includes(recMsg.author.id)) {
+          console.log('reeeeee')
 
-      else if (thingyToEdit == undefined) {
+          var editableOptions = ['usepresense', 'presensemsg', 'botinvitelink', 'testingchannel', 'owner']
+          // var acceptedValues = []
 
-        recMsg.channel.send(`You can edit the following settings. If you know what you are doing and want a faster way use ${prefix}(set)tings <item> <your change here>
-
-    usePresense
-    presenseMsg
-    botInviteLink
-    owner
-    testingChannel
-    permissions to use this
-
-
-  
-      
-      `)
-        // console.log('sdfsdfsfsd')
-        
-        recMsg.channel.send('Enter a setting to edit')
-        recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
-                  // only accept messages by the user who sent the command
-                  // accept only 1 message, and return the promise after 30000ms = 30s
-    
-                  // first (and, in this case, only) message of the collection
-          if (collected.first().content.toLowerCase() == 'usepresense') {
-            thingyToEdit = 'usePresense'
-
-            recMsg.channel.send('Enter the new value (true/false)')
-            recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
-              if (collected.first().content.toLowerCase() == 'true') {
-                thingyToPut = 'true'
+          if (editableOptions.includes(thingyToEdit.toLowerCase) && thingyToPut != undefined) {
+            console.log('dfusfghsdfuisdhfuisdhfsuidhfuid')
+            if (thingyToEdit.toLowerCase() == 'usepresense') {
+              // thingyToEdit = 'usePresense'
+              if (thingyToPut.toLowerCase() == 'true') {
                 confEditor('usePresense', 'true')
-                recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+                recMsg.send(`presenseMsg has been updated to "true"`)
+              } 
+              else if (thingyToPut.toLowerCase() == 'false') {
+                confEditor('usePresense', 'false')
+                recMsg.send(`presenseMsg has been updated to "false"`)
+              }
+              else {
+                recMsg.channel.send('Invalid value. Must be `true/false`')
+              }
+            }
+
+            if (thingyToEdit.toLowerCase() == 'presensemsg') {
+              confEditor('presenseMsg', thingyToPut)
+              recMsg.send(`presenseMsg has been updated to "${thingyToPut}"`)
+              }
+            
+
+            if (thingyToEdit.toLowerCase() == 'botinvitelink') {
+              confEditor('botInviteLink', thingyToPut)
+              recMsg.send(`botInviteLink has been updated to "${thingyToPut}"`)
+            }
+
+            if (thingyToEdit.toLowerCase() == 'owner') {
+              if (thingyToPut.isInteger()) {
+                confEditor('owner', thingyToPut)
+                recMsg.send(`owner has been updated to "${thingyToPut}"`)
+              }
+              else {
+                recMsg.send('You must provide a valid discord use ID.')
+              }
+            }
+
+            if (thingyToEdit.toLowerCase() == 'testingChannel') {
+
+            }
+
+            if (thingyToEdit.toLowerCase() == 'perm to use dis') {
+
+            }
+          }
+          
+
+          
+          // if (thingyToEdit.toLowerCase() == 'usepresense' || thingyToEdit.toLowerCase() == 'presensemsg' || thingyToEdit.toLowerCase() == 'botinvitelink' || thingyToEdit.toLowerCase() == 'testingchannel' || thingyToEdit.toLowerCase() == 'owner') {
+          //   recMsg.channel.send('yeah uh.... this part is wip. So... uh... just use the slow way...')
+          // }
+
+          else if (thingyToEdit == undefined) { //make if thingy to edit is defiend but thingy tio put is not
+
+            recMsg.channel.send(`You can edit the following settings. If you know what you are doing and want a faster way use ${prefix}(set)tings <item> <your change here>
+
+        usePresense
+        presenseMsg
+        botInviteLink
+        owner
+        testingChannel
+        permissions to use this
+          `)
+            // console.log('sdfsdfsfsd')
+            
+            recMsg.channel.send('Enter a setting to edit')
+            recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+                      // only accept messages by the user who sent the command
+                      // accept only 1 message, and return the promise after 30000ms = 30s
+        
+                      // first (and, in this case, only) message of the collection
+              if (collected.first().content.toLowerCase() == 'usepresense') {
+                thingyToEdit = 'usePresense'
+
+                recMsg.channel.send('Enter the new value (true/false)')
+                recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+                  if (collected.first().content.toLowerCase() == 'true') {
+                    thingyToPut = 'true'
+                    confEditor('usePresense', 'true')
+                    recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+                  }
+
+                  else if (collected.first().content.toLowerCase() == 'false') {
+                    thingyToPut = 'false'
+                    confEditor('usePresense', 'false')
+                    recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+                  }
+
+                  else {
+                    recMsg.reply('Not a valid value.');   
+                  }   
+                }).catch(() => {
+                  recMsg.reply('No answer after 30 seconds, operation canceled.');
+                });
               }
 
-              else if (collected.first().content.toLowerCase() == 'false') {
-                thingyToPut = 'false'
-                confEditor('usePresense', 'false')
-                recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
-              }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
               else {
-                recMsg.reply('Not a valid value.');   
+                recMsg.reply('Not a valid setting to edit.');   
               }   
             }).catch(() => {
               recMsg.reply('No answer after 30 seconds, operation canceled.');
             });
+        
+        
+            
+          }
+          else {
+            recMsg.channel.send("Invalid Command usage")
           }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          else {
-            recMsg.reply('Not a valid setting to edit.');   
-          }   
-        }).catch(() => {
-          recMsg.reply('No answer after 30 seconds, operation canceled.');
-        });
-    
-    
-        
-      }
+    }
 
       else {
-        recMsg.channel.send('Invalid usage of command')
+        recMsg.channel.send('You do not have authority to edit the bot configuration.')
+      }
+
+      }
+      else {
+        recMsg.channel.send('JSON editor is disabled.')
       }
 
 
@@ -1401,27 +1503,27 @@ API: ${Math.round(client.ws.ping)}ms`))
 
 
 
-    if (recMsg.content.toLowerCase().startsWith(prefix + "test")) { 
-      recMsg.channel.send('andwere')
-    recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id,
-      {max: 1, time: 30000}).then(collected => {
-              // only accept messages by the user who sent the command
-              // accept only 1 message, and return the promise after 30000ms = 30s
+    // if (recMsg.content.toLowerCase().startsWith(prefix + "test")) { 
+    //   recMsg.channel.send('andwere')
+    // recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id,
+    //   {max: 1, time: 30000}).then(collected => {
+    //           // only accept messages by the user who sent the command
+    //           // accept only 1 message, and return the promise after 30000ms = 30s
 
-              // first (and, in this case, only) message of the collection
-              if (collected.first().content.toLowerCase() == 'yes') {
-                      recMsg.reply('Shutting down...');
+    //           // first (and, in this case, only) message of the collection
+    //           if (collected.first().content.toLowerCase() == 'yes') {
+    //                   recMsg.reply('Shutting down...');
                       
-              }
+    //           }
 
-              else
-                      recMsg.reply('Operation canceled.');      
-      }).catch(() => {
-              recMsg.reply('No answer after 30 seconds, operation canceled.');
-      });
+    //           else
+    //                   recMsg.reply('Operation canceled.');      
+    //   }).catch(() => {
+    //           recMsg.reply('No answer after 30 seconds, operation canceled.');
+    //   });
 
 
-    }
+    // }
 
 
   //   client.on('message', message => {
@@ -1454,13 +1556,66 @@ API: ${Math.round(client.ws.ping)}ms`))
   //     }
   // });
 
+  if (recMsg.content.toLowerCase().startsWith(prefix + 'remind')) { //pings the user after amount of time
 
+      var suffix = recMsg.content.split(' ').slice(1);
+      var timesUnit = suffix[1];
+      var time = suffix[0];
+      var WhatToRemind = recMsg.content.split(' ').slice(3).join(' ') 
+
+      timeToWait = 0
+      // console.log(timesUnit)
+      // console.log(time)
+      // console.log(WhatToRemind)
+
+      if (time > 0 && !isNaN(time) && isNaN(timesUnit)) {
+        // console.log('yes')
+       
+        function reminderThingy() {
+          recMsg.reply(`Ok, reminding you in ${timeToWait}ms`)
+          sleep(timeToWait).then(() => {
+            recMsg.reply(WhatToRemind)
+          })
+        }
+
+        if (timesUnit.toLowerCase() == 'sec') {
+          timeToWait = timeToWait + (time * 1000)
+          reminderThingy()
+        }
+        else if (timesUnit.toLowerCase() == 'min') {
+          timeToWait = timeToWait + (time * 1000 * 60)
+          reminderThingy()
+        }
+        else if (timesUnit.toLowerCase() == 'hr') {
+          timeToWait = timeToWait + (time * 1000 * 60 * 60)
+          reminderThingy()
+        }
+        else if (timesUnit.toLowerCase() == 'day') {
+          timeToWait = timeToWait + (time * 1000 * 60 * 60 * 24)
+          reminderThingy()
+        }
+        else {
+          recMsg.reply(`Invalid time unit.`)
+        }
+      }
+
+      else {
+        recMsg.channel.send('Invalid command usage')
+      }
 
       
-    antiSpam.add(recMsg.author.id);
-    setTimeout(() => {
-    antiSpam.delete(recMsg.author.id);
-    }, 1000); //1sec
+
+
+
+
+
+  }
+
+      
+    // antiSpam.add(recMsg.author.id);
+    // setTimeout(() => {
+    // antiSpam.delete(recMsg.author.id);
+    // }, 1000); //1sec
   }
 })
 
@@ -1935,6 +2090,138 @@ client.on('message', async recMsg => {
       logme('ERROR', `Reuested member not found`)
     }
   }
+
+
+//   if (recMsg.content.toLowerCase().startsWith(prefix + 'blackjack') || recMsg.content.toLowerCase().startsWith(prefix + 'bj')) {
+//     // logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) executed "gamble"`)
+
+//     // var yesOrNo = Math.floor(Math.random() * Math.floor(101)) //random number...
+//     // var moneyMultiplier = Math.floor(Math.random() * Math.floor(5))
+//     var moneyBet = Math.floor(parseFloat(0 + recMsg.content.split(' ').slice(1)));
+//     // var moneyWon = Math.round(moneyBet * moneyMultiplier / 3.3827463287482) + moneyBet
+//     var currentNumber = 0
+//     var botCurrentNumber = 0
+
+//     var addingAcard = random generator stuff
+//     var addingBotCard = random generator stuff
+
+
+//     currentNumber = currentNumber + addingAcard
+//     botCurrentNumber = botCurrentNumber + addingBotCard
+    
+
+    
+//     // console.log(moneyBet)
+//     // console.log('--------')
+//     // console.log(yesOrNo)
+//     while (currentNumber <=21 && botCurrentNumber <=21) {
+
+//     recMsg.channel.send('stand or smash')
+//             recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+//                       // only accept messages by the user who sent the command
+//                       // accept only 1 message, and return the promise after 30000ms = 30s
+        
+//                       // first (and, in this case, only) message of the collection
+//               if (collected.first().content.toLowerCase() == 'stand') {
+//               //weeee
+//               //bot decide if yeet.
+//               botCurrentNumber = botCurrentNumber + addingBotCard
+//               }
+//               else if (collected.first().content.toLowerCase() == 'smash') {
+//                 currentNumber = currentNumber + addingAcard
+
+//                 //bot decide if yeet.
+//                 botCurrentNumber = botCurrentNumber + addingBotCard
+// //AHHHHHHHHHHHHHHHHHHH
+//               }
+
+
+
+
+//               else {
+//                 // recMsg.reply('Not a valid setting to edit.');   
+//               }   
+//             }).catch(() => {
+//               recMsg.reply('No answer after 30 seconds, game ended.');
+//             });
+//           }
+
+//           recMsg.send('the winer is blank')
+        
+            
+          
+
+
+
+
+
+
+
+
+
+
+
+
+//     // if (moneyBet > 9) {
+      
+//     //   fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
+//     //     if (err) {
+//     //       fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+//     //       recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
+//     //       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
+//     //       // balReset(recMsg.author.id)
+//     //     } 
+        
+//     //     else { 
+//     //       var lineReader = require('readline').createInterface({
+//     //         input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+//     //       });
+
+//     //       lineReader.on('line', function (line) {
+//     //         if (parseFloat(line.split(' ').slice(1)) >= moneyBet) {
+          
+//     //           if (yesOrNo > 60) {
+//     //             var lineReader = require('readline').createInterface({
+//     //               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+//     //             });
+//     //             lineReader.on('line', function (line) {
+//     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
+//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You somehow won and got ${moneyWon}`, 3591188))
+//     //               logme('DEBUG', `Won gamble (${moneyWon})`)
+//     //             })
+//     //           }
+              
+//     //           else if (yesOrNo == 50) {
+//     //             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
+//     //             recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
+//     //             logme('DEBUG', `lost all money`)
+//     //           }
+
+//     //           else {
+//     //             var lineReader = require('readline').createInterface({
+//     //               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
+//     //             });
+
+//     //             lineReader.on('line', function (line) {
+//     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
+//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "lol rip u lost", 14685520))
+//     //               logme('DEBUG', `lost gamble (${moneyBet})`)
+//     //             })
+//     //           } 
+//     //         }
+//     //         else {
+//     //           recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You dont have enough money', 2727567))
+//     //           logme('DEBUG', `user has not enough money`)
+//     //         }
+//     //       })
+//     //     }
+//     //   })
+//     // }
+//     // else {
+//     //   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You must bet at least $10.', 14685520))
+//     //   logme('DEBUG', `user bet less than $10 (${moneyBet})`)
+//     // }
+//   }
  
 
   antiSpamEcon.add(recMsg.author.id);
