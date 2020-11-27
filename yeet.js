@@ -1,5 +1,5 @@
 // Welcome to my sketchy code
-const version = 'v1.3b4'
+const version = 'v1.3b5 (1301)'
 const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3b3'
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -10,15 +10,10 @@ const os = require('os');
 const fs = require('fs');
 
 const editJsonFile = require("edit-json-file");
+const si = require('systeminformation');
+const { Recoverable } = require('repl');
 
-// Setting Up
-// install node, then: 
-// npm install discord.js
-// npm install node-os-utils 
 
-// Go to Retrograde.json and do your token, owner id, channel id stuff.
-// https://www.youtube.com/watch?v=nrD7rzidZ84 <-- fix nuking when internet loss hopefully
-// return this.reconnect()          dsicord.js/scr/client/websocket/packets/websocketconnections.js
 
 // rate limiter gang
 const sloTFdownDab = new Set();
@@ -106,7 +101,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function clientUptime() { 
+function uptime(whatUptime) { 
   `This function gets the uptime of the bot
   
   returns:
@@ -119,7 +114,19 @@ function clientUptime() {
     sec
       uptime`
 
-  var totalSeconds = (client.uptime / 1000);
+  var totalSeconds = 0
+  var totalSecondsCopy = 0
+
+  if (whatUptime == 'bot') {
+    totalSeconds = (client.uptime / 1000);
+    totalSecondsCopy = (client.uptime / 1000);
+  }
+  else if (whatUptime == 'os') {
+    totalSeconds = (os.uptime);
+    totalSecondsCopy = (os.uptime);
+
+  }
+
   var days = Math.floor(totalSeconds / 86400);
   totalSeconds %= 86400;
   var hours = Math.floor(totalSeconds / 3600);
@@ -127,21 +134,23 @@ function clientUptime() {
   var minutes = Math.floor(totalSeconds / 60);
   var seconds = totalSeconds % 60;
   
-  if (client.uptime >= 86400000) { //day
+
+  if (totalSecondsCopy >= 86400) { //day
     return `${days} days, ${hours} hr, ${minutes} min, ${Math.round(seconds)} sec`
   }
 
-  else if (client.uptime >= 3600000) { //hour
+  else if (totalSecondsCopy >= 3600) { //hour
     return `${hours} hr, ${minutes} min, ${Math.round(seconds)} sec`
   }
 
-  else if (client.uptime >= 60000) { // minute
+  else if (totalSecondsCopy >= 60) { // minute
     return `${minutes} min, ${Math.round(seconds)} sec`
   }
 
-  else if (client.uptime >= 1000) { //second
+  else if (totalSecondsCopy >= 1) { //second
     return `${Math.round(seconds)} sec`
   }
+  
 }
 
 function timeParse(time) { 
@@ -539,7 +548,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       description: description,
@@ -558,7 +567,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -576,7 +585,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -594,7 +603,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -618,7 +627,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -641,7 +650,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -670,7 +679,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -698,7 +707,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -734,7 +743,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -767,7 +776,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
     embedded = ({embed: {
       color: colour,
       author: {
-        name: usersName,
+        name: `Requested by ${usersName}`,
         icon_url: usersNameURL
       },
       title: title,
@@ -803,7 +812,7 @@ function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, c
   embedded = ({embed: {
         color: colour,
         author: {
-          name: usersName,
+          name: `Requested by ${usersName}`,
           icon_url: usersNameURL
         },
         title: title,
@@ -924,7 +933,7 @@ function chatLogme(server, channel, dood, stuffToLog) {
 // function balReset(usriD) {
 //   `this function is used to reset balence so i dont have to spam this everywhere in econ`
 //   fs.writeFileSync(`./moneys/${usriD}.txt`, `ur_money= 0`)
-//   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
+//   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
 //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
 // }
 
@@ -974,7 +983,7 @@ Servers:`)
 
 
   var generalChannel = client.channels.cache.get(config.bot.testingChannel) // testing channel ID
-  generalChannel.send(richEmbed('desc' ,client.user.username, client.user.avatarURL, undefined,'I is the online',3447003))
+  generalChannel.send(richEmbed('desc' ,client.user.username, client.user.avatarURL({ format: 'png', dynamic: true}), undefined,'I is the online',3447003))
 
   console.log(`--------------------------
 the prefix is: ${config.bot.prefix}  
@@ -1050,13 +1059,16 @@ Experemental: blackjack`
       // console.log(os.loadavg())
       // console.log(os.hostname())
       const used = process.memoryUsage().heapUsed / 1024 / 1024;
-      
+    
       osu.cpu.usage()
       .then(usg => {
+
+       
         
-        recMsg.channel.send(richEmbed('title-field-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL, "Bot Info", undefined, 13691445, 'Uptime', clientUptime(), 
+        recMsg.channel.send(richEmbed('title-field-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), "Bot Info", undefined, 13691445, 'Uptime', uptime('bot'), 
         
-        'Bot', `Version: ${version}
+        'Bot', 
+`Version: ${version}
 Node: ${process.version}
 Memory Usg: ${Math.round(used * 100) / 100} MB`, 
 
@@ -1068,10 +1080,63 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
         'Other',
 `**OS:** ${os.type} (${os.platform()})
 **RAM:** ${parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)}/${parseInt(os.totalmem * bytesToMB)} MB (${(((parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)) / parseInt(os.totalmem * bytesToMB))* 100).toFixed(2)}% usage)
-`))
-      })
+**Uptime:** ${uptime('os')}`))
+      
+
+    })
     }
 
+    if (recMsg.content.toLowerCase() == prefix + ('info ext')) {
+
+
+      si.cpuTemperature()
+        .then(temp => {
+
+          si.cpu()
+          .then(processor => {
+            si.battery()
+              .then(batt => {
+                si.osInfo()
+                  .then(OSInfo => {
+
+
+
+      recMsg.channel.send(richEmbed('', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), " Extra Bot Info", undefined, 13691445, 
+      
+      'CPU', 
+      `**Temp:** ${temp.main} ${temp.cores} ${temp.max}
+      **Family:* ${processor.family}
+      **Govonor:* ${processor.governor}
+      **Cores: ** ${processor.physicalCores}C ${processor.cores}T
+      **Speed:** ${processor.speed}GHz`, 
+        
+      'Battery', 
+`**Batery:** ${batt.hasbattery}
+${batt.cyclecount} Cycle(s), ${batt.currentcapacity}/${batt.maxcapacity} mWh (${batt.designedcapacity} mWh design) capacity unit????: ${batt.capacityUnit} mWh, ${batt.model} (${batt.manufacturer})
+**AC Connected:** ${batt.acconnected} (${batt.percent}%)
+
+
+
+**OS info:** ${OSInfo.platform} ${OSInfo.distro} ${OSInfo.release} (${OSInfo.codename}) service pack ${OSInfo.servicepack} ${OSInfo.kernel} (${OSInfo.arch}) ${OSInfo.codepage}? ${OSInfo.build}? ${OSInfo.uefi}
+
+
+`, 
+
+//       'OS', 
+// `**Random info:** ${OSInfo.platform} ${OSInfo.distro} ${OSInfo.release} (${OSInfo.codename}) service pack ${OSInfo.servicepack} ${OSInfo.kernel} (${OSInfo.arch}) ${OSInfo.codepage}? ${OSInfo.build}? ${OSInfo.uefi}
+// **Utilization:** 
+// `,
+
+//       'Other',
+// `**OS:** ${os.type} (${os.platform()})
+// **RAM:** ${parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)}/${parseInt(os.totalmem * bytesToMB)} MB (${(((parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)) / parseInt(os.totalmem * bytesToMB))* 100).toFixed(2)}% usage)
+// **Uptime:** ${uptime('os')}`
+))
+    }) //temp
+  }) //processor
+}) //battery
+        }) //OS
+  }
 
 
     if (recMsg.content.toLowerCase() == prefix + ("essay")) {
@@ -1105,10 +1170,10 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "skelly"`)
     }
 
-    if (recMsg.content.toLowerCase() == prefix + ("essay")) {
-      recMsg.channel.send(config.bot.essay2)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay2"`)
-    }
+    // if (recMsg.content.toLowerCase() == prefix + ("essay")) {
+    //   recMsg.channel.send(config.bot.essay2)
+    //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay2"`)
+    // }
 
     // ehh temporary hardcode, i will make it better eventually...
     if (recMsg.content.toLowerCase() == prefix + ("acc")) {
@@ -1131,18 +1196,17 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
       recMsg.channel.send('adb backup -f aug12_2020 --twrp --compress data boot')
     }
 
+    
+
 
   
 
 
 
-
-
-
     if (recMsg.content.toLowerCase() == prefix + "ping") {
-      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
+      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
 
-      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL, 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
+      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
 API: ${Math.round(client.ws.ping)}ms`))
     
       console.log(`Pong! ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
@@ -1151,8 +1215,8 @@ API: ${Math.round(client.ws.ping)}ms`))
 
 
     if (recMsg.content.toLowerCase() == prefix + ("help")) {
-      // recMsg.channel.send(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL, 'Bot Command Help', undefined, 6053119, ':)', helptext))
-      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL, 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Copy Pasta', helpMessage, 'Economy', helpEcon))
+      // recMsg.channel.send(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Command Help', undefined, 6053119, ':)', helptext))
+      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Copy Pasta', helpMessage, 'Economy', helpEcon))
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "help"`)
     }
 
@@ -1273,12 +1337,12 @@ API: ${Math.round(client.ws.ping)}ms`))
         logme('DEBUG', `Date Join: ${dateJoin}`)
         logme('DEBUG', `Highest role: ${usrRoles}`)
 
-        recMsg.channel.send(richEmbed('title-desc-field-field-field-field', user.username, user.avatarURL, "User info", `<@!${useriD}>`, 13691445, 'ID', user.id, 'Account Created', dateCreate, 'Joined Server', dateJoin, 'Highest Role', usrRoles))
+        recMsg.channel.send(richEmbed('title-desc-field-field-field-field', user.username, user.avatarURL({ format: 'png', dynamic: true}), "User info", `<@!${useriD}>`, 13691445, 'ID', user.id, 'Account Created', dateCreate, 'Joined Server', dateJoin, 'Highest Role', usrRoles))
         logme('DEBUG', `user cmd success`)
       }
 
       else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Member not found.`, 2727567))
+        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
         logme('ERROR', `Rquested member not found`)
       }
 
@@ -1637,7 +1701,7 @@ client.on('message', async recMsg => {
     if (recMsg.content.toLowerCase() == prefix + 'reset bal') {
 
       fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Balence reset.', 14685520))
+      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'Balence reset.', 14685520))
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "reset bal" (bal was reset)`)
     }
 
@@ -1660,7 +1724,7 @@ client.on('message', async recMsg => {
         fs.stat(`./moneys/${useriD}.txt`, function(err) {  
           if (err) { 
             fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 2727567))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 2727567))
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
             // balReset(useriD)
 
@@ -1669,7 +1733,7 @@ client.on('message', async recMsg => {
               input: require('fs').createReadStream(`./moneys/${useriD}.txt`)
             });
             lineReader.on('line', function (line) {
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Balance for <@!${useriD}>: $${line.split(' ').slice(1)}`, 2727567))
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Balance for <@!${useriD}>: $${line.split(' ').slice(1)}`, 2727567))
             })
           }
         })
@@ -1677,7 +1741,7 @@ client.on('message', async recMsg => {
       }
 
       else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Member not found.`, 2727567))
+        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
         logme('ERROR', `Rquested member not found`)
       }
     }
@@ -1694,7 +1758,7 @@ client.on('message', async recMsg => {
           if (err) {
             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
             // balReset(recMsg.author.id)
 
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
@@ -1706,7 +1770,7 @@ client.on('message', async recMsg => {
             lineReader.on('line', function (line) {
               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${backdoorMoney}`)
               
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'Yes.', 14685520))
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'Yes.', 14685520))
             })
 
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) transaction success (${backdoorMoney})`)
@@ -1715,7 +1779,7 @@ client.on('message', async recMsg => {
         });
       }
       else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'No.', 14685520))
+        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'No.', 14685520))
         logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) transaction not success (${backdoorMoney})`)
       }
     }
@@ -1734,7 +1798,7 @@ client.on('message', async recMsg => {
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
             
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
             // balReset(recMsg.author.id)
@@ -1747,7 +1811,7 @@ client.on('message', async recMsg => {
 
             lineReader.on('line', function (line) {
               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "Here's $500", 14685520))
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "Here's $500", 14685520))
             })
           }
         })
@@ -1783,7 +1847,7 @@ client.on('message', async recMsg => {
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
             // balReset(recMsg.author.id)
           } 
@@ -1802,14 +1866,14 @@ client.on('message', async recMsg => {
                   });
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You somehow won and got ${moneyWon}`, 3591188))
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You somehow won and got ${moneyWon}`, 3591188))
                     logme('DEBUG', `Won gamble (${moneyWon})`)
                   })
                 }
                 
                 else if (yesOrNo == 50) {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
+                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
                   logme('DEBUG', `lost all money`)
                 }
 
@@ -1820,13 +1884,13 @@ client.on('message', async recMsg => {
 
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "lol rip u lost", 14685520))
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "lol rip u lost", 14685520))
                     logme('DEBUG', `lost gamble (${moneyBet})`)
                   })
                 } 
               }
               else {
-                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You dont have enough money', 2727567))
+                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
                 logme('DEBUG', `user has not enough money`)
               }
             })
@@ -1834,7 +1898,7 @@ client.on('message', async recMsg => {
         })
       }
       else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You must bet at least $10.', 14685520))
+        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You must bet at least $10.', 14685520))
         logme('DEBUG', `user bet less than $10 (${moneyBet})`)
       }
     }
@@ -1867,7 +1931,7 @@ client.on('message', async recMsg => {
         fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
           if (err) {
             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
             // balReset(recMsg.author.id)
           } 
@@ -1896,7 +1960,7 @@ client.on('message', async recMsg => {
 
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
                     logme('DEBUG', `sucessful stalk (${moneyWon})`)
                   })
                 }
@@ -1914,7 +1978,7 @@ client.on('message', async recMsg => {
                   });
                   lineReader.on('line', function (line) {
                     fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
+                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
                     logme('DEBUG', `failed stalk (${moneyWon})`)
                   })
                 } 
@@ -1958,7 +2022,7 @@ client.on('message', async recMsg => {
       fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
         if (err) {
           fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
+          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
           logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
           // balReset(recMsg.author.id)
         } 
@@ -1987,7 +2051,7 @@ client.on('message', async recMsg => {
 
                 lineReader.on('line', function (line) {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
+                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
                   logme('DEBUG', `dab success (${moneyWon})`)
                 })
               }
@@ -2006,7 +2070,7 @@ client.on('message', async recMsg => {
 
                 lineReader.on('line', function (line) {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
+                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
                   logme('DEBUG', `dab failed (${moneyWon})`)
                 })
               } 
@@ -2030,7 +2094,7 @@ client.on('message', async recMsg => {
     var useriD = getUseriD.replace('@', '').replace("<", '').replace("!", '').replace(">", '')
   
     if (useriD == undefined, useriD == '') {
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You need to mention someone`, 2727567))
+      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You need to mention someone`, 2727567))
       logme('ERROR', `No member mentioned`)
     }
     // console.log(getUseriD)
@@ -2044,7 +2108,7 @@ client.on('message', async recMsg => {
       fs.stat(`./moneys/${useriD}.txt`, function(err) {  
         if (err) { 
           fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
+          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
           logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
           // balReset(useriD)
 
@@ -2070,14 +2134,14 @@ client.on('message', async recMsg => {
                   fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (-1 * getDefinedAmount))}`)
                 })
 
-                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Transaction sucessful: <@!${useriD}> recieved $${getDefinedAmount}`, 2727567))
+                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Transaction sucessful: <@!${useriD}> recieved $${getDefinedAmount}`, 2727567))
               })
         
               logme('DEBUG', `pay sucessful`)
             }
 
             else {
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You dont have enough money', 2727567))
+              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
               logme('DEBUG', `user has not enough money`)
             }
           })
@@ -2086,7 +2150,7 @@ client.on('message', async recMsg => {
     }
 
     else {
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Member not found.`, 2727567))
+      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
       logme('ERROR', `Reuested member not found`)
     }
   }
@@ -2167,7 +2231,7 @@ client.on('message', async recMsg => {
 //     //   fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
 //     //     if (err) {
 //     //       fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-//     //       recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
+//     //       recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
 //     //       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
 //     //       // balReset(recMsg.author.id)
 //     //     } 
@@ -2186,14 +2250,14 @@ client.on('message', async recMsg => {
 //     //             });
 //     //             lineReader.on('line', function (line) {
 //     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, `You somehow won and got ${moneyWon}`, 3591188))
+//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You somehow won and got ${moneyWon}`, 3591188))
 //     //               logme('DEBUG', `Won gamble (${moneyWon})`)
 //     //             })
 //     //           }
               
 //     //           else if (yesOrNo == 50) {
 //     //             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-//     //             recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
+//     //             recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
 //     //             logme('DEBUG', `lost all money`)
 //     //           }
 
@@ -2204,13 +2268,13 @@ client.on('message', async recMsg => {
 
 //     //             lineReader.on('line', function (line) {
 //     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined, "lol rip u lost", 14685520))
+//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "lol rip u lost", 14685520))
 //     //               logme('DEBUG', `lost gamble (${moneyBet})`)
 //     //             })
 //     //           } 
 //     //         }
 //     //         else {
-//     //           recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You dont have enough money', 2727567))
+//     //           recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
 //     //           logme('DEBUG', `user has not enough money`)
 //     //         }
 //     //       })
@@ -2218,7 +2282,7 @@ client.on('message', async recMsg => {
 //     //   })
 //     // }
 //     // else {
-//     //   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL, undefined,'You must bet at least $10.', 14685520))
+//     //   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You must bet at least $10.', 14685520))
 //     //   logme('DEBUG', `user bet less than $10 (${moneyBet})`)
 //     // }
 //   }
@@ -2325,7 +2389,7 @@ client.login(config.bot.token);
 //     color: 3447003,
 //     author: {
 //       name: client.user.username,
-//       icon_url: client.user.avatarURL
+//       icon_url: client.user.avatarURL({ format: 'png', dynamic: true})
 //     },
 //     title: "This is an embed",
 //     url: "http://google.cum",
@@ -2345,7 +2409,7 @@ client.login(config.bot.token);
 //     ],
 //     timestamp: new Date(),
 //     footer: {
-//       icon_url: client.user.avatarURL,
+//       icon_url: client.user.avatarURL({ format: 'png', dynamic: true}),
 //       text: "A sketchy discord bot by Meepco"
 //     }
 //   }
