@@ -1,5 +1,5 @@
 // Welcome to my sketchy code
-const version = 'v1.3b5 (1301)'
+const version = 'v1.3b6 (1302)'
 const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3b3'
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -13,14 +13,18 @@ const editJsonFile = require("edit-json-file");
 const si = require('systeminformation');
 const { Recoverable } = require('repl');
 
+// Modules
+// const generalCmds = require('./generalCmds');
+const ChatLogMeDaddy = require('./chatLog')
+// const econ = require('./econ.js')
 
 
 // rate limiter gang
-const sloTFdownDab = new Set();
-const sloTFdownDaily = new Set();
+// const sloTFdownDab = new Set();
+// const sloTFdownDaily = new Set();
 const antiSpam = new Set();
-const antiSpamEcon = new Set();
-const sloTFdownStalk = new Set();
+// const antiSpamEcon = new Set();
+// const sloTFdownStalk = new Set();
 // const sloTFdownSpam = new Set();
 
 
@@ -52,7 +56,7 @@ function timer(callback, delay) {
   this.start()
 }
 
-
+/*
 function timeStampy() {
   // ` Gets the current time
 
@@ -88,7 +92,7 @@ function timeStampy() {
   // return hour + ":" + min + ":" + sec;
   return dateStr
 }
-
+*/
 
 function sleep(ms) {
   `This function haults execution for a defined amount of time
@@ -152,7 +156,7 @@ function uptime(whatUptime) {
   }
   
 }
-
+/*
 function timeParse(time) { 
 
   var totalSeconds = (time / 1000);
@@ -179,345 +183,7 @@ function timeParse(time) {
     return `${Math.round(seconds)} sec`
   }
 }
-
-
-// this monstrocity...
-
-
-// function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
-//   `This function handles the formatting of rich embed messages
-  
-//   Parameters:
-//     whichOneToUse:
-//       define which of the formats to use
-//     userName:
-//       user to display
-//     usersNameURL:
-//       user's profile picture/picture
-//     title:
-//       title of msg
-//     description
-//       the message, usually when there is no fields in use
-//     colour:
-//       colour number code thingy of teh righ embed
-//     field#Name: 
-//       title of the field
-//     field#:
-//       the message
-
-//     returns:
-//       alot to type here that i dont want to. A better system is needed here...
-//     `
-
-//   if (whichOneToUse == 'desc')  { //desc only
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       description: description,
-      
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//         }
-//       }
-//     });
-//     return embedded
-//   }
-
-//   else if (whichOneToUse == 'title') { // title only
-
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-     
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   }
-
-//   else if (whichOneToUse == 'title-desc') { // title and disc
-
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field') { //title, desc, 1 field
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-
-//       description: description,
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-//   }
-
-//   else if (whichOneToUse == 'title-field') { //title, NO DESC, 1 field
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field') { // title, desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       // url: "",
-//       description: description,
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-field-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//         {
-//           name: field4Name,
-//           value: field4
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-
-//   else if (whichOneToUse == 'title-desc-field-field-field-field') { // title, NO desc, 2 fields
-//     embedded = ({embed: {
-//       color: colour,
-//       author: {
-//         name: usersName,
-//         icon_url: usersNameURL
-//       },
-//       title: title,
-//       description: description,
-    
-//       fields: [{
-//           name: field1Name,
-//           value: field1
-//         },
-//         {
-//           name: field2Name,
-//           value: field2
-//         },
-//         {
-//           name: field3Name,
-//           value: field3
-//         },
-//         {
-//           name: field4Name,
-//           value: field4
-//         },
-//       ],
-//       timestamp: new Date(),
-//       footer: {
-//         text: "A sketchy discord bot by Meepco"
-//       }
-//     }
-//   });
-//   return embedded
-
-//   }
-//   else if (whichOneToUse == 'title-desc-field-field-field-field-field-field') { // title, desc, 6 fields
-//   embedded = ({embed: {
-//         color: colour,
-//         author: {
-//           name: usersName,
-//           icon_url: usersNameURL
-//         },
-//         title: title,
-//         // url: "",
-//         description: description,
-//         fields: [{
-//             name: field1Name,
-//             value: field1
-//           },
-//           {
-//             name: field2Name,
-//             value: field2
-//           },
-//           {
-//             name: field3Name,
-//             value: field3
-//           },
-//           {
-//             name: field4Name,
-//             value: field4
-//           },
-//           {
-//             name: field5Name,
-//             value: field5
-//           },
-//           {
-//             name: field6Name,
-//             value: field6
-//           }
-//         ],
-//         timestamp: new Date(),
-//         footer: {
-//           text: "A sketchy discord bot by Meepco"
-//         }
-//       }
-//     });
-//   return embedded
-//   }
-// }
-
+*/
 
 function richEmbed(whichOneToUse, usersName, usersNameURL, title, description, colour, field1Name, field1, field2Name, field2, field3Name, field3, field4Name, field4, field5Name, field5, field6Name, field6) {
   `This function handles the formatting of rich embed messages
@@ -862,23 +528,24 @@ function logme(level, stuffToLog) {
       level of logging (DEBUG, WARNING, INFO, ERROR, CRITICAL)
     stuffToLog:
       content to be logged`
-
-  var date = new Date();
-  var dateStr =
-    date.getFullYear() + "-" +
-    ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
-    ("00" + date.getDate()).slice(-2) + " " +
+  if (config.bot.botLogging == 'true') { //temporary thing... need to remember to do permanent solution
+    var date = new Date();
+    var dateStr =
+      date.getFullYear() + "-" +
+      ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+      ("00" + date.getDate()).slice(-2) + " " +
+      
+      ("00" + date.getHours()).slice(-2) + ":" +
+      ("00" + date.getMinutes()).slice(-2) + ":" +
+      ("00" + date.getSeconds()).slice(-2);
+    // console.log(dateStr);
     
-    ("00" + date.getHours()).slice(-2) + ":" +
-    ("00" + date.getMinutes()).slice(-2) + ":" +
-    ("00" + date.getSeconds()).slice(-2);
-  // console.log(dateStr);
-  
-fs.appendFileSync('logs.txt', `${dateStr} - ${level} - ${stuffToLog}
-`)
+    fs.appendFileSync('logs.txt', `${dateStr} - ${level} - ${stuffToLog}
+    `)
+  }
 }
 
-
+/**
 function chatLogme(server, channel, dood, stuffToLog) {
   `This function handles logging
    
@@ -930,6 +597,7 @@ function chatLogme(server, channel, dood, stuffToLog) {
 // fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${channel} - ${dood} - ${stuffToLog}
 // `)
 }
+*/
 // function balReset(usriD) {
 //   `this function is used to reset balence so i dont have to spam this everywhere in econ`
 //   fs.writeFileSync(`./moneys/${usriD}.txt`, `ur_money= 0`)
@@ -955,6 +623,7 @@ function confEditor(thingyToEdit, thingyToPut) {
 
 
 //loading
+
 client.on('ready', () => {
 
   fs.appendFileSync('logs.txt', `
@@ -1027,33 +696,49 @@ client.on('message', async recMsg => {
   else {
 
 
-    var helpGaneral = `
-**ping:** Gets latency.
-**help:** Shows this message.
-**info:** shows bot info
-**alt f4:** just dont...
-**invite:** Get a bot invite link
-**remind <time> <time unit> <message>
 
-Experemental: settings`
-    var helpMessage = `**essay:** Best roast
-**bwah:** A simple wall of text
-**skelly:** Totally not NSFW...`
-    var helpEcon = `**reset bal:** Resets balance
-**bal <user>:** Check balance
-**pay <user> <amount>:** Pay someone
-**gamble <number>:** Try your luck...
-**dab:** Hit a dab!
-**stalk:** A high risk indecency, for high rewards...
+    
 
-Experemental: blackjack`
-    
-    if (recMsg.content.toLowerCase() == prefix + ('help-depricated')) {
-      recMsg.channel.send("**Removed/disable commands** \n`yeet <member> <reason>: kicks member\nban <member> <reason>: bans member\n**spam <amount> <thing>:** Spams user defined message (x) number of times, 100 max (DO NOT SPAM WITHOUT MESSAGE)`")
-    }
-    
-  
-    if (recMsg.content.toLowerCase() == prefix + ('info')) {
+//main commands
+  switch (recMsg.content.toLowerCase()) {
+
+    case prefix + 'help':
+      var helpGaneral = `
+      **help-depricated:** Show depricated cmds
+      **ping:** Gets latency
+      **help:** Shows this message.
+      **info:** shows bot info
+      !!!info-ext: shows more bot info
+      **alt f4:** just dont...
+      **invite:** Get a bot invite link
+      !!!remind <time> <time unit> <message>
+      !!!settings: Do not touch. Period.`
+          var helpMessage = `**essay:** Best roast
+      **bwah:** A simple wall of text
+      **skelly:** Totally not NSFW...
+      **Android commands:** acc, uevent, vanced, ssh, twrp`
+          var helpEcon = `WHOLE ECONOMY IS DEAD BC MY BRAIN TOO SMALL
+      **reset bal:** Resets balance
+      **bal <user>:** Check balance
+      **pay <user> <amount>:** Pay someone
+      **gamble <number>:** Try your luck...
+      **dab:** Hit a dab!
+      **stalk:** A high risk indecency, for high rewards...
+      !!!blackjack: A game of blackjack
+      
+      !!!Experemental/WIP`
+
+
+      // recMsg.channel.send(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Command Help', undefined, 6053119, ':)', helptext))
+      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Copy Pasta', helpMessage, 'Economy', helpEcon))
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "help"`)
+      break;
+
+    case prefix + 'help-depricated':
+      recMsg.channel.send("**Removed/disabled commands** \n`yeet <member> <reason>: kicks member\nban <member> <reason>: bans member\n**spam <amount> <thing>:** Spams user defined message (x) number of times, 100 max (DO NOT SPAM WITHOUT MESSAGE) \n The entirety of economy`")
+      break;
+
+    case prefix + 'info':
       var bytesToMB = 1 / 1048576  
       // var memusg = process.memoryUsage()
       // console.log(os.loadavg())
@@ -1063,54 +748,50 @@ Experemental: blackjack`
       osu.cpu.usage()
       .then(usg => {
 
-       
-        
         recMsg.channel.send(richEmbed('title-field-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), "Bot Info", undefined, 13691445, 'Uptime', uptime('bot'), 
         
-        'Bot', 
+      'Bot', 
 `Version: ${version}
 Node: ${process.version}
 Memory Usg: ${Math.round(used * 100) / 100} MB`, 
 
-        'CPU', 
+      'CPU', 
 `**CPU:** ${osu.cpu.model()} (${os.arch()}), ${osu.cpu.count()} core(s) 
 **Utilization:** ${usg}% (${os.loadavg()})
 `,
 
-        'Other',
+      'Other',
 `**OS:** ${os.type} (${os.platform()})
 **RAM:** ${parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)}/${parseInt(os.totalmem * bytesToMB)} MB (${(((parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)) / parseInt(os.totalmem * bytesToMB))* 100).toFixed(2)}% usage)
 **Uptime:** ${uptime('os')}`))
       
 
     })
-    }
-
-    if (recMsg.content.toLowerCase() == prefix + ('info ext')) {
-
-
+      break;
+    
+    case prefix + 'info-ext':
       si.cpuTemperature()
-        .then(temp => {
+      .then(temp => {
 
-          si.cpu()
-          .then(processor => {
-            si.battery()
-              .then(batt => {
-                si.osInfo()
-                  .then(OSInfo => {
+        si.cpu()
+        .then(processor => {
+          si.battery()
+            .then(batt => {
+              si.osInfo()
+                .then(OSInfo => {
 
 
 
-      recMsg.channel.send(richEmbed('', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), " Extra Bot Info", undefined, 13691445, 
+    recMsg.channel.send(richEmbed('', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), " Extra Bot Info", undefined, 13691445, 
+    
+    'CPU', 
+    `**Temp:** ${temp.main} ${temp.cores} ${temp.max}
+    **Family:* ${processor.family}
+    **Govonor:* ${processor.governor}
+    **Cores: ** ${processor.physicalCores}C ${processor.cores}T
+    **Speed:** ${processor.speed}GHz`, 
       
-      'CPU', 
-      `**Temp:** ${temp.main} ${temp.cores} ${temp.max}
-      **Family:* ${processor.family}
-      **Govonor:* ${processor.governor}
-      **Cores: ** ${processor.physicalCores}C ${processor.cores}T
-      **Speed:** ${processor.speed}GHz`, 
-        
-      'Battery', 
+    'Battery', 
 `**Batery:** ${batt.hasbattery}
 ${batt.cyclecount} Cycle(s), ${batt.currentcapacity}/${batt.maxcapacity} mWh (${batt.designedcapacity} mWh design) capacity unit????: ${batt.capacityUnit} mWh, ${batt.model} (${batt.manufacturer})
 **AC Connected:** ${batt.acconnected} (${batt.percent}%)
@@ -1132,24 +813,67 @@ ${batt.cyclecount} Cycle(s), ${batt.currentcapacity}/${batt.maxcapacity} mWh (${
 // **RAM:** ${parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)}/${parseInt(os.totalmem * bytesToMB)} MB (${(((parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)) / parseInt(os.totalmem * bytesToMB))* 100).toFixed(2)}% usage)
 // **Uptime:** ${uptime('os')}`
 ))
-    }) //temp
-  }) //processor
+  }) //temp
+}) //processor
 }) //battery
-        }) //OS
-  }
+      }) //OS
 
+      break;
+  
+    case prefix + 'ping':
+      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
 
-    if (recMsg.content.toLowerCase() == prefix + ("essay")) {
-        recMsg.channel.send(config.bot.essay)
-        logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay"`)
+      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
+API: ${Math.round(client.ws.ping)}ms`))
+    
+      console.log(`Pong! ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "ping" - ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
+      break;
+
+      v
+    
+    case prefix + 'alt f4':
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "alt f4"`)
+
+    try {
+      if (recMsg.author.id == config.bot.owner) { // user id you want to give kill-the-bot perms too, put in json
+        logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
+        console.log('User terminated')
+        logme('DEBUG', `user requested terminating...`)
+        recMsg.channel.send('au revoir!')
+        await sleep(3000)
+        process.exit()
+      }
+      else {
+        recMsg.channel.send('haha lol XDDDDDDD you cannot kill the bot.')
+        logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Termination failure (no permissions)`)
+      }
     }
-
-    if (recMsg.content.toLowerCase() == prefix + ("bwah")) {
-        recMsg.channel.send(config.bot.bwah)
-        logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "bwah"`)
+    catch {
+      console.log('something went wrong')
+      logme('ERROR', `Something went wrong`)
     }
+    
+      break;
 
-    if (recMsg.content.toLowerCase() == prefix + 'skelly') {
+    case prefix + 'invite':
+      recMsg.channel.send('Add this bot ---> ' + config.bot.botInviteLink)
+      //       fs.appendFileSync('logs.txt', `
+      // ${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
+      break;
+// copypasta below
+    case prefix + 'essay':
+      recMsg.channel.send(config.bot.essay)
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay"`)
+      break;
+
+    case prefix + 'bwah':
+      recMsg.channel.send(config.bot.bwah)
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "bwah"`)
+      break;              
+
+    case prefix + 'skelly':
       recMsg.channel.send(`░░░░░░▄▄▄░░▄██▄░░░ 
 ░░░░░▐▀█▀▌░░░░▀█▄░░░ 
 ░░░░░▐█▄█▌░░░░░░▀█▄░░ 
@@ -1167,133 +891,40 @@ ${batt.cyclecount} Cycle(s), ${batt.currentcapacity}/${batt.maxcapacity} mWh (${
 ░░░░░░█░░░░░░░░█░░░░░░░
 ░░░░░░█░░░░░░░░█░░░░░░░░░
 ░░░░ ▄██▄░░░░░ ▄██▄░░░░░░░`)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "skelly"`)
-    }
+            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "skelly"`)
+      break; 
 
-    // if (recMsg.content.toLowerCase() == prefix + ("essay")) {
-    //   recMsg.channel.send(config.bot.essay2)
-    //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay2"`)
-    // }
-
-    // ehh temporary hardcode, i will make it better eventually...
-    if (recMsg.content.toLowerCase() == prefix + ("acc")) {
+    case prefix + 'acc':
       recMsg.channel.send('acc --set --current 500')
       recMsg.channel.send('acc -s v 3920')
-    }
-    if (recMsg.content.toLowerCase() == prefix + ("uevent")) {
+      break;
+
+    case prefix + 'uevent':
       recMsg.channel.send('cat /sys/class/power_supply/bms/uevent')
-    }
+      break;  
 
-    if (recMsg.content.toLowerCase() == prefix + ("vanced")) {
-      recMsg.channel.send('chcon -R u:object_r:system_file:s0 /data/app/com.google.android.youtube-5Hl-a7B5elWgb4zmK0MWBg==')
-    }
+    case prefix + 'vanced':
+      recMsg.channel.send('chcon -R u:object_r:system_file:s0 /data/app/com.google.android.youtube-whatever')
+      break;  
 
-    if (recMsg.content.toLowerCase() == prefix + ("ssh")) {
+    case prefix + 'ssh':
       recMsg.channel.send('/data/adb/modules/ssh/opensshd.init start')
-    }
+      break;
 
-    if (recMsg.content.toLowerCase() == prefix + ("twrp")) {
+    case prefix + 'twrp':
       recMsg.channel.send('adb backup -f aug12_2020 --twrp --compress data boot')
-    }
+      break;   
 
-    
-
-
-  
-
-
-
-    if (recMsg.content.toLowerCase() == prefix + "ping") {
-      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
-
-      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
-API: ${Math.round(client.ws.ping)}ms`))
-    
-      console.log(`Pong! ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "ping" - ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
-    }
-
-
-    if (recMsg.content.toLowerCase() == prefix + ("help")) {
-      // recMsg.channel.send(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Command Help', undefined, 6053119, ':)', helptext))
-      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Copy Pasta', helpMessage, 'Economy', helpEcon))
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "help"`)
-    }
-
-    // if (recMsg.content.toLowerCase().startsWith(prefix + "spam")) {    //spam command
-    //   logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
-
-    //   if (sloTFdownSpam.has(recMsg.author.id)) {
-    //     recMsg.channel.send(`You may not abuse my spam command, thank you. You can use this in ${timeParse(spamTimeRemaining.getTimeLeft())}.`);
-    //     logme('DEBUG', ` Spam request rejected (avalable in ${timeParse(spamTimeRemaining.getTimeLeft())})`)
-    //   } 
+      // case prefix + 'help':
+      //   recMsg.channel.send('yes')
+      //   break; 
       
-    //   else {
-    //     logme('DEBUG', `Spam granted -- "${WhatToSpam}" x${TimesToRun}`)
-    //     try {
-    //       var suffix = recMsg.content.split(' ').slice(1);
-    //       var timesRun = 0;
-    //       var TimesToRun = suffix[0];
-    //       var WhatToSpam = recMsg.content.split(' ').slice(2).join(' ')  
+  }
 
-    //     if (WhatToSpam != undefined && WhatToSpam != '') {
-    //       console.log(`${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!
-    //       `)
+  switch (recMsg.content.toLowerCase().startsWith) {
 
-    //         while (timesRun < TimesToRun) {
-    //             if (timesRun == TimesToRun, TimesToRun > 100) {
-    //               break    
-    //             }
-    //             recMsg.channel.send(WhatToSpam)
-    //             timesRun = timesRun + 1;    
-    //         }   
-    //         if (timesRun > 0) {   
-    //           var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
-    //           recMsg.channel.send(spamEnd)
-    //         }
-    //       }
-    //       else {
-    //         recMsg.channel.send('You need to define what to spam')
-    //       }
-    //     }
 
-    //     catch {
-    //       recMsg.channel.send('Error')
-    //       logme('DEBUG', ` Spam gave an error`)
-    //     }
-
-    //     sloTFdownSpam.add(recMsg.author.id);
-    //       spamTimeRemaining = new timer(function() {
-    //         sloTFdownDaily.delete(recMsg.author.id);
-    //       }, 43200000) // 12 hrs
-    //   }
-    // }
-
-    if (recMsg.content == prefix + "alt f4") {
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "alt f4"`)
-
-      try {
-        if (recMsg.author.id == config.bot.owner) { // user id you want to give kill-the-bot perms too, put in json
-          logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
-          console.log('User terminated')
-          logme('DEBUG', `user requested terminating...`)
-          recMsg.channel.send('au revoir!')
-          await sleep(3000)
-          process.exit()
-        }
-        else {
-          recMsg.channel.send('haha lol XDDDDDDD you cannot kill the bot.')
-          logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Termination failure (no permissions)`)
-        }
-      }
-      catch {
-        console.log('something went wrong')
-        logme('ERROR', `Something went wrong`)
-      }
-      
-    }
-
-    if (recMsg.content.toLowerCase().startsWith(prefix + 'user')) {
+    case prefix + 'user':
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "user"`)
 
       var getUseriD = (recMsg.content.split(' ').slice(1)).toString(); 
@@ -1345,18 +976,10 @@ API: ${Math.round(client.ws.ping)}ms`))
         recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
         logme('ERROR', `Rquested member not found`)
       }
+      break; 
 
-    }
-
-    if (recMsg.content.toLowerCase() == prefix + ("invite")) {
-      recMsg.channel.send('Add this bot ---> ' + config.bot.botInviteLink)
-//       fs.appendFileSync('logs.txt', `
-// ${timeStampy()}: ${recMsg.author.id} Executed "-essay"`)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
-    }
-
-    if (recMsg.content.toLowerCase().startsWith(prefix + "settings") || (recMsg.content.toLowerCase().startsWith(prefix + "set"))) {
-      recMsg.channel.send('WARNING: This command is heavilly unfinished')
+    case prefix + 'settings', prefix + 'set', prefix + 's' :      // config and settings editor, very very very wip
+      recMsg.channel.send('WARNING: This command is *heavilly* unfinished')
       // if(recMsg.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])) {
       //   recMsg.channel.send('yes')
       // }
@@ -1559,69 +1182,9 @@ API: ${Math.round(client.ws.ping)}ms`))
 
 
 
-    }
+      break; 
 
-
-
-
-
-
-
-    // if (recMsg.content.toLowerCase().startsWith(prefix + "test")) { 
-    //   recMsg.channel.send('andwere')
-    // recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id,
-    //   {max: 1, time: 30000}).then(collected => {
-    //           // only accept messages by the user who sent the command
-    //           // accept only 1 message, and return the promise after 30000ms = 30s
-
-    //           // first (and, in this case, only) message of the collection
-    //           if (collected.first().content.toLowerCase() == 'yes') {
-    //                   recMsg.reply('Shutting down...');
-                      
-    //           }
-
-    //           else
-    //                   recMsg.reply('Operation canceled.');      
-    //   }).catch(() => {
-    //           recMsg.reply('No answer after 30 seconds, operation canceled.');
-    //   });
-
-
-    // }
-
-
-  //   client.on('message', message => {
-  //     // Command handler, seen previously
-  //     switch (command) {
-  //             case 'shutdown': {
-  //                     message.reply('The bot will now shut down.\n'
-  //                             + 'Confirm with `yes` or deny with `no`.');
-  
-  //                     // First argument is a filter function - which is made of conditions
-  //                     // m is a 'Message' object
-  //                     message.channel.awaitMessages(m => m.author.id == message.author.id,
-  //                             {max: 1, time: 30000}).then(collected => {
-  //                                     // only accept messages by the user who sent the command
-  //                                     // accept only 1 message, and return the promise after 30000ms = 30s
-  
-  //                                     // first (and, in this case, only) message of the collection
-  //                                     if (collected.first().content.toLowerCase() == 'yes') {
-  //                                             message.reply('Shutting down...');
-  //                                             client.destroy();
-  //                                     }
-  
-  //                                     else
-  //                                             message.reply('Operation canceled.');      
-  //                             }).catch(() => {
-  //                                     message.reply('No answer after 30 seconds, operation canceled.');
-  //                             });
-  //                     break;
-  //             }  
-  //     }
-  // });
-
-  if (recMsg.content.toLowerCase().startsWith(prefix + 'remind')) { //pings the user after amount of time
-
+    case prefix + 'remind':
       var suffix = recMsg.content.split(' ').slice(1);
       var timesUnit = suffix[1];
       var time = suffix[0];
@@ -1667,1053 +1230,116 @@ API: ${Math.round(client.ws.ping)}ms`))
         recMsg.channel.send('Invalid command usage')
       }
 
+
+      break; 
       
-
-
-
-
-
   }
 
-      
-    // antiSpam.add(recMsg.author.id);
-    // setTimeout(() => {
-    // antiSpam.delete(recMsg.author.id);
-    // }, 1000); //1sec
-  }
-})
 
 
 
 
-//moneyyyyyy
-client.on('message', async recMsg => {
-
-  if (recMsg.author == client.user) {
-    return
-  }
-
-  if (antiSpamEcon.has(recMsg.author.id)) { // also 1 sec rate limit
-  } 
-
-  else {
   
-    if (recMsg.content.toLowerCase() == prefix + 'reset bal') {
-
-      fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'Balence reset.', 14685520))
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "reset bal" (bal was reset)`)
-    }
-
-    if (recMsg.content.toLowerCase().startsWith(prefix + 'bal') || recMsg.content.toLowerCase().startsWith(prefix + 'balance') || recMsg.content.toLowerCase().startsWith(prefix + 'money')) {
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "bal"`)
-      
-      var getUseriD = (recMsg.content.split(' ').slice(1)).toString(); 
-      var useriD = getUseriD.replace('@', '').replace("<", '').replace("!", '').replace(">", '')
-    
-      if (useriD == undefined, useriD == '') {
-        useriD = recMsg.author.id
-      }
-      // console.log(getUseriD)
-      // console.log(useriD)
-
-      var guild = recMsg.guild // is user in the server?
-    
-      if (guild.member(useriD)) { // skid is here
-
-        fs.stat(`./moneys/${useriD}.txt`, function(err) {  
-          if (err) { 
-            fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 2727567))
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
-            // balReset(useriD)
-
-          } else { 
-            var lineReader = require('readline').createInterface({
-              input: require('fs').createReadStream(`./moneys/${useriD}.txt`)
-            });
-            lineReader.on('line', function (line) {
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Balance for <@!${useriD}>: $${line.split(' ').slice(1)}`, 2727567))
-            })
-          }
-        })
-        logme('DEBUG', `bal sucessful`)
-      }
-
-      else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
-        logme('ERROR', `Rquested member not found`)
-      }
-    }
-    
-    
-    if (recMsg.content.toLowerCase().startsWith(prefix + 'backdoor')) { // we dont talk about this...
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "backdoor"...`)
-
-      var backdoorMoney = parseFloat(0 + recMsg.content.split(' ').slice(1));
-      recMsg.channel.send(backdoorMoney)
-
-      if (backdoorMoney > 0) {
-        fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-          if (err) {
-            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
-            // balReset(recMsg.author.id)
-
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-          } else {
-            var lineReader = require('readline').createInterface({
-              input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-            });
-
-            lineReader.on('line', function (line) {
-              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${backdoorMoney}`)
-              
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'Yes.', 14685520))
-            })
-
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) transaction success (${backdoorMoney})`)
-          }
-        
-        });
-      }
-      else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'No.', 14685520))
-        logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) transaction not success (${backdoorMoney})`)
-      }
-    }
 
 
-    if (recMsg.content.toLowerCase() == prefix + 'daily') {
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) exectued "daily"`)
 
-      if (sloTFdownDaily.has(recMsg.author.id)) {
-        recMsg.channel.send(`Boiiii too fast for me! You can only do this again in ${timeParse(dailyTimeRemaining.getTimeLeft())}.`);
-        console.log(dailyTimeRemaining.getTimeLeft())
-        logme('DEBUG', `daily not paid (retelimited)`)
+
+/**
+spam command
+    if (recMsg.content.toLowerCase().startsWith(prefix + "spam")) {    
+      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "spam"`)
+
+      if (sloTFdownSpam.has(recMsg.author.id)) {
+        recMsg.channel.send(`You may not abuse my spam command, thank you. You can use this in ${timeParse(spamTimeRemaining.getTimeLeft())}.`);
+        logme('DEBUG', ` Spam request rejected (avalable in ${timeParse(spamTimeRemaining.getTimeLeft())})`)
       } 
-      else {
-        
-        fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-          if (err) {
-            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
-            
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-            // balReset(recMsg.author.id)
-          } 
-
-          else {       
-            var lineReader = require('readline').createInterface({
-              input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-            });
-
-            lineReader.on('line', function (line) {
-              fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${parseFloat(line.split(' ').slice(1)) + 500}`)
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "Here's $500", 14685520))
-            })
-          }
-        })
-        logme('DEBUG', `paid daily`)
-
-        
-        sloTFdownDaily.add(recMsg.author.id);
-        // setTimeout(() => {
-        // sloTFdownDaily.delete(recMsg.author.id);
-        // }, 82800000); // 23 hrs
-        dailyTimeRemaining = new timer(function() {
-          sloTFdownDaily.delete(recMsg.author.id);
-          // What ever
-        }, 82800000)
-      }
-    }
-
-
-    if (recMsg.content.toLowerCase().startsWith(prefix + 'gamble')) {
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) executed "gamble"`)
-
-      var yesOrNo = Math.floor(Math.random() * Math.floor(101)) //random number...
-      var moneyMultiplier = Math.floor(Math.random() * Math.floor(5))
-      var moneyBet = Math.floor(parseFloat(0 + recMsg.content.split(' ').slice(1)));
-      var moneyWon = Math.round(moneyBet * moneyMultiplier / 3.3827463287482) + moneyBet
       
-      // console.log(moneyBet)
-      // console.log('--------')
-      // console.log(yesOrNo)
-
-      if (moneyBet > 9) {
-        
-        fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-          if (err) {
-            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-            // balReset(recMsg.author.id)
-          } 
-          
-          else { 
-            var lineReader = require('readline').createInterface({
-              input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-            });
-
-            lineReader.on('line', function (line) {
-              if (parseFloat(line.split(' ').slice(1)) >= moneyBet) {
-            
-                if (yesOrNo > 60) {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
-                  lineReader.on('line', function (line) {
-                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You somehow won and got ${moneyWon}`, 3591188))
-                    logme('DEBUG', `Won gamble (${moneyWon})`)
-                  })
-                }
-                
-                else if (yesOrNo == 50) {
-                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
-                  logme('DEBUG', `lost all money`)
-                }
-
-                else {
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
-
-                  lineReader.on('line', function (line) {
-                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "lol rip u lost", 14685520))
-                    logme('DEBUG', `lost gamble (${moneyBet})`)
-                  })
-                } 
-              }
-              else {
-                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
-                logme('DEBUG', `user has not enough money`)
-              }
-            })
-          }
-        })
-      }
       else {
-        recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You must bet at least $10.', 14685520))
-        logme('DEBUG', `user bet less than $10 (${moneyBet})`)
+        logme('DEBUG', `Spam granted -- "${WhatToSpam}" x${TimesToRun}`)
+        try {
+          var suffix = recMsg.content.split(' ').slice(1);
+          var timesRun = 0;
+          var TimesToRun = suffix[0];
+          var WhatToSpam = recMsg.content.split(' ').slice(2).join(' ')  
+
+        if (WhatToSpam != undefined && WhatToSpam != '') {
+          console.log(`${recMsg.author.id} Unleashed spam of "${WhatToSpam}" for ${TimesToRun} times!
+          `)
+
+            while (timesRun < TimesToRun) {
+                if (timesRun == TimesToRun, TimesToRun > 100) {
+                  break    
+                }
+                recMsg.channel.send(WhatToSpam)
+                timesRun = timesRun + 1;    
+            }   
+            if (timesRun > 0) {   
+              var spamEnd = `**Spam has ended with: ${timesRun} spams, thank ${recMsg.author}**`
+              recMsg.channel.send(spamEnd)
+            }
+          }
+          else {
+            recMsg.channel.send('You need to define what to spam')
+          }
+        }
+
+        catch {
+          recMsg.channel.send('Error')
+          logme('DEBUG', ` Spam gave an error`)
+        }
+
+        sloTFdownSpam.add(recMsg.author.id);
+          spamTimeRemaining = new timer(function() {
+            sloTFdownDaily.delete(recMsg.author.id);
+          }, 43200000) // 12 hrs
       }
     }
+*/
 
-
-    if (recMsg.content.toLowerCase() == prefix + 'stalk') {
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) executed "stalk"`)
-
-      var addOrTake = Math.floor(Math.random() * Math.floor(34))
-      var addOrTakeBonus = Math.floor(Math.random() * Math.floor(287))
-      var moneyMultiplier = Math.floor(Math.random() * Math.floor(9))
-      var OtherMoneyMultiplier = Math.floor(Math.random() * Math.floor(25))
-      var nerfBonus = 1
-
-      if (addOrTakeBonus > 251) { // decide if take away bonus
-        nerfBonus = -1
-      }
-      var moneyBet = 695
-      var moneyWon = Math.round(moneyBet * moneyMultiplier / 3.3827463287482) + Math.round(moneyBet * OtherMoneyMultiplier / 83.9203485763457834) * nerfBonus
-
-      // console.log(addOrTake)
-      // console.log(moneyBet)
-      // console.log(yesOrNo)
-
-      if (sloTFdownStalk.has(recMsg.author.id)) {
-        recMsg.channel.send(`You can stalk again in ${timeParse(stalkTimeRemaining.getTimeLeft())}.`);
-        logme('DEBUG', `stalk ratelimited (${timeParse(stalkTimeRemaining.getTimeLeft())})`)
-      } 
-      else {
-        fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-          if (err) {
-            fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-            recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-            // balReset(recMsg.author.id)
-          } 
-          
-          else { 
-            var lineReader = require('readline').createInterface({
-              input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-            });
-
-            lineReader.on('line', function (line) {
-              // pull messages from json
-              logme('DEBUG', `pulling message from json)`)
-                dabMessage = config.bot.stalkMsg[Math.floor(Math.random() * Math.floor(config.bot.stalkMsg.length))]
-                // console.log(dabMessage)
-                dabMessageNegative = config.bot.stalkMsgNeg[Math.floor(Math.random() * Math.floor(config.bot.stalkMsgNeg.length))]
-                logme('DEBUG', `pull success)`)
-            
-                if (addOrTake > 19) {
-          
-                  if (moneyWon < 0) {
-                    moneyWon = moneyWon * -1
-                  }
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
-
-                  lineReader.on('line', function (line) {
-                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
-                    logme('DEBUG', `sucessful stalk (${moneyWon})`)
-                  })
-                }
-
-                else {
-          
-                  if (moneyWon < 0) {
-                    moneyWon = moneyWon * -1
-                  }
-
-                  moneyWon = (Math.round(moneyWon * 1.3432473246))
-
-                  var lineReader = require('readline').createInterface({
-                    input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                  });
-                  lineReader.on('line', function (line) {
-                    fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
-                    recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
-                    logme('DEBUG', `failed stalk (${moneyWon})`)
-                  })
-                } 
-              })
-              sloTFdownStalk.add(recMsg.author.id);
-              stalkTimeRemaining = new timer(function() {
-                sloTFdownDaily.delete(recMsg.author.id);
-                // What ever
-              }, 25200000)
-          }
-        })
-      }
+  
+      
+    antiSpam.add(recMsg.author.id);
+    setTimeout(() => {
+    antiSpam.delete(recMsg.author.id);
+    }, 1000); //1sec
   }
 
 
-  if (recMsg.content.toLowerCase() == prefix + 'dab') {
-    logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) executed "dab"`)
 
-    // var yesOrNo = Math.floor(Math.random() * Math.floor(101)) //random number...
-    var addOrTake = Math.floor(Math.random() * Math.floor(3))
-    var addOrTakeBonus = Math.floor(Math.random() * Math.floor(3))
-    var moneyMultiplier = Math.floor(Math.random() * Math.floor(5))
-    var OtherMoneyMultiplier = Math.floor(Math.random() * Math.floor(20))
-    var nerfBonus = 1
+  // Chat logging
+  if (config.bot.enableChatlogging == 'true') {
 
-    if (addOrTakeBonus == 0) { // decide if take away bonus
-      nerfBonus = -1
-    }
-    var moneyBet = 69//Math.floor(parseFloat(0 + recMsg.content.split(' ').slice(1)));
-    var moneyWon = Math.round(moneyBet * moneyMultiplier / 3.3827463287482) + Math.round(moneyBet * OtherMoneyMultiplier / 8.9203485763457834) * nerfBonus
 
-    // console.log(addOrTake)
-    // console.log(moneyBet)
-    // console.log(yesOrNo)
-
-    if (sloTFdownDab.has(recMsg.author.id)) {
-      recMsg.channel.send(`You can dab again in ${timeParse(dabTimeRemaining.getTimeLeft())}.`);
-    } 
-    else {
-      
-      fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-        if (err) {
-          fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 14685520))
-          logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-          // balReset(recMsg.author.id)
-        } 
-        
-        else { 
-          var lineReader = require('readline').createInterface({
-            input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-          });
-
-          lineReader.on('line', function (line) {
-            // pull messages from json
-            logme('DEBUG', `pulling message from json)`)
-              dabMessage = config.bot.dabMsg[Math.floor(Math.random() * Math.floor(config.bot.dabMsg.length))]
-              // console.log(dabMessage)
-              dabMessageNegative = config.bot.dabMsgNeg[Math.floor(Math.random() * Math.floor(config.bot.dabMsgNeg.length))]
-              logme('DEBUG', `oull success`)
-          
-              if (addOrTake > 0) {
-    
-                if (moneyWon < 0) {
-                  moneyWon = moneyWon * -1
-                }
-                var lineReader = require('readline').createInterface({
-                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                });
-
-                lineReader.on('line', function (line) {
-                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessage.replace('{pholder}', moneyWon)}`, 3591188))
-                  logme('DEBUG', `dab success (${moneyWon})`)
-                })
-              }
-
-              else {
-        
-                if (moneyWon < 0) {
-                  moneyWon = moneyWon * -1
-                }
-
-                moneyWon = (Math.round(moneyWon * 1.3432473246))
-                
-                var lineReader = require('readline').createInterface({
-                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                });
-
-                lineReader.on('line', function (line) {
-                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (moneyWon * -1))}`)
-                  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `${dabMessageNegative.replace('{pholder}', moneyWon)}`, 15278883))
-                  logme('DEBUG', `dab failed (${moneyWon})`)
-                })
-              } 
-            })
-            sloTFdownDab.add(recMsg.author.id);
-            dabTimeRemaining = new timer(function() {
-              sloTFdownDaily.delete(recMsg.author.id);
-              // What ever
-            }, 14400000)
-        }
-      })
-    }
-  }
-
-  if (recMsg.content.toLowerCase().startsWith(prefix + 'pay')) {
-    logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "pay"`)
-
-    var suffix = recMsg.content.split(' ').slice(1);
-    var getUseriD = suffix[0]; //(recMsg.content.split(' ').slice(1)).toString(); 
-    var getDefinedAmount = parseFloat(recMsg.content.split(' ').slice(2).join(' '))
-    var useriD = getUseriD.replace('@', '').replace("<", '').replace("!", '').replace(">", '')
-  
-    if (useriD == undefined, useriD == '') {
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You need to mention someone`, 2727567))
-      logme('ERROR', `No member mentioned`)
-    }
-    // console.log(getUseriD)
-    // console.log(useriD)
-    // console.log(getDefinedAmount)
-
-    var guild = recMsg.guild // is user in the server?
-  
-    if (guild.member(useriD)) { //skid is here
-  
-      fs.stat(`./moneys/${useriD}.txt`, function(err) {  
-        if (err) { 
-          fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= 0`)
-          recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
-          logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
-          // balReset(useriD)
-
-        } 
-        else { 
-          var lineReader = require('readline').createInterface({
-            input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-          });
-          lineReader.on('line', function (line) {
-            if (parseFloat(line.split(' ').slice(1)) >= getDefinedAmount) {
-              var lineReader = require('readline').createInterface({
-                input: require('fs').createReadStream(`./moneys/${useriD}.txt`)
-              });
-              lineReader.on('line', function (line) {
-                
-                fs.writeFileSync(`./moneys/${useriD}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + getDefinedAmount)}`)
-
-                var lineReader = require('readline').createInterface({
-                  input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-                });
-
-                lineReader.on('line', function (line) {
-                  fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + (-1 * getDefinedAmount))}`)
-                })
-
-                recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Transaction sucessful: <@!${useriD}> recieved $${getDefinedAmount}`, 2727567))
-              })
-        
-              logme('DEBUG', `pay sucessful`)
-            }
-
-            else {
-              recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
-              logme('DEBUG', `user has not enough money`)
-            }
-          })
-        }
-      })
+    if (recMsg.author == client.user) {
+      // console.log('the bot said something')
+      // console.log(recMsg.content)
+      var doIt = new ChatLogMeDaddy(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, `${recMsg.content} (may not log properly cuz rich embeds)` )
+      doIt.logMeDaddy()
     }
 
     else {
-      recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
-      logme('ERROR', `Reuested member not found`)
+      // console.log(recMsg.content)
+      // console.log(recMsg.author.username)
+      // console.log(recMsg.guild.name)
+      // console.log(client.user.message.content)
+      // console.log(client.user)
+      // console.log(recMsg.guild)
+      // console.log(recMsg.channel)
+
+      // function chatLogme(server, channel, dood, stuffToLog) 
+      // currentServer = recMsg.guild.name
+
+      var doIt_1 = new ChatLogMeDaddy(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, recMsg.content)
+      doIt_1.logMeDaddy()
     }
+    
+  
   }
 
-
-//   if (recMsg.content.toLowerCase().startsWith(prefix + 'blackjack') || recMsg.content.toLowerCase().startsWith(prefix + 'bj')) {
-//     // logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) executed "gamble"`)
-
-//     // var yesOrNo = Math.floor(Math.random() * Math.floor(101)) //random number...
-//     // var moneyMultiplier = Math.floor(Math.random() * Math.floor(5))
-//     var moneyBet = Math.floor(parseFloat(0 + recMsg.content.split(' ').slice(1)));
-//     // var moneyWon = Math.round(moneyBet * moneyMultiplier / 3.3827463287482) + moneyBet
-//     var currentNumber = 0
-//     var botCurrentNumber = 0
-
-//     var addingAcard = random generator stuff
-//     var addingBotCard = random generator stuff
-
-
-//     currentNumber = currentNumber + addingAcard
-//     botCurrentNumber = botCurrentNumber + addingBotCard
-    
-
-    
-//     // console.log(moneyBet)
-//     // console.log('--------')
-//     // console.log(yesOrNo)
-//     while (currentNumber <=21 && botCurrentNumber <=21) {
-
-//     recMsg.channel.send('stand or smash')
-//             recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
-//                       // only accept messages by the user who sent the command
-//                       // accept only 1 message, and return the promise after 30000ms = 30s
-        
-//                       // first (and, in this case, only) message of the collection
-//               if (collected.first().content.toLowerCase() == 'stand') {
-//               //weeee
-//               //bot decide if yeet.
-//               botCurrentNumber = botCurrentNumber + addingBotCard
-//               }
-//               else if (collected.first().content.toLowerCase() == 'smash') {
-//                 currentNumber = currentNumber + addingAcard
-
-//                 //bot decide if yeet.
-//                 botCurrentNumber = botCurrentNumber + addingBotCard
-// //AHHHHHHHHHHHHHHHHHHH
-//               }
-
-
-
-
-//               else {
-//                 // recMsg.reply('Not a valid setting to edit.');   
-//               }   
-//             }).catch(() => {
-//               recMsg.reply('No answer after 30 seconds, game ended.');
-//             });
-//           }
-
-//           recMsg.send('the winer is blank')
-        
-            
-          
-
-
-
-
-
-
-
-
-
-
-
-
-//     // if (moneyBet > 9) {
-      
-//     //   fs.stat(`./moneys/${recMsg.author.id}.txt`, function(err) {  
-//     //     if (err) {
-//     //       fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-//     //       recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal reset** to reset your balence.`, 14685520))
-//     //       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) created account`)
-//     //       // balReset(recMsg.author.id)
-//     //     } 
-        
-//     //     else { 
-//     //       var lineReader = require('readline').createInterface({
-//     //         input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-//     //       });
-
-//     //       lineReader.on('line', function (line) {
-//     //         if (parseFloat(line.split(' ').slice(1)) >= moneyBet) {
-          
-//     //           if (yesOrNo > 60) {
-//     //             var lineReader = require('readline').createInterface({
-//     //               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-//     //             });
-//     //             lineReader.on('line', function (line) {
-//     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) + moneyWon)}`)
-//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `You somehow won and got ${moneyWon}`, 3591188))
-//     //               logme('DEBUG', `Won gamble (${moneyWon})`)
-//     //             })
-//     //           }
-              
-//     //           else if (yesOrNo == 50) {
-//     //             fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= 0`)
-//     //             recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, 'lol rip ur luck is very bad and u lost literally all ur money', 14685520))
-//     //             logme('DEBUG', `lost all money`)
-//     //           }
-
-//     //           else {
-//     //             var lineReader = require('readline').createInterface({
-//     //               input: require('fs').createReadStream(`./moneys/${recMsg.author.id}.txt`)
-//     //             });
-
-//     //             lineReader.on('line', function (line) {
-//     //               fs.writeFileSync(`./moneys/${recMsg.author.id}.txt`, `ur_money= ${Math.round(parseFloat(line.split(' ').slice(1)) - moneyBet)}`)
-//     //               recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, "lol rip u lost", 14685520))
-//     //               logme('DEBUG', `lost gamble (${moneyBet})`)
-//     //             })
-//     //           } 
-//     //         }
-//     //         else {
-//     //           recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You dont have enough money', 2727567))
-//     //           logme('DEBUG', `user has not enough money`)
-//     //         }
-//     //       })
-//     //     }
-//     //   })
-//     // }
-//     // else {
-//     //   recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined,'You must bet at least $10.', 14685520))
-//     //   logme('DEBUG', `user bet less than $10 (${moneyBet})`)
-//     // }
-//   }
- 
-
-  antiSpamEcon.add(recMsg.author.id);
-  setTimeout(() => {
-  antiSpamEcon.delete(recMsg.author.id);
-  }, 1000); //1sec
-  }
 })
 
-
-//chat loging
-client.on('message', async recMsg => {
-
-  // if (recMsg.author == client.user) {
-  //   return
-  // }
-
-
-  if (recMsg.author == client.user) {
-    // console.log('the bot said something')
-    // console.log(recMsg.content)
-    chatLogme(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, `${recMsg.content} (may not log properly cuz rich embeds)` )
-  }
-
-  else {
-    // console.log(recMsg.content)
-    // console.log(recMsg.author.username)
-    // console.log(recMsg.guild.name)
-    // console.log(client.user.message.content)
-    // console.log(client.user)
-    // console.log(recMsg.guild)
-    // console.log(recMsg.channel)
-
-    // function chatLogme(server, channel, dood, stuffToLog) 
-    // currentServer = recMsg.guild.name
-
-    chatLogme(recMsg.guild.name, recMsg.channel.name, recMsg.author.username, recMsg.content)
-  }
-  
-  
-
-})
 
 client.login(config.bot.token);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//plz ignore my references
-
-
-// fs.stat('path-to-your-file', function(err) {  
-//   if (err) {
-//      // file does not exist
-//   } else {
-//       // file exists
-//   }
-// });
-
-
-
-
-// if (sloTFdown.has(recMsg.author.id)) {
-//   recMsg.channel.send("No u (Rate limited)");
-// } else {
-
-//  // stuff
-
-
-// sloTFdown.add(recMsg.author.id);
-// setTimeout(() => {
-// sloTFdown.delete(recMsg.author.id);
-// }, 60000);
-// }
-
-
-//   generalChannel.send({embed: {
-//     color: 3447003,
-//     author: {
-//       name: client.user.username,
-//       icon_url: client.user.avatarURL({ format: 'png', dynamic: true})
-//     },
-//     title: "This is an embed",
-//     url: "http://google.cum",
-//     description: "This is here for my reference.",
-//     fields: [{
-//         name: "Yes",
-//         value: "ooooooooo nice header."
-//       },
-//       {
-//         name: "Masked links",
-//         value: "You do ting [masked links](http://google.cum) and get ting."
-//       },
-//       {
-//         name: "owo",
-//         value: "uwu."
-//       }
-//     ],
-//     timestamp: new Date(),
-//     footer: {
-//       icon_url: client.user.avatarURL({ format: 'png', dynamic: true}),
-//       text: "A sketchy discord bot by Meepco"
-//     }
-//   }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Welcome to my code graveyard
-
-
-
-// //Moderation somewhat works but dont trust it  
-// client.on('message', async message => {
-//   const logchannel = client.channels.get("569207056993878036")
-//   if (message.author == client.user) return;
-//   const args = message.content.slice(config.prefix).trim().split(/ +/g);    
-
-//     if (message.content.startsWith(prefix + 'yeet')) {
-//       console.log(message.author + 'issued command: "yeet"')
-//       const user = message.mentions.users.first() || message.guild.members.get(args[0]);;
-//       if (user) {
-//         const member = message.guild.member(user);
-//         let reason = args.slice(2).join(' ');
-//         if (!message.member.roles.some(r=>["Admin", "BeGone Thot Givers"].includes(r.name)) ) 
-//           return message.reply('Not enough permissions');
-          
-//           if (member) {
-//             const delay = (msec) => new Promise((resolve) => setTimeout(resolve, msec)); 
-//             const server = "(server) idk how to do this part"
-//             user.send(`You have been moderated from: *${server}* for:  
-            
-// **${reason}** 
-            
-            
-// (_***ignore this is you havent been kicked)***_`);
-//             message.channel.send(`${message.author} Has summoned the yeeter on ${user}!`);
-//             await delay(1000);
-//             member.kick(reason).then(() => {
-//             message.channel.send(`${user.tag} Was YEETED for: 
-
-// ${reason}`);
-//             logchannel.send(`${user.tag} Was YEETED for: 
-
-//             ${reason}`);
-           
-                
-//           }).catch(err => {
-//             message.reply('Yeet failed');
-//             console.log('Unable to Yeet the skid');
-//             console.error(err);
-//               });
-//             }     
-//           }
-//       else {
-//         message.reply('No skid was mentioned/skid not in server');
-//           }
-//         }
- 
-//         if (message.content.startsWith(prefix + 'ban')) {
-//               console.log(message.author + 'issued command: "ban"')
-//               const user = message.mentions.users.first() || message.guild.members.get(args[0]);;
-//               if (user) {
-//                 const member = message.guild.member(user);
-//                 let reason = args.slice(2).join(' ');
-//                 if (!message.member.roles.some(r=>["Admin", "BeGone Thot Givers"].includes(r.name)) ) 
-//                   return message.reply('Not enough permissions');
-                  
-//                   if (member) {
-//                     const delay = (msec) => new Promise((resolve) => setTimeout(resolve, msec)); 
-//                     const server = "(server) idk how to do this part"
-//                     user.send(`You have been banned from: *${server}* for:  
-                    
-//         **${reason}** 
-                    
-                    
-//         (_***ignore this is you havent been banned)***_`);
-//                     message.channel.send(`${message.author} Has summoned the yeeter on ${user}!`);
-//                     await delay(1000);
-//                     member.ban(reason).then(() => {
-//                     message.channel.send(`${user.tag} Was BANNED for: 
-        
-//         ${reason}`);
-//                     logchannel.send(`${user.tag} Was BANNED for: 
-        
-//                     ${reason}`);
-                  
-        
-//                   }).catch(err => {
-//                     message.reply('Ban error');
-//                     console.log('Unable to Yeet the skid');
-//                     console.error(err);
-//                       });
-//                     }     
-//                   }
-//               else {
-//                 message.reply('No skid was mentioned/skid not in server');
-//                   }
-//                 }        
-//               });
-
-
-
-
-
-// Sketchy music... also somewhat works but dont trust it 
-
-
-// const { Client, Util } = require('discord.js');
-// // const { TOKEN, PREFIX, GOOGLE_API_KEY } = require('./config');
-// const YouTube = require('simple-youtube-api');
-// const ytdl = require('ytdl-core');
-// // const ffmpeg = require('ffmpeg');
-
-// // const client = new Client({ disableEveryone: true });
-
-// const youtube = new YouTube(config.bot.apiKey);
-
-// const queue = new Map();
-// client.on('warn', console.warn);
-// client.on('error', console.error);
-// client.on('ready', () => console.log('Music Ready'));
-// client.on('disconnect', () => console.log('Disconnected, reconnecting now...'));
-// client.on('reconnecting', () => console.log('Reconnecting...'));
-
-// client.on('message', async msg => { // eslint-disable-line
-// 	if (msg.author.bot) return undefined;
-// 	if (!msg.content.startsWith(config.bot.prefix)) return undefined;
-
-// 	const args = msg.content.split(' ');
-// 	const searchString = args.slice(1).join(' ');
-// 	const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
-// 	const serverQueue = queue.get(msg.guild.id);
-
-// 	let command = msg.content.toLowerCase().split(' ')[0];
-// 	command = command.slice(config.bot.prefix.length)
-
-// 	if (command === 'play') {
-// 		const voiceChannel = msg.member.voiceChannel;
-// 		if (!voiceChannel) return msg.channel.send('You need to be in a voice channel.');
-// 		const permissions = voiceChannel.permissionsFor(msg.client.user);
-// 		if (!permissions.has('CONNECT')) {
-// 			return msg.channel.send('Insufficient permissions to connect.');
-// 		}
-// 		if (!permissions.has('SPEAK')) {
-// 			return msg.channel.send('Insufficient permissions to speak.');
-// 		}
-
-// 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-// 			const playlist = await youtube.getPlaylist(url);
-// 			const videos = await playlist.getVideos();
-// 			for (const video of Object.values(videos)) {
-// 				const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-// 				await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
-// 			}
-// 			return msg.channel.send(`Queued **${playlist.title}** playlist.`);
-// 		} else {
-// 			try {
-// 				var video = await youtube.getVideo(url);
-// 			} catch (error) {
-// 				try {
-// 					var videos = await youtube.searchVideos(searchString, 10);
-// 					let index = 0;
-// 					msg.channel.send(`
-// __**Song selection:**__
-// ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-// Select a song (1-10)
-// 					`);
-// 					// eslint-disable-next-line max-depth
-// 					try {
-// 						var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-// 							maxMatches: 1,
-// 							time: 10000,
-// 							errors: ['time']
-// 						});
-// 					} catch (err) {
-// 						console.error(err);
-// 						return msg.channel.send('No/invalid value entered, cancelling.');
-// 					}
-// 					const videoIndex = parseInt(response.first().content);
-// 					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-// 				} catch (err) {
-// 					console.error(err);
-// 					return msg.channel.send('No search results.');
-// 				}
-// 			}
-// 			return handleVideo(video, msg, voiceChannel);
-// 		}
-// 	} else if (command === 'skip') {
-// 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel.');
-// 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-// 		serverQueue.connection.dispatcher.end('Skip command has been used');
-// 		return undefined;
-// 	} else if (command === 'stop') {
-// 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-// 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-// 		serverQueue.songs = [];
-// 		serverQueue.connection.dispatcher.end('Stop command has been used');
-// 		return undefined;
-// 	} else if (command === 'volume') {
-// 		if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-// 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-// 		if (!args[1]) return msg.channel.send(`The volume is: **${serverQueue.volume}**`);
-// 		serverQueue.volume = args[1];
-// 		serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
-// 		return msg.channel.send(`Volume set to: **${args[1]}**`);
-// 	} else if (command === 'np') {
-// 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-// 		return msg.channel.send(`🎶 Now playing: **${serverQueue.songs[0].title}**`);
-// 	} else if (command === 'queue') {
-// 		if (!serverQueue) return msg.channel.send('There is nothing playing.');
-// 		return msg.channel.send(`
-// __**Song queue:**__
-// ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-// **Now playing:** ${serverQueue.songs[0].title}
-// 		`);
-// 	} else if (command === 'pause') {
-// 		if (serverQueue && serverQueue.playing) {
-// 			serverQueue.playing = false;
-// 			serverQueue.connection.dispatcher.pause();
-// 			return msg.channel.send('Paused.');
-// 		}
-// 		return msg.channel.send('There is nothing playing.');
-// 	} else if (command === 'resume') {
-// 		if (serverQueue && !serverQueue.playing) {
-// 			serverQueue.playing = true;
-// 			serverQueue.connection.dispatcher.resume();
-// 			return msg.channel.send('Resumed.');
-// 		}
-// 		return msg.channel.send('There is nothing playing.');
-// 	}
-
-// 	return undefined;
-// });
-
-// async function handleVideo(video, msg, voiceChannel, playlist = false) {
-// 	const serverQueue = queue.get(msg.guild.id);
-// 	// console.log(video);
-// 	const song = {
-// 		id: video.id,
-// 		title: Util.escapeMarkdown(video.title),
-// 		url: `https://www.youtube.com/watch?v=${video.id}`
-// 	};
-// 	if (!serverQueue) {
-// 		const queueConstruct = {
-// 			textChannel: msg.channel,
-// 			voiceChannel: voiceChannel,
-// 			connection: null,
-// 			songs: [],
-// 			volume: 5,
-// 			playing: true
-// 		};
-// 		queue.set(msg.guild.id, queueConstruct);
-
-// 		queueConstruct.songs.push(song);
-
-// 		try {
-// 			var connection = await voiceChannel.join();
-// 			queueConstruct.connection = connection;
-// 			play(msg.guild, queueConstruct.songs[0]);
-// 		} catch (error) {
-// 			console.error(`Failed to join voice channel: ${error}`);
-// 			queue.delete(msg.guild.id);
-// 			return msg.channel.send(`Failed to join voice channel: ${error}`);
-// 		}
-// 	} else {
-// 		serverQueue.songs.push(song);
-// 		// console.log(serverQueue.songs);
-// 		if (playlist) return undefined;
-// 		else return msg.channel.send(`**${song.title}** added to queue!`);
-// 	}
-// 	return undefined;
-// }
-
-// function play(guild, song) {
-// 	const serverQueue = queue.get(guild.id);
-
-// 	if (!song) {
-// 		serverQueue.voiceChannel.leave();
-// 		queue.delete(guild.id);
-// 		return;
-// 	}
-// 	// console.log(serverQueue.songs);
-
-// 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-// 		.on('end', reason => {
-// 			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-// 			else console.log(reason);
-// 			serverQueue.songs.shift();
-// 			play(guild, serverQueue.songs[0]);
-// 		})
-// 		.on('error', error => console.error(error));
-// 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-// 	serverQueue.textChannel.send(`Playing: **${song.title}** ${song.url}`);
-// }
+var Yeet = function Yeet() {}
+module.exports.Yeet = Yeet;

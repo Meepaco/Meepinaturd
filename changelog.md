@@ -2,6 +2,7 @@
 
 ### (WIP) 1.3 Back From The Dead REEEEEEE!!!
 - Disabled moosic & spam completly
+- Disabled economy *for now...* 
 - Add partial chat logging 
     - rich embeds
     - message deletes, edits, server join/leave, whatever
@@ -9,9 +10,14 @@
     - ~~boot display~~
     - ~~ping api latency~~
     - ~~user cmd~~
+    - requested by person cmmad
     - more stuff?
 - Fix typo(s)... again
 - Update help text
+- Remind Command
+
+
+- remamp info. include uptime in info cmd
     
 **Experemental** (Basically dont use this of stuff will break, idk)
 
@@ -19,6 +25,26 @@
     - restrict to bot owner/owner's server?
     - ~~enable/disable switch~~
 - Very unfinished blackjack
+
+- new info-ext command
+
+
+**todo**
+- expand/finish econ (for the relative future)
+- ~~sort out the mess of logging~~
+- ~~case insensitive cmds~~
+- ~~bot status~~
+- cleanup code (again)
+
+- update dsiplay text stuff???
+- blackjack
+- Remove useless/unnesesary logging
+- shove stuff into individual modules
+- Revamp Econ
+    - Make so no need to do command again to create account.
+- probs much more that I didn't specify
+
+ https://github.com/sebhildebrandt/systeminformation 
     
 
 
