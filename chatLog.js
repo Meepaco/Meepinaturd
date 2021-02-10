@@ -83,7 +83,7 @@ class ChatLogMeDaddy {
   
    logMeDaddy () {
     try {
-      fs.appendFileSync(`${this.server}/chatLogs.txt`, `${timeStampy()} - ${this.server} - ${this.channel} - ${this.dood}: ${this.stuffToLog}
+      fs.appendFileSync(`chatLogs/${this.server}/chatLogs.txt`, `${timeStampy()} - ${this.server} - ${this.channel} - ${this.dood}: ${this.stuffToLog}
   `)
     }
     catch {
@@ -91,7 +91,7 @@ class ChatLogMeDaddy {
         fs.mkdirSync(`./${this.server}`);
       }
   
-      fs.appendFileSync(`${this.server}/chatLogs.txt`, `${timeStampy()} - ${this.server} - ${this.channel} - ${this.dood}: ${this.stuffToLog}
+      fs.appendFileSync(`chatLogs/${this.server}/chatLogs.txt`, `${timeStampy()} - ${this.server} - ${this.channel} - ${this.dood}: ${this.stuffToLog}
   `)
       }
     }

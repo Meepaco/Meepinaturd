@@ -10,23 +10,26 @@
     - ~~boot display~~
     - ~~ping api latency~~
     - ~~user cmd~~
-    - requested by person cmmad
-    - more stuff?
+    - ~~requested by person cmmad~~
+
 - Fix typo(s)... again
 - Update help text
-- Remind Command
+- add chatlogs to chatlogs folder
+- "fix" commands that take arguments
+- remamp info cmd, include uptime in info cmd
 
 
-- remamp info. include uptime in info cmd
-    
-**Experemental** (Basically dont use this of stuff will break, idk)
+**Experemental/WIP** (Basically stuff listed may not be fully functional/stable it may break randomly, idk)
 
 - Bot settings editor
     - restrict to bot owner/owner's server?
     - ~~enable/disable switch~~
 - Very unfinished blackjack
-
-- new info-ext command
+- ping a server
+- ~~new info-ext command~~ disabled for now
+- Remind Command
+- revamp pasteboard
+    - module is done, now need to implement better
 
 
 **todo**

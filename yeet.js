@@ -1,5 +1,5 @@
 // Welcome to my sketchy code
-const version = 'v1.3b6 (1302)'
+const version = 'v1.3b7 (1303)'
 const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3b3'
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -8,14 +8,16 @@ const prefix = config.bot.prefix;
 const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
+var ping = require('ping');
 
 const editJsonFile = require("edit-json-file");
-const si = require('systeminformation');
-const { Recoverable } = require('repl');
+// const si = require('systeminformation');
+// const { Recoverable } = require('repl');
 
 // Modules
 // const generalCmds = require('./generalCmds');
 const ChatLogMeDaddy = require('./chatLog')
+const Pasteboard = require('./pasteboard.js')
 // const econ = require('./econ.js')
 
 
@@ -711,12 +713,12 @@ client.on('message', async recMsg => {
       !!!info-ext: shows more bot info
       **alt f4:** just dont...
       **invite:** Get a bot invite link
-      !!!remind <time> <time unit> <message>
+      !!!remind <time> <time unit> <message> (time valid time units sec min hr day)
       !!!settings: Do not touch. Period.`
-          var helpMessage = `**essay:** Best roast
-      **bwah:** A simple wall of text
-      **skelly:** Totally not NSFW...
-      **Android commands:** acc, uevent, vanced, ssh, twrp`
+          var helpMessage = `pb <name> <paste contents to add>
+          pb <name>
+          pb-list
+          pb-del <name>`
           var helpEcon = `WHOLE ECONOMY IS DEAD BC MY BRAIN TOO SMALL
       **reset bal:** Resets balance
       **bal <user>:** Check balance
@@ -730,7 +732,7 @@ client.on('message', async recMsg => {
 
 
       // recMsg.channel.send(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Command Help', undefined, 6053119, ':)', helptext))
-      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Copy Pasta', helpMessage, 'Economy', helpEcon))
+      recMsg.channel.send(richEmbed('title-desc-field-field-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'Bot Commands', `The prefix is (${prefix})`, 6053119, `General`, helpGaneral, 'Pasteboard', helpMessage, 'Economy', helpEcon))
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "help"`)
       break;
 
@@ -768,7 +770,7 @@ Memory Usg: ${Math.round(used * 100) / 100} MB`,
 
     })
       break;
-    
+    /** 
     case prefix + 'info-ext':
       si.cpuTemperature()
       .then(temp => {
@@ -819,11 +821,11 @@ ${batt.cyclecount} Cycle(s), ${batt.currentcapacity}/${batt.maxcapacity} mWh (${
       }) //OS
 
       break;
-  
+  */
     case prefix + 'ping':
-      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
+      const msg = await recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS mY IntERnEt?', undefined, 13691445, 'UwU?', `Pinging...`));
 
-      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS yOuR IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
+      msg.edit(richEmbed('title-field', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), 'HoW baD iS mY IntERnEt?', undefined, 13691445, 'Uwu!', `Round-Trip: ${msg.createdTimestamp - recMsg.createdTimestamp}ms. 
 API: ${Math.round(client.ws.ping)}ms`))
     
       console.log(`Pong! ${msg.createdTimestamp - recMsg.createdTimestamp}ms, API:${Math.round(client.ping)}ms)`)
@@ -863,68 +865,107 @@ API: ${Math.round(client.ws.ping)}ms`))
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "invite"`)
       break;
 // copypasta below
-    case prefix + 'essay':
-      recMsg.channel.send(config.bot.essay)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay"`)
-      break;
+//     case prefix + 'essay':
+//       recMsg.channel.send(config.bot.essay)
+//       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "essay"`)
+//       break;
 
-    case prefix + 'bwah':
-      recMsg.channel.send(config.bot.bwah)
-      logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "bwah"`)
-      break;              
+//     case prefix + 'bwah':
+//       recMsg.channel.send(config.bot.bwah)
+//       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "bwah"`)
+//       break;              
 
-    case prefix + 'skelly':
-      recMsg.channel.send(`░░░░░░▄▄▄░░▄██▄░░░ 
-░░░░░▐▀█▀▌░░░░▀█▄░░░ 
-░░░░░▐█▄█▌░░░░░░▀█▄░░ 
-░░░░░░▀▄▀░░░▄▄▄▄▄▀▀░░ 
-░░░░▄▄▄██▀▀▀▀░░░░░░░ 
-░░░█▀▄▄▄█░▀▀░░ 
-░░░▌░▄▄▄▐▌▀▀▀░░ 
-▄░▐░░░▄▄░█░▀▀ ░░ 
-▀█▌░░░▄░▀█▀░▀ ░░
-░░░░░░░▄▄▐▌▄▄░░░ 
-░░░░░░░▀███▀█░▄██░                                        ██
-░░░░░░▐▌▀▄████████████████████████
-░░░░░░▐▀░░░░░░▐▌██░                                     ██
-░░░░░░█░░░░░░░░█░░░░░░░
-░░░░░░█░░░░░░░░█░░░░░░░
-░░░░░░█░░░░░░░░█░░░░░░░░░
-░░░░ ▄██▄░░░░░ ▄██▄░░░░░░░`)
-            logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "skelly"`)
+//     case prefix + 'skelly':
+//       recMsg.channel.send(`░░░░░░▄▄▄░░▄██▄░░░ 
+// ░░░░░▐▀█▀▌░░░░▀█▄░░░ 
+// ░░░░░▐█▄█▌░░░░░░▀█▄░░ 
+// ░░░░░░▀▄▀░░░▄▄▄▄▄▀▀░░ 
+// ░░░░▄▄▄██▀▀▀▀░░░░░░░ 
+// ░░░█▀▄▄▄█░▀▀░░ 
+// ░░░▌░▄▄▄▐▌▀▀▀░░ 
+// ▄░▐░░░▄▄░█░▀▀ ░░ 
+// ▀█▌░░░▄░▀█▀░▀ ░░
+// ░░░░░░░▄▄▐▌▄▄░░░ 
+// ░░░░░░░▀███▀█░▄██░                                        ██
+// ░░░░░░▐▌▀▄████████████████████████
+// ░░░░░░▐▀░░░░░░▐▌██░                                     ██
+// ░░░░░░█░░░░░░░░█░░░░░░░
+// ░░░░░░█░░░░░░░░█░░░░░░░
+// ░░░░░░█░░░░░░░░█░░░░░░░░░
+// ░░░░ ▄██▄░░░░░ ▄██▄░░░░░░░`)
+//             logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "skelly"`)
+//       break; 
+
+//     case prefix + 'acc':
+//       recMsg.channel.send('acc --set --current 500')
+//       recMsg.channel.send('acc -s v 3920')
+//       recMsg.channel.send('acc --set pause_capacity=75 resume_capacity=74')
+//       break;
+
+//     case prefix + 'uevent':
+//       recMsg.channel.send('cat /sys/class/power_supply/bms/uevent')
+//       break;  
+
+//     case prefix + 'vanced':
+//       recMsg.channel.send('chcon -R u:object_r:system_file:s0 /data/app/com.google.android.youtube-whatever')
+//       break;  
+
+//     case prefix + 'ssh':
+//       recMsg.channel.send('/data/adb/modules/ssh/opensshd.init start')
+//       break;
+
+//     case prefix + 'twrp':
+      // recMsg.channel.send('adb backup -f aug12_2020 --twrp --compress data boot')
+      // break;   
+
+    case prefix + 'pingsvr':
+      recMsg.channel.send('pinging server...')
+
+      // var ping = require('ping');
+
+      // var hosts = ['129.168.2.23:25565', 'google.com'];
+      // hosts.forEach(function(host){
+      //     ping.sys.probe(host, function(isAlive){
+      //         var msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
+      //         console.log(msg);
+      //     });
+      // });
+
+
+      var net = require('net');
+var hosts = [[config.bot.radicaleServer[0], config.bot.radicaleServer[1]]];
+hosts.forEach(function(item) {
+    var sock = new net.Socket();
+    sock.setTimeout(2500);
+    sock.on('connect', function() {
+      recMsg.channel.send(item[0]+':'+item[1]+' is online.');
+        sock.destroy();
+    }).on('error', function(e) {
+      recMsg.channel.send(item[0]+':'+item[1]+' is down: ' + e.message);
+    }).on('timeout', function(e) {
+      recMsg.channel.send(item[0]+':'+item[1]+' is down: timeout');
+    }).connect(item[1], item[0]);
+});
       break; 
 
-    case prefix + 'acc':
-      recMsg.channel.send('acc --set --current 500')
-      recMsg.channel.send('acc -s v 3920')
-      break;
-
-    case prefix + 'uevent':
-      recMsg.channel.send('cat /sys/class/power_supply/bms/uevent')
-      break;  
-
-    case prefix + 'vanced':
-      recMsg.channel.send('chcon -R u:object_r:system_file:s0 /data/app/com.google.android.youtube-whatever')
-      break;  
-
-    case prefix + 'ssh':
-      recMsg.channel.send('/data/adb/modules/ssh/opensshd.init start')
-      break;
-
-    case prefix + 'twrp':
-      recMsg.channel.send('adb backup -f aug12_2020 --twrp --compress data boot')
-      break;   
+      
 
       // case prefix + 'help':
       //   recMsg.channel.send('yes')
       //   break; 
+
+      
       
   }
 
-  switch (recMsg.content.toLowerCase().startsWith) {
+  // if (recMsg.content.toLowerCase().startsWith("yeet")) {
+  //   console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  // }
+  // switch (recMsg.content.toLowerCase().startsWith()) {
 
 
-    case prefix + 'user':
+    // case prefix + 'user':
+    if (recMsg.content.toLowerCase().startsWith(prefix + 'user')) {
       logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Executed "user"`)
 
       var getUseriD = (recMsg.content.split(' ').slice(1)).toString(); 
@@ -976,9 +1017,11 @@ API: ${Math.round(client.ws.ping)}ms`))
         recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Member not found.`, 2727567))
         logme('ERROR', `Rquested member not found`)
       }
-      break; 
+      // break; 
+    }
 
-    case prefix + 'settings', prefix + 'set', prefix + 's' :      // config and settings editor, very very very wip
+    // case prefix + 'settings', prefix + 'set', prefix + 's' :      // config and settings editor, very very very wip
+    else if (recMsg.content.toLowerCase().startsWith(prefix + 'settings', prefix + 'set', prefix + 's')) {
       recMsg.channel.send('WARNING: This command is *heavilly* unfinished')
       // if(recMsg.member.hasPermission(['KICK_MEMBERS', 'BAN_MEMBERS'])) {
       //   recMsg.channel.send('yes')
@@ -1181,10 +1224,12 @@ API: ${Math.round(client.ws.ping)}ms`))
 
 
 
+    }
+      // break; 
 
-      break; 
-
-    case prefix + 'remind':
+    // case prefix + 'remind':
+    else if (recMsg.content.toLowerCase().startsWith(prefix + 'remind')) {
+      console.log('yeet')
       var suffix = recMsg.content.split(' ').slice(1);
       var timesUnit = suffix[1];
       var time = suffix[0];
@@ -1230,10 +1275,149 @@ API: ${Math.round(client.ws.ping)}ms`))
         recMsg.channel.send('Invalid command usage')
       }
 
-
-      break; 
+    }
+      // break; 
       
-  }
+      else if (recMsg.content.toLowerCase().startsWith(prefix + 'pb-del')) {
+        var suffix = recMsg.content.split(' ').slice(1);
+            var alias = suffix[0];
+            var descriptor = ''
+            var content = recMsg.content.split(' ').slice(2).join(' ')
+            var personWHoAdd = client.user.username
+        // yes = new Pasteboard('', new Date(), 'personWHoAdd', 'descriptor', 'content')
+        let yes = new Pasteboard(alias, new Date(), personWHoAdd, descriptor, content)
+
+            // recMsg.channel.send( yes.copy())
+
+
+
+            recMsg.channel.send(yes.evict())
+      }
+
+
+      else if (recMsg.content.toLowerCase() == prefix + 'pb-list') {
+        yes = new Pasteboard('', new Date(), 'personWHoAdd', 'descriptor', 'content')
+
+            // recMsg.channel.send( yes.copy())
+
+
+
+            recMsg.channel.send(yes.listPastes())
+      }
+
+      else if (recMsg.content.toLowerCase() == prefix + 'pb-backup') {
+        recMsg.channel.send("Here are the paste contents.", {
+          files: [
+            "./pasteboardContent.json"]
+        });
+      }
+
+      else if (recMsg.content.toLowerCase().startsWith(prefix + 'pb')) {
+        // console.log('pb asaaaaaaaaaaaaaaaaa')
+
+
+
+
+        try {
+          if (recMsg.author.id == config.bot.owner) {   // user id you want to give perms too, put in json
+            var suffix = recMsg.content.split(' ').slice(1);
+            var alias = suffix[0];
+            var descriptor = ''
+            var content = recMsg.content.split(' ').slice(2).join(' ')
+            var personWHoAdd = client.user.username
+             console.log('a')
+             let yes = new Pasteboard(alias, new Date(), personWHoAdd, descriptor, content)
+             
+             if (content == '' && alias != undefined) { // paste
+              // console.log('pasting')
+              // yes = new Pasteboard('', new Date(), 'personWHoAdd', 'descriptor', 'content')    
+              recMsg.channel.send(yes.paste())
+              // recMsg.reply(yes.paste())
+
+            }
+
+            else if (alias != undefined && content != undefined) { // copy
+              // console.log('coyping')
+
+            
+
+            // recMsg.channel.send(yes.copy(alias))
+          
+
+
+
+
+            // recMsg.channel.send(yes.paste('uwu'))
+        // });
+        recMsg.channel.send('Confirm paste addition (Y/N)')
+        recMsg.channel.awaitMessages(m => m.author.id == recMsg.author.id, {max: 1, time: 30000}).then(collected => {
+          if (collected.first().content.toLowerCase() == 'y') {
+            // thingyToPut = 'true'
+            // confEditor('usePresense', 'true')
+            // recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+
+            recMsg.reply(yes.copy())
+
+           
+          }
+
+
+
+
+          else if (collected.first().content.toLowerCase() == 'n') {
+            // thingyToPut = 'false'
+            // confEditor('usePresense', 'false')
+            // recMsg.reply(`${thingyToEdit} has been changed to "${thingyToPut}".`)
+            recMsg.reply('Pasteboard addition canceled.');   
+          }
+
+          else {
+            recMsg.reply('Not a valid value.');   
+          }   
+        }).catch(() => {
+          recMsg.reply('No answer after 30 seconds, operation canceled.');
+        });
+        
+            
+            
+            
+            
+            
+
+            }
+
+           
+
+
+
+
+
+
+
+
+
+
+
+
+        
+           
+          }
+          else {
+            recMsg.channel.send('You do not have authority to edit the pasteboard')
+            // logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Termination failure (no permissions)`)
+          }
+
+        }
+        
+        catch(e) {
+          console.log(e)
+          console.log('something went wrong')
+          logme('ERROR', `Something went wrong`)
+          recMsg.channel.send('something went wrong')
+        }
+
+      }
+  // }
 
 
 

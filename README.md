@@ -6,9 +6,15 @@
 ## Setting Up
 ### install node, then: 
 ```
-npm install discord.js
-npm install node-os-utils
-npm install edit-json-file
+npm install discord.js --save
+npm install node-os-utils --save
+npm install edit-json-file --save
+npm install systeminformation --save
+npm install ping 
+
+
+
+sudo apt-get install lm-sensors linux temps
 ```
 
 Not needed
@@ -20,6 +26,9 @@ good luck installing ffmpeg!  (this may help -> https://chocolatey.org/packages/
 ```
 
 Go to Retrograde.json and do your token, owner id, channel id, presense settings, ~~google api stuff~~.
+
+https://www.youtube.com/watch?v=nrD7rzidZ84 <-- fix nuking when internet loss hopefully
+return this.reconnect()          dsicord.js/scr/client/websocket/packets/websocketconnections.js
 
 
 ## Features
