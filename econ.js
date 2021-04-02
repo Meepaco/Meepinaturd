@@ -1,4 +1,15 @@
-/moneyyyyyy
+function balReset(usriD) {
+  `this function is used to reset balence so i dont have to spam this everywhere in econ`
+  fs.writeFileSync(`./moneys/${usriD}.txt`, `ur_money= 0`)
+  recMsg.channel.send(richEmbed('desc', recMsg.member.user.username, recMsg.member.user.avatarURL({ format: 'png', dynamic: true}), undefined, `Account created, use **${prefix}bal** reset to reset your balence.`, 2727567))
+  logme('DEBUG', `${recMsg.author.id} (${recMsg.member.user.username}) Created account`)
+}
+
+
+
+
+
+// moneyyyyyy
 client.on('message', async recMsg => {
 
   if (recMsg.author == client.user) {

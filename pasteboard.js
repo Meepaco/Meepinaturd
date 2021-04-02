@@ -1,4 +1,5 @@
 const fs = require('fs');
+const pbDataVersion = '1'
 
 function linearSearch(array, thingToSearch) {
   /**
@@ -11,7 +12,7 @@ function linearSearch(array, thingToSearch) {
    * @return {number} -1 if the item is not found
    * 
    */
-  console.log('linear search activated')
+  // console.log('linear search activated')
   // console.log(array)
   for (const i in array) {
     // console.log('linear charas')
@@ -25,11 +26,12 @@ function linearSearch(array, thingToSearch) {
 }
 
 class Pasteboard {
-  constructor(alias, date, personWHoAdded, descriptor, content) {
+  constructor(alias, date, currentGuild, personWHoAdded, content) {
     this.alias = alias;
-    this.personWHoAdded = personWHoAdded;
     this.date = date;
-    this.descriptor = descriptor;
+    // this.descriptor = descriptor;
+    this.currentGuild = currentGuild
+    this.personWHoAdded = personWHoAdded;
     this.content = content;
   }
 
@@ -42,20 +44,21 @@ class Pasteboard {
      */
     try {
       let obj = {
+        version: pbDataVersion,
         table: []
       };
       
       obj = JSON.parse(fs.readFileSync('pasteboardContent.json', 'utf-8'));
 
-      let evicting = linearSearch(obj.table, this.alias)
-      // console.log(evicting)
-      if (evicting <= -1) { 
+      let indexOfPaste = linearSearch(obj.table, this.alias)
+      // console.log(indexOfPaste)
+      if (indexOfPaste <= -1) { 
         return 'Paste does not exist'
       }
       else {
         // console.log('deleting')
         // console.log(obj.table)
-        obj.table.splice(evicting, 1)
+        obj.table.splice(indexOfPaste, 1)
         // console.log(obj.table)
         // console.log('deleted')
 
@@ -85,6 +88,7 @@ class Pasteboard {
      * finds the paste on the pasteboard, send the content
      */
     let obj = {
+      version: pbDataVersion,
       table: []
     };
 
@@ -124,13 +128,15 @@ class Pasteboard {
      */
 
     let obj = {
+      version: pbDataVersion,
       table: []
     };
       
     let pasteObject = {
       alias: this.alias,
       date: this.date,
-      descriptor: this.descriptor,
+      currentGuild: this.currentGuild,
+      author : this.personWHoAdded,
       content: this.content
     };
 
@@ -165,7 +171,8 @@ class Pasteboard {
       let sampleObject = {
         alias: 'alias',
         date: 'date',
-        descriptor: 'descripto',
+        currentGuild: 'guild id',
+        author : 'author',
         content: "content"
       };
 
@@ -192,6 +199,7 @@ class Pasteboard {
      * list all avalible pastes
      */
     let obj = {
+      version: pbDataVersion,
       table: []
     };
     let avaliblePastes = ''
@@ -203,9 +211,36 @@ class Pasteboard {
     }
     return 'Avalible pastes:\n' + avaliblePastes
   }
+
+
+getInfo () {
+  /**
+   * retrieves information about a paste from the pasteboard
+   */
+  try {
+    let obj = {
+      version: pbDataVersion,
+      table: []
+    };
+    
+    obj = JSON.parse(fs.readFileSync('pasteboardContent.json', 'utf-8'));
+
+    let indexOfPaste = linearSearch(obj.table, this.alias)
+    // console.log(indexOfPaste)
+    if (indexOfPaste <= -1) { 
+      return 'Paste does not exist'
+    }
+    else {
+      let infoSpam = `Name: ${obj.table[indexOfPaste].alias} \n Date: ${obj.table[indexOfPaste].date} \n Author: ${(obj.table[indexOfPaste].author).split(' ').slice(0)[0]}`
+      return infoSpam
+    }
+  }
+
+  catch(err) {
+    return err
+  }
 }
-
-
+}
 
 
 module.exports = Pasteboard;

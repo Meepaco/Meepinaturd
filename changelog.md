@@ -1,58 +1,36 @@
 ## Changelog
 
 ### (WIP) 1.3 Back From The Dead REEEEEEE!!!
-- Disabled moosic & spam completly
-- Disabled economy *for now...* 
-- Add partial chat logging 
-    - rich embeds
-    - message deletes, edits, server join/leave, whatever
+
+Highlights
+- Pasteboard
+- Disable alot of stuff
+- It works I think
+- Basic chat logging
+- Remind Command
+- Fix whatever discord.js v12 broke
+
+Other misc stuff no one cares about
+
 - Fix whatever discord.js v12 broke
     - ~~boot display~~
     - ~~ping api latency~~
-    - ~~user cmd~~
-    - ~~requested by person cmmad~~
+    - ~~user cmd~~ 
+    - ~~"requested by" in rich embeds~~
 
 - Fix typo(s)... again
 - Update help text
-- add chatlogs to chatlogs folder
-- "fix" commands that take arguments
-- remamp info cmd, include uptime in info cmd
+- Add chatlogs to chatlogs folder
+- Revamp info cmd, include uptime in info cmd
+- Clean up readme
+- Other misc changes
 
-
-**Experemental/WIP** (Basically stuff listed may not be fully functional/stable it may break randomly, idk)
-
-- Bot settings editor
-    - restrict to bot owner/owner's server?
-    - ~~enable/disable switch~~
-- Very unfinished blackjack
-- ping a server
-- ~~new info-ext command~~ disabled for now
-- Remind Command
-- revamp pasteboard
-    - module is done, now need to implement better
-
-
-**todo**
-- expand/finish econ (for the relative future)
-- ~~sort out the mess of logging~~
-- ~~case insensitive cmds~~
-- ~~bot status~~
-- cleanup code (again)
-
-- update dsiplay text stuff???
-- blackjack
-- Remove useless/unnesesary logging
-- shove stuff into individual modules
-- Revamp Econ
-    - Make so no need to do command again to create account.
-- probs much more that I didn't specify
-
- https://github.com/sebhildebrandt/systeminformation 
-    
-
-
-
-
+**Depricated**
+- info-ext command
+- jank settings editor
+- moosic
+- spam command
+- whole economy *for now...* 
 
 
 ### 1.2: SKETCHY MOOSIC

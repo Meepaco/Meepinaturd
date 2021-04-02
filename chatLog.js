@@ -39,6 +39,62 @@ function timeStampy() {
     return dateStr
   }
 
+/** 
+  function chatLogme(server, channel, dood, stuffToLog) {
+    `This function handles logging
+     
+    parameters:
+      level:
+        level of logging (DEBUG, WARNING, INFO, ERROR, CRITICAL)
+      stuffToLog:
+        content to be logged`
+  
+    // var date = new Date();
+    // var dateStr =
+    //   date.getFullYear() + "-" +
+    //   ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+    //   ("00" + date.getDate()).slice(-2) + " " +
+      
+    //   ("00" + date.getHours()).slice(-2) + ":" +
+    //   ("00" + date.getMinutes()).slice(-2) + ":" +
+    //   ("00" + date.getSeconds()).slice(-2);
+    // console.log(dateStr);
+  
+    // fs.stat(`./${server}`, function(err) {  
+    //   if (err) {
+    //      // file does not exist
+    //   } else {
+    //       // file exists
+    //   }
+  
+    try {
+      fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${server} - ${channel} - ${dood}: ${stuffToLog}
+  `)
+    }
+    catch {
+      if (!fs.existsSync(`./${server}`)){
+        fs.mkdirSync(`./${server}`);
+      }
+  
+      fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${server} - ${channel} - ${dood}: ${stuffToLog}
+  `)
+      }
+  
+  
+    
+    
+    
+  
+  
+    
+    
+  // fs.appendFileSync(`${server}/chatLogs.txt`, `${timeStampy()} - ${channel} - ${dood} - ${stuffToLog}
+  // `)
+  }
+*/
+
+
+
 
 
 class ChatLogMeDaddy {
