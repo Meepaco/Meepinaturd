@@ -8,7 +8,7 @@
     "prefix": "=",
     "usePresense": "true",
     "useJsonEditor": "false",
-    "presenseMsg": "failing to code simulator",
+    "presenseMsg": "presense",
     "skidsAllowedToEditJson": [],
     "enableChatlogging": ["false"],
     "botLogging": ["false"],

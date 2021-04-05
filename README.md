@@ -17,7 +17,7 @@ It is nessesary to configure Retrograde.json
 ## Features
 
 - Pasteboard
-- Logging
+- Partial Logging
 - ~~Economy~~ returns at a later date
 - Reminders
 - Miscellaneous Commands

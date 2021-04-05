@@ -4,11 +4,12 @@
 
 Highlights
 - Pasteboard
-- Disable alot of stuff
+- Disable alot of stuff (see depricated)
 - It works I think
 - Basic chat logging
 - Remind Command
-- Fix whatever discord.js v12 broke
+- Fix whatever discord.js v12 broke (see below)
+
 
 Other misc stuff no one cares about
 
@@ -21,9 +22,13 @@ Other misc stuff no one cares about
 - Fix typo(s)... again
 - Update help text
 - Add chatlogs to chatlogs folder
-- Revamp info cmd, include uptime in info cmd
+- Revamp info cmd entirely
+- User cmd shows all user roles
 - Clean up readme
 - Other misc changes
+
+todo
+-CODE CLEANUP/DOCCUMENTATION
 
 **Depricated**
 - info-ext command
@@ -32,6 +37,9 @@ Other misc stuff no one cares about
 - spam command
 - whole economy *for now...* 
 
+**Known issues**
+- sketchy rich embed parser
+    - user cmd (pinging) shows wrong requested by
 
 ### 1.2: SKETCHY MOOSIC
 
