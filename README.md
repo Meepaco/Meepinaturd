@@ -5,14 +5,14 @@
 
 ## Requirements
 
-NodeJS and the following modules
+Node.js and the following modules
 ```
 discord.js
 node-os-utils
 ```
 
 It is nessesary to configure Retrograde.json
-
+start yeet.js (or index.js that maks you happy)
 
 ## Features
 

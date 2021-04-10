@@ -1,5 +1,5 @@
 // Welcome to my sketchy code
-const version = 'v1.3-rc1 (1307)'
+const version = 'v1.3 (1308)'
 const whatTheJsonVersionShouldBeForThisVersonOfTheBot = '1.3'
 
 const Discord = require('discord.js');
@@ -10,16 +10,12 @@ const osu = require('node-os-utils');
 const os = require('os');
 const fs = require('fs');
 // var ping = require('ping');
-
-// const editJsonFile = require("edit-json-file");
 // const si = require('systeminformation');
-// const { Recoverable } = require('repl');
 
-// Modules
+// Bot Modules
 // const generalCmds = require('./generalCmds');
 const ChatLogMeDaddy = require('./chatLog')
 const Pasteboard = require('./pasteboard.js');
-// const { receiveMessageOnPort } = require('node:worker_threads');
 // const econ = require('./econ.js')
 
 
@@ -30,7 +26,6 @@ const antiSpam = new Set();
 // const sloTFdownSpam = new Set();
 // const sloTFdownDab = new Set();
 // const sloTFdownDaily = new Set();
-
 
 
 
@@ -481,8 +476,9 @@ function helpMsg(variant, recMsgDummy) {
   **invite:** Get a bot invite link
   **remind** <time> <time unit> <message> (time valid time units sec min hr day)`
       var helpMessage = `**pb** <name> <content>: Adds a paste to the pasteboard
-      pb-<list/del/info> <name>`
-      var helpEcon = `WHOLE ECONOMY IS DSIABLED, WILL RETURN AT LATER DATE
+      **pb**-del/info> <name>
+      **pb**-list`
+      var helpEcon = `WHOLE ECONOMY IS THANOS SNAPPED, WILL RETURN AT LATER DATE
   **reset bal:** Resets balance
   **bal <user>:** Check balance
   **pay <user> <amount>:** Pay someone
@@ -506,7 +502,7 @@ function helpMsg(variant, recMsgDummy) {
 
 function getInfo(callback, embedSwitch, recMsgDummy) {
   /**
-   * return system and bot nerd stats
+   * return system and bot nerd stats, either in a rich embed or just plain text
    */
 
   return new Promise(function(resolve, reject) {
@@ -514,22 +510,28 @@ function getInfo(callback, embedSwitch, recMsgDummy) {
     
     osu.cpu.usage()
     .then(usg => {
+      // bot info
       let bytesToMB = 1 / 1048576  
       let botVersion = version
       let nodePlatform = process.platform
       let nodeVersion = process.version
       let memUsg = process.memoryUsage().heapUsed / 1024 / 1024;
-      let botMemUsg = `${Math.round(memUsg * 100) / 100} MB`
+      let botMemUsg = `${Math.round(memUsg * 100) / 100}`
       let botUptime = uptime('bot')
       let botConfigFile = `${config.bot.jsonVersion} (expected: ${whatTheJsonVersionShouldBeForThisVersonOfTheBot})`
 
-      let hostCPU = `${osu.cpu.model()} (${os.arch()}), ${osu.cpu.count()} core(s)`
+      //system info
+      let coreCount = 0
+      os.cpus().forEach((core) => {
+        coreCount = coreCount + 1
+      })
+      let hostCPU = `${osu.cpu.model()} (${os.arch()}), ${coreCount}C/${osu.cpu.count()}T`
       let cpuUilization = `${usg}% (${os.loadavg()})`
       let hostOS = `${os.type} (${os.platform()})`
       let hostMemUsg = `${parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)}/${parseInt(os.totalmem * bytesToMB)} MB (${(((parseInt(os.totalmem * bytesToMB) - parseInt(os.freemem * bytesToMB)) / parseInt(os.totalmem * bytesToMB))* 100).toFixed(2)}% usage)`
       let hostUptime = uptime('os')
 
-      if (embedSwitch == 'embed') { 
+      if (embedSwitch == 'embed') { // use rich embeds
         infoMsg = richEmbed('title-field-field-field', recMsgDummy.member.user.username, recMsgDummy.member.user.avatarURL({ format: 'png', dynamic: true}), "Bot Info", undefined, 13691445, 
           'Bot', `**Version:** ${botVersion}
 **Platform:** ${nodePlatform}
@@ -549,7 +551,7 @@ function getInfo(callback, embedSwitch, recMsgDummy) {
       }
 
 
-      else {
+      else { // no rich embeds
         infoMsg = `
             --Bot--
             Version: ${botVersion}
@@ -646,16 +648,25 @@ getInfo(function(infoMsg) {
 
   if (config.bot.usePresense == "true") {
     logme('DEBUG', 'Setting up presense')
-    client.user.setStatus('available')
-      client.user.setPresence({
-          game: {
-              name: config.bot.presenseMsg,
-              type: "PLAYING",
-              url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          }
-      });
-    logme('DEBUG', 'Done setting up presense')
-    console.log('Presense enabled')
+    // client.user.setStatus('available')
+    //   client.user.setPresence({
+    //       game: {
+    //           name: config.bot.presenseMsg,
+    //           type: "PLAYING",
+    //           // url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    //       }
+    //   });
+    try {
+      client.user.setActivity(config.bot.presenseMsg, { type: 'PLAYING' }) // PLAYING, STREAMING, LISTENING, WATCHING
+      console.log('Presense set to: ' + config.bot.presenseMsg)
+      logme('DEBUG', 'Done setting up presense')
+    }
+    catch (e) {
+      console.log(e)
+      logme('ERROR', 'Failed to set up presense')
+    }
+
+   
   }
   console.log('-----finished loading-----')
 })
@@ -779,7 +790,7 @@ API: ${Math.round(client.ws.ping)}ms`))
 
           var dateCreate = user.createdAt.toLocaleDateString();
           var dateJoin = guildUsr.joinedAt.toLocaleDateString();
-          var usrRoles = guildUsr.roles.highest //guildUsr.highestRole.name
+          var usrRoles = guildUsr.roles.highest
   
 
           // const status = user.presence.game.name
@@ -788,7 +799,6 @@ API: ${Math.round(client.ws.ping)}ms`))
           // console.log(status)
           // console.log(usrRoles)
           // console.log(guildUsr.roles.cache)
-          // aaaaaa.concat(guildUsr.roles.cache)
 
           // get all user's roles
           let allRoles = []
@@ -859,7 +869,6 @@ API: ${Math.round(client.ws.ping)}ms`))
         else {
           recMsg.channel.send('Invalid command usage')
         }
-
       }
         
         else if (recMsg.content.toLowerCase().startsWith(prefix + 'pb-del')) {
@@ -904,12 +913,7 @@ API: ${Math.round(client.ws.ping)}ms`))
 
         else if (recMsg.content.toLowerCase() == prefix + 'pb-list') {
           yes = new Pasteboard('', new Date(), 'personWHoAdd', 'descriptor', 'content')
-
-              // recMsg.channel.send( yes.copy())
-
-
-
-              recMsg.channel.send(yes.listPastes())
+          recMsg.channel.send(yes.listPastes())
         }
 
         else if (recMsg.content.toLowerCase().startsWith(prefix + 'pb-info')) {
@@ -936,7 +940,6 @@ API: ${Math.round(client.ws.ping)}ms`))
         else if (recMsg.content.toLowerCase().startsWith(prefix + 'pb')) { // main command, paste and copy
     
           try {
-            
             let suffix = recMsg.content.split(' ').slice(1);
             let alias = suffix[0];
             let content = recMsg.content.split(' ').slice(2).join(' ')
@@ -945,7 +948,7 @@ API: ${Math.round(client.ws.ping)}ms`))
             let date = new Date();
             let dateAdded = date.getFullYear() + "-" + ("00" + (date.getMonth() + 1)).slice(-2) + "-" + ("00" + date.getDate()).slice(-2) + ' ' + ("00" + date.getHours()).slice(-2) + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
             
-
+            
             let yes = new Pasteboard(alias, dateAdded, currentGuild, personWHoAdd, content)
             
             if (content == '' && alias != undefined) { // paste

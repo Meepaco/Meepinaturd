@@ -1,11 +1,10 @@
 ## Changelog
 
-### (WIP) 1.3 Back From The Dead REEEEEEE!!!
+### 1.3 Back From The Dead REEEEEEE!!!
 
 Highlights
 - Pasteboard
-- Disable alot of stuff (see depricated)
-- It works I think
+- Disable alot of stuff (see deprecated)
 - Basic chat logging
 - Remind Command
 - Fix whatever discord.js v12 broke (see below)
@@ -14,21 +13,21 @@ Highlights
 Other misc stuff no one cares about
 
 - Fix whatever discord.js v12 broke
-    - ~~boot display~~
-    - ~~ping api latency~~
-    - ~~user cmd~~ 
-    - ~~"requested by" in rich embeds~~
+    - boot display
+    - ping api latency
+    - user cmd
+    - "requested by" in rich embeds
+    - presence message
 
 - Fix typo(s)... again
 - Update help text
 - Add chatlogs to chatlogs folder
 - Revamp info cmd entirely
+    - C/T may or may not display wrong number of logical cores, I obviously can't test on 4C/4T processor
 - User cmd shows all user roles
-- Clean up readme
+- Rekame readme
 - Other misc changes
 
-todo
--CODE CLEANUP/DOCCUMENTATION
 
 **Depricated**
 - info-ext command
@@ -40,6 +39,7 @@ todo
 **Known issues**
 - sketchy rich embed parser
     - user cmd (pinging) shows wrong requested by
+
 
 ### 1.2: SKETCHY MOOSIC
 
